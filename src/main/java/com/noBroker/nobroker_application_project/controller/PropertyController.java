@@ -23,18 +23,6 @@ public class PropertyController {
         this.propertyService = propertyService;
     }
 
-    @GetMapping("/images")
-    public String propertyImages(Model model) {
-        return "gallary";
-    }
-
-    @PostMapping("/images")
-    public String uploadImages(@RequestParam("propertyImages") MultipartFile[] propertyImages) {
-        propertyService.saveImage(propertyImages);
-
-        return "redirect:/next-step"; // change this as per your flow
-    }
-
     @GetMapping("/")
     public String getForm1(){
         return "property-details";
@@ -42,7 +30,7 @@ public class PropertyController {
 
     @PostMapping("/propertyDetails")
     public String addPropertyDetails(Property property){
-       propertyService.saveProperty(property);
+        propertyService.saveProperty(property);
 
         return "locality-details";
     }
@@ -61,14 +49,14 @@ public class PropertyController {
 
     @GetMapping("/rentalDetails")
     public String getFrom3(){
-        return "rental-details";
+        return "rentaldetails";
     }
 
     @PostMapping("/rentalDetails")
     public String addAddress(RentalDto rentalDto) {
         propertyService.saveRentails(rentalDto);
 
-        return "ammenties-details";
+        return "amenities-details";
     }
 
     @PostMapping("/amenities")
@@ -76,5 +64,17 @@ public class PropertyController {
         propertyService.saveAmenities(amenity);
 
         return "gallary";
+    }
+
+    @GetMapping("/images")
+    public String propertyImages(Model model) {
+        return "gallary";
+    }
+
+    @PostMapping("/images")
+    public String uploadImages(@RequestParam("propertyImages") MultipartFile[] propertyImages) {
+        propertyService.saveImage(propertyImages);
+
+        return "/";
     }
 }

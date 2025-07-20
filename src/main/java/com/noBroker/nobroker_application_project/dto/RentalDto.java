@@ -2,6 +2,7 @@ package com.noBroker.nobroker_application_project.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;

@@ -34,7 +34,7 @@ public class PropertyService {
 
     public void saveAddress(Address address) {
 
-//        property.setAddress(address);
+        property.setAddress(address);
     }
 
     public void saveRentails(RentalDto rentalDto) {
