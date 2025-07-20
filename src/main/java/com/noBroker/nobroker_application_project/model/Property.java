@@ -55,7 +55,7 @@ public class Property {
     private Set<User> bookmarkedByUsers = new HashSet<>();
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Photo> photos = new HashSet<>();
+    private Set<Image> photos = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "amenity_id")
