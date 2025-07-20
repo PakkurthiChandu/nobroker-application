@@ -50,6 +50,7 @@ public class PropertyController {
     @PostMapping("/amenities")
     public String addAmenities(Amenity amenity){
         propertyService.saveAmenities(amenity);
-        return "amenities-details";
+
+        return "gallary";
     }
 }

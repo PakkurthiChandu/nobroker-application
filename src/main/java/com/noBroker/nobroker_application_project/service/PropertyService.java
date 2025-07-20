@@ -6,7 +6,7 @@ import com.noBroker.nobroker_application_project.model.Image;
 import com.noBroker.nobroker_application_project.model.Property;
 import com.noBroker.nobroker_application_project.repository.PropertyRepository;
 import com.noBroker.nobroker_application_project.model.Amenity;
-import com.noBroker.nobroker_application_project.model.Property;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +24,14 @@ public class PropertyService {
     public PropertyService(Cloudinary cloudinary, PropertyRepository propertyRepository) {
         this.cloudinary = cloudinary;
         this.propertyRepository = propertyRepository;
+    }
+
+    public void saveProperty(Property property) {
+        this.property = property;
+    }
+
+    public void saveAmenities(Amenity amenity) {
+        property.setAmenity(amenity);
     }
 
     public void saveImage(MultipartFile[] propertyImages) {
@@ -51,9 +59,5 @@ public class PropertyService {
         }
 
         propertyRepository.save(property);
-    }
-
-    public void saveAmenities(Amenity amenity) {
-        property.setAmenity(amenity);
     }
 }
