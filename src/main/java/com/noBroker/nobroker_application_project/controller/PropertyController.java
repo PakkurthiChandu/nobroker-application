@@ -23,6 +23,7 @@ public class PropertyController {
     @PostMapping("/propertyDetails")
     public String addPropertyDetails(Property property){
        propertyService.saveProperty(property);
+
         return "property-details";
     }
 }
