@@ -3,6 +3,7 @@ package com.noBroker.nobroker_application_project.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -19,14 +20,14 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long propertyId;
 
-    private String propertyType;
-    private String propertyName;
+    private String apartmentType;
+    private String apartmentName;
     private int bhkType;
     private int floor;
     private int totalFloors;
     private int propertyAge;
     private String facing;
-    private double buildUpArea;
+    private double builtUpArea;
     private String availableFor;
     private long expectedRent;
     private long exceptedDeposit;

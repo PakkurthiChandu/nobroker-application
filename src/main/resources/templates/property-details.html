@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Post Property - Property Details</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+        }
+
+        /* HEADER STYLES */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            z-index: 1000;
+        }
+
+        .left-section, .right-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 30px;
+            height: 30px;
+        }
+
+        .brand-name {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .menu-item {
+            cursor: pointer;
+        }
+
+        .pay-rent, .post-property {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .pay-rent {
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        .post-property {
+            background-color: #00aa9b;
+            color: #fff;
+        }
+
+        .profile {
+            background-color: #eee;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .view-toggle button {
+            background-color: #00aa9b;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            margin-top: 60px;
+            width: 260px;
+            background-color: #fff;
+            border-right: 1px solid #e0e0e0;
+            height: calc(100vh - 60px);
+        }
+
+        .progress-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .nav-steps {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-step {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+
+        .nav-step.active {
+            background-color: #e6f7f5;
+            border-left: 3px solid #00aa9b;
+        }
+
+        .step-icon {
+            margin-right: 10px;
+        }
+
+        /* MAIN FORM CONTENT */
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .form-section {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group select option[disabled] {
+            color: #aaa;
+        }
+
+        .submit-btn {
+            background-color: #00aa9b;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #008d84;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="main-header">
+    <div class="left-section">
+        <img src="https://static.thenounproject.com/png/1040629-200.png" alt="Logo" class="logo" />
+        <span class="brand-name">NOBROKER</span>
+        <span class="menu-item">Buy ▾</span>
+    </div>
+    <div class="right-section">
+        <button class="pay-rent">Pay Rent</button>
+        <button class="post-property">Post Your Property</button>
+        <div class="profile">Pakkurthi Chandu ▾</div>
+        <div class="view-toggle">
+            <button>List</button>
+            <button>Map</button>
+        </div>
+    </div>
+</header>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="progress-header">
+        <span>80% Done</span>
+        <button class="preview-btn">Preview</button>
+    </div>
+    <ul class="nav-steps">
+        <li class="nav-step active"><span class="step-icon">🏠</span> Property Details</li>
+        <li class="nav-step"><span class="step-icon">📍</span> Locality Details</li>
+        <li class="nav-step"><span class="step-icon">💰</span> Rental Details</li>
+        <li class="nav-step"><span class="step-icon">🎯</span> Amenities</li>
+        <li class="nav-step"><span class="step-icon">📷</span> Gallery</li>
+        <li class="nav-step"><span class="step-icon">📅</span> Schedule</li>
+    </ul>
+</div>
+
+<!-- FORM -->
+<div class="main-content">
+    <div class="form-section">
+        <h2>Property Details</h2>
+        <!-- Only form section is shown below, rest of your HTML remains same -->
+
+        <form action="/propertyDetails" method="post">
+            <div class="form-group">
+                <label>Apartment Type*</label>
+                <select name="apartmentType" required>
+                    <option disabled selected>Select Type</option>
+                    <option value="Gated Community">Gated Community</option>
+                    <option value="Villa">Villa</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Apartment Name*</label>
+                <input type="text" name="apartmentName" placeholder="e.g. Ajmera Enclave" required />
+            </div>
+
+            <div class="form-group">
+                <label>BHK Type*</label>
+                <select name="bhkType" required>
+                    <option disabled selected>Select BHK</option>
+                    <option value="1">1 BHK</option>
+                    <option value="2">2 BHK</option>
+                    <option value="3">3 BHK</option>
+                    <option value="4">4 BHK</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>No. of Floors*</label>
+                <select name="totalFloors" required>
+                    <option disabled selected>Select</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4+">4+</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Property Age*</label>
+                <select name="propertyAge" required>
+                    <option disabled selected>Select Age</option>
+                    <option value="1">Less than 1 year</option>
+                    <option value="2">1 to 3 years</option>
+                    <option value="3">3 to 5 years</option>
+                    <option value="4">5+ years</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Facing</label>
+                <select name="facing">
+                    <option disabled selected>Select Facing</option>
+                    <option value="East">East</option>
+                    <option value="West">West</option>
+                    <option value="North">North</option>
+                    <option value="South">South</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Built-Up Area (in sq.ft)*</label>
+                <input type="text" name="builtUpArea" placeholder="e.g. 1200" required />
+            </div>
+
+            <button type="submit" class="submit-btn">Save & Continue</button>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>
