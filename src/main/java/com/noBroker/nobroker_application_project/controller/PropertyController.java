@@ -31,23 +31,6 @@ public class PropertyController {
     @PostMapping("/amenities")
     public String addAmenities(Amenity amenity){
         propertyService.saveAmenities(amenity);
-        System.out.println(amenity.getBathrooms());
-        System.out.println(amenity.getBalcony());
-        System.out.println(amenity.getWaterSupply());
-        System.out.println(amenity.getPetAllowed());
-        System.out.println(amenity.getGym());
-        System.out.println(amenity.getNonVeg());
-        System.out.println(amenity.getGatedSecurity());
-        System.out.println(amenity.getLift());
-        System.out.println(amenity.getGasPipeLine());
-        System.out.println(amenity.getPark());
-        System.out.println(amenity.getSecondaryNumber());
-        System.out.println(amenity.getHouseKeeping());
-        System.out.println(amenity.getInternetService());
-        System.out.println(amenity.getPowerBackUp());
-        System.out.println(amenity.getServentRoom());
-        System.out.println(amenity.getSwimmingPool());
-        System.out.println(amenity.getFireSafety());
         return "amenities-details";
     }
 }
