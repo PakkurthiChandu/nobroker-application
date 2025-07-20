@@ -1,5 +1,7 @@
 package com.noBroker.nobroker_application_project.service;
 
+import com.noBroker.nobroker_application_project.dto.RentalDto;
+import com.noBroker.nobroker_application_project.model.Address;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.noBroker.nobroker_application_project.model.Image;
@@ -28,6 +30,27 @@ public class PropertyService {
 
     public void saveProperty(Property property) {
         this.property = property;
+    }
+
+    public void saveAddress(Address address) {
+
+//        property.setAddress(address);
+    }
+
+    public void saveRentails(RentalDto rentalDto) {
+
+        property.setIsSale(rentalDto.getIsSale());
+        property.setExpectedRent(rentalDto.getExpectedRent());
+        property.setExceptedDeposit(rentalDto.getExpectedDeposite());
+        property.setMontlyMaintenance(rentalDto.getMontlyMaintenance());
+        property.setNegotiation(rentalDto.getNegotiation());
+        property.setAvailableFrom(rentalDto.getAvailableFrom());
+        property.setPreferredTenets(rentalDto.getPreferredTenets());
+        property.setFurnishing(rentalDto.getFurnishing());
+        property.setParking(rentalDto.getParking());
+        property.setDescription(rentalDto.getDescription());
+
+
     }
 
     public void saveAmenities(Amenity amenity) {

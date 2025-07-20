@@ -1,16 +1,16 @@
 package com.noBroker.nobroker_application_project.controller;
 
+import com.noBroker.nobroker_application_project.dto.RentalDto;
+import com.noBroker.nobroker_application_project.model.Address;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 
 import com.noBroker.nobroker_application_project.model.Amenity;
 import com.noBroker.nobroker_application_project.model.Property;
-import com.noBroker.nobroker_application_project.service.PropertyService;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,7 +44,31 @@ public class PropertyController {
     public String addPropertyDetails(Property property){
        propertyService.saveProperty(property);
 
-        return "amenities-details";
+        return "locality-details";
+    }
+
+    @GetMapping("/localityDetails")
+    public String getFrom2(){
+        return "locality-details";
+    }
+
+    @PostMapping("/localityDetails")
+    public String addAddress(Address address){
+        propertyService.saveAddress(address);
+
+        return "rental-details";
+    }
+
+    @GetMapping("/rentalDetails")
+    public String getFrom3(){
+        return "rental-details";
+    }
+
+    @PostMapping("/rentalDetails")
+    public String addAddress(RentalDto rentalDto) {
+        propertyService.saveRentails(rentalDto);
+
+        return "ammenties-details";
     }
 
     @PostMapping("/amenities")
