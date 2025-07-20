@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Post Property - Property Details</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+        }
+
+        /* HEADER STYLES */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            z-index: 1000;
+        }
+
+        .left-section, .right-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 30px;
+            height: 30px;
+        }
+
+        .brand-name {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .menu-item {
+            cursor: pointer;
+        }
+
+        .pay-rent, .post-property {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .pay-rent {
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        .post-property {
+            background-color: #00aa9b;
+            color: #fff;
+        }
+
+        .profile {
+            background-color: #eee;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .view-toggle button {
+            background-color: #00aa9b;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            margin-top: 60px;
+            width: 260px;
+            background-color: #fff;
+            border-right: 1px solid #e0e0e0;
+            height: calc(100vh - 60px);
+        }
+
+        .progress-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .nav-steps {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-step {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+
+        .nav-step.active {
+            background-color: #e6f7f5;
+            border-left: 3px solid #00aa9b;
+        }
+
+        .step-icon {
+            margin-right: 10px;
+        }
+
+        /* MAIN FORM CONTENT */
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .form-section {
+            max-width: 800px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            color: #00aa9b;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group select option[disabled] {
+            color: #aaa;
+        }
+
+        /* Counter Input Styles */
+        .counter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .counter-btn {
+            width: 35px;
+            height: 35px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .counter-btn:hover {
+            background: #e9e9e9;
+        }
+
+        .counter-display {
+            min-width: 50px;
+            text-align: center;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fff;
+        }
+
+        /* Toggle Button Styles */
+        .toggle-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: #00aa9b;
+            color: #fff;
+            border-color: #00aa9b;
+        }
+
+        .toggle-btn:hover:not(.active) {
+            background: #f5f5f5;
+        }
+
+        /* Amenities Grid */
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .amenity-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .amenity-item:hover {
+            border-color: #00aa9b;
+            background: #f8fffd;
+        }
+
+        .amenity-item input[type="checkbox"] {
+            margin: 0;
+            width: 18px;
+            height: 18px;
+            accent-color: #00aa9b;
+        }
+
+        .amenity-icon {
+            font-size: 18px;
+        }
+
+        .amenity-label {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #e6f7f5;
+            border: 1px solid #b3e5d9;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .info-box .close-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #666;
+            margin-left: auto;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-title {
+            font-weight: bold;
+            color: #00aa9b;
+            margin-bottom: 5px;
+        }
+
+        .info-text {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Phone Input */
+        .phone-input {
+            display: flex;
+            align-items: center;
+        }
+
+        .country-code {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-right: none;
+            border-radius: 6px 0 0 6px;
+            background: #f9f9f9;
+            font-size: 14px;
+        }
+
+        .phone-input input {
+            border-radius: 0 6px 6px 0;
+        }
+
+        .directions-input {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn, .back-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .submit-btn {
+            background-color: #00aa9b;
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background-color: #008d84;
+        }
+
+        .back-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .back-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="main-header">
+    <div class="left-section">
+        <img src="https://static.thenounproject.com/png/1040629-200.png" alt="Logo" class="logo" />
+        <span class="brand-name">NOBROKER</span>
+        <span class="menu-item">Buy ▾</span>
+    </div>
+    <div class="right-section">
+        <button class="pay-rent">Pay Rent</button>
+        <button class="post-property">Post Your Property</button>
+        <div class="profile">Pakkurthi Chandu ▾</div>
+        <div class="view-toggle">
+            <button>List</button>
+            <button>Map</button>
+        </div>
+    </div>
+</header>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="progress-header">
+        <span>80% Done</span>
+        <button class="preview-btn">Preview</button>
+    </div>
+    <ul class="nav-steps">
+        <li class="nav-step active"><span class="step-icon">🏠</span> Property Details</li>
+        <li class="nav-step"><span class="step-icon">📍</span> Locality Details</li>
+        <li class="nav-step"><span class="step-icon">💰</span> Rental Details</li>
+        <li class="nav-step"><span class="step-icon">🎯</span> Amenities</li>
+        <li class="nav-step"><span class="step-icon">📷</span> Gallery</li>
+        <li class="nav-step"><span class="step-icon">📅</span> Schedule</li>
+    </ul>
+</div>
+
+<!-- FORM -->
+<div class="main-content">
+    <form action="/amenities" method="post">
+            <div class="section-title">Provide additional details about your property to get maximum visibility</div>
+
+            <div class="form-row">
+                <div class="form-col">
+                    <label>Bathroom(s)*</label>
+                    <div class="counter-group">
+                        <button type="button" class="counter-btn" onclick="decreaseCounter('bathroom')">−</button>
+                        <div class="counter-display" id="bathroomCount">0</div>
+                        <button type="button" class="counter-btn" onclick="increaseCounter('bathroom')">+</button>
+                        <input type="hidden" name="bathrooms" id="bathroomInput" value="0">
+                    </div>
+                </div>
+                <div class="form-col">
+                    <label>Balcony</label>
+                    <div class="counter-group">
+                        <button type="button" class="counter-btn" onclick="decreaseCounter('balcony')">−</button>
+                        <div class="counter-display" id="balconyCount">0</div>
+                        <button type="button" class="counter-btn" onclick="increaseCounter('balcony')">+</button>
+                        <input type="hidden" name="balcony" id="balconyInput" value="0">
+                    </div>
+                    <div class="form-col">
+                        <label>Water Supply*</label>
+                        <select name="waterSupply" required>
+                            <option disabled selected>Select</option>
+                            <option value="Corporation">Corporation</option>
+                            <option value="Borewell">Borewell</option>
+                            <option value="Both">Both</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toggle Buttons -->
+            <div class="form-row">
+                <div class="form-col">
+                    <label>Pet Allowed*</label>
+                    <div class="toggle-group">
+                        <button type="button" class="toggle-btn active" onclick="toggleOption('pet', 'false')" id="petNo">No</button>
+                        <button type="button" class="toggle-btn" onclick="toggleOption('pet', 'true')" id="petYes">Yes</button>
+                        <input type="hidden" name="petAllowed" id="petInput" value="false">
+                    </div>
+                </div>
+                <div class="form-col">
+                    <label>Gym*</label>
+                    <div class="toggle-group">
+                        <button type="button" class="toggle-btn active" onclick="toggleOption('gym', 'false')" id="gymNo">No</button>
+                        <button type="button" class="toggle-btn" onclick="toggleOption('gym', 'true')" id="gymYes">Yes</button>
+                        <input type="hidden" name="gym" id="gymInput" value="false">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-col">
+                    <label>Non-Veg Allowed*</label>
+                    <div class="toggle-group">
+                        <button type="button" class="toggle-btn active" onclick="toggleOption('nonVeg', 'false')" id="nonVegNo">No</button>
+                        <button type="button" class="toggle-btn" onclick="toggleOption('nonVeg', 'true')" id="nonVegYes">Yes</button>
+                        <input type="hidden" name="nonVeg" id="nonVegInput" value="false">
+                    </div>
+                </div>
+                <div class="form-col">
+                    <label>Gated Security*</label>
+                    <div class="toggle-group">
+                        <button type="button" class="toggle-btn active" onclick="toggleOption('gatedSecurity', 'false')" id="gatedSecurityNo">No</button>
+                        <button type="button" class="toggle-btn" onclick="toggleOption('gatedSecurity', 'true')" id="gatedSecurityYes">Yes</button>
+                        <input type="hidden" name="gatedSecurity" id="gatedSecurityInput" value="false">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dropdown Selects -->
+            <div class="form-row">
+                <div class="form-col">
+                    <label>Who will show the property?*</label>
+                    <select name="showProperty" required>
+                        <option disabled selected>Select</option>
+                        <option value="Owner">Owner</option>
+                        <option value="Tenant">Tenant</option>
+                        <option value="Neighbor">Neighbor</option>
+                        <option value="Security">Security</option>
+                    </select>
+                </div>
+                <div class="form-col">
+                    <label>Current Property Condition?</label>
+                    <select name="propertyCondition">
+                        <option disabled selected>Select</option>
+                        <option value="Excellent">Excellent</option>
+                        <option value="Good">Good</option>
+                        <option value="Average">Average</option>
+                        <option value="Below Average">Below Average</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Phone Input -->
+            <div class="form-group">
+                <label>Secondary Number</label>
+                <div class="phone-input">
+                    <div class="country-code">
+                        🇮🇳 +91 ▾
+                    </div>
+                    <input type="tel" name="secondaryNumber" placeholder="Secondary Number">
+                </div>
+            </div>
+
+            <!-- Near By Place -->
+            <div class="form-group">
+                <label>Near By Place</label>
+                <input type="text" name="nearByPlace" placeholder="Eg. Near Metro Station, Shopping Mall, etc.">
+            </div>
+
+            <!-- Amenities Section - Only fields from your model -->
+            <div class="form-group">
+                <label>Select the available amenities</label>
+                <div class="amenities-grid">
+                    <label class="amenity-item">
+                        <input type="checkbox" name="lift" value="true">
+                        <span class="amenity-icon">🏢</span>
+                        <span class="amenity-label">Lift</span>
+                    </label>
+                    <label class="amenity-item">
+                        <input type="checkbox" name="gasPipeLine" value="true">
+                        <span class="amenity-icon">⛽</span>
+                        <span class="amenity-label">Gas Pipeline</span>
+                    </label>
+                    <label class="amenity-item">
+                        <input type="checkbox" name="airConditioner" value="true">
+                        <span class="amenity-icon">❄️</span>
+                        <span class="amenity-label">Air Conditioner</span>
+                    </label>
+                    <label class="amenity-item">
+                        <input type="checkbox" name="park" value="true">
+                        <span class="amenity-icon">🌳</span>
+                        <span class="amenity-label">Park</span>
+                    </label>
+                    <label class="amenity-item">
+                        <input type="checkbox" name="houseKeeping" value="true">
+                        <span class="amenity-icon">🧹</span>
+                        <span class="amenity-label">House Keeping</span>
+                    </label>
+                    <label class="amenity-item">
+                        <input type="checkbox" name="internetService" value="true">
+                        <span class="amenity-icon">📶</span>
+                        <span class="amenity-label">Internet Service</span>
+                    </label>
+                    <label class="amenity-item">
+                        <input type="checkbox" name="powerBackUp" value="true">
+                        <span class="amenity-icon">🔋</span>
+                        <span class="amenity-label">Power Backup</span>
+                    </label>
+                    <label class="amenity-item">
+                        <input type="checkbox" name="serventRoom" value="true">
+                        <span class="amenity-icon">🏠</span>
+                        <span class="amenity-label">Servant Room</span>
+                    </label>
+                    <label class="amenity-item">
+                        <input type="checkbox" name="swimmingPool" value="true">
+                        <span class="amenity-icon">🏊</span>
+                        <span class="amenity-label">Swimming Pool</span>
+                    </label>
+                    <label class="amenity-item">
+                        <input type="checkbox" name="fireSafety" value="true">
+                        <span class="amenity-icon">🔥</span>
+                        <span class="amenity-label">Fire Safety</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="back-btn">Back</button>
+                <button type="submit" class="submit-btn">Save & Continue</button>
+            </div>
+    </form>
+    </div>
+</div>
+
+<script>
+    function increaseCounter(type) {
+        const display = document.getElementById(type + 'Count');
+        const input = document.getElementById(type + 'Input');
+        let current = parseInt(display.textContent);
+        current++;
+        display.textContent = current;
+        input.value = current;
+    }
+
+    function decreaseCounter(type) {
+        const display = document.getElementById(type + 'Count');
+        const input = document.getElementById(type + 'Input');
+        let current = parseInt(display.textContent);
+        if (current > 0) {
+            current--;
+            display.textContent = current;
+            input.value = current;
+        }
+    }
+
+    function toggleOption(type, value) {
+        const buttons = document.querySelectorAll(`[id^="${type}"]`);
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        const activeBtn = value === 'true' ?
+            document.getElementById(type + 'Yes') :
+            document.getElementById(type + 'No');
+
+        if (activeBtn) {
+            activeBtn.classList.add('active');
+        }
+
+        const input = document.getElementById(type + 'Input');
+        if (input) {
+            input.value = value;
+        }
+    }
+</script>
+
+</body>
+</html>
