@@ -7,11 +7,10 @@ import com.noBroker.nobroker_application_project.service.PropertyService;
 import com.noBroker.nobroker_application_project.model.Amenity;
 import com.noBroker.nobroker_application_project.model.Property;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -76,5 +75,148 @@ public class PropertyController {
         propertyService.saveImage(propertyImages);
 
         return "/";
+    }
+
+    // ---- Modification Starts here for editing -----
+
+    @GetMapping("/edit/{propertyId}")
+    public String showEditForm(@PathVariable Long propertyId,
+                               HttpSession session,
+                               Model theModel) {
+        Property property = propertyService.getPropertyById(propertyId);
+        session.setAttribute("property", property);
+        theModel.addAttribute("property", property);
+        return "property-details";
+    }
+
+    @PostMapping("/edit/propertyDetails")
+    public String updatePropertyDetails(Property updatedProperty,
+                                        HttpSession session) {
+        Property property = (Property)session.getAttribute("property");
+        if (property == null) {
+            return "redirect:/";
+        }
+        property.setApartmentType(updatedProperty.getApartmentType());
+        property.setApartmentName(updatedProperty.getApartmentName());
+        property.setBhkType(updatedProperty.getBhkType());
+        property.setFloor(updatedProperty.getFloor());
+        property.setTotalFloors(updatedProperty.getTotalFloors());
+        property.setPropertyAge(updatedProperty.getPropertyAge());
+        property.setFacing(updatedProperty.getFacing());
+        property.setBuiltUpArea(updatedProperty.getBuiltUpArea());
+
+        propertyService.saveProperty(property);
+
+        session.setAttribute("property", property);
+
+        return "redirect:/edit/address";
+    }
+
+    @GetMapping("/edit/address")
+    public String showEditAddressForm(HttpSession session, Model theModel) {
+        Property property = (Property)session.getAttribute("property");
+        if (property == null || property.getAddress() == null) {
+            return "redirect:/";
+        }
+        theModel.addAttribute("address", property.getAddress());
+
+        return "locality-details";
+    }
+
+    @PostMapping("/edit/address")
+    public String updateAddress(@ModelAttribute Address address, HttpSession session) {
+        Property property = (Property) session.getAttribute("property");
+        property.setAddress(address);
+
+        session.setAttribute("property", property);
+
+        return "redirect:/edit/rentals";
+    }
+
+    @GetMapping("/edit/rentals")
+    public String showRentalEditForm(HttpSession session, Model theModel) {
+        Property property = (Property) session.getAttribute("property");
+        if(property == null) {
+            return "redirect:/";
+        }
+        theModel.addAttribute("property", property);
+
+        return "rental-details";
+    }
+
+    @PostMapping("/edit/rentals")
+    public String updateRentalDetails(@ModelAttribute Property updatedProperty,
+                                      HttpSession session) {
+        Property property = (Property) session.getAttribute("property");
+        if(property == null) {
+            return "redirect:/";
+        }
+        property.setAvailableFor(updatedProperty.getAvailableFor());
+        property.setExpectedRent(updatedProperty.getExpectedRent());
+        property.setExceptedDeposit(updatedProperty.getExceptedDeposit());
+        property.setNegotiation(updatedProperty.getNegotiation());
+        property.setMontlyMaintenance(updatedProperty.getMontlyMaintenance());
+        property.setAvailableFrom(updatedProperty.getAvailableFrom());
+        property.setPreferredTenets(updatedProperty.getPreferredTenets());
+        property.setFurnishing(updatedProperty.getFurnishing());
+        property.setParking(updatedProperty.getParking());
+        property.setDescription(updatedProperty.getDescription());
+
+        propertyService.saveProperty(property);
+
+        session.setAttribute("property", property);
+
+        System.out.println("Updating rental info for property: " + property.getPropertyId());
+        System.out.println("Expected rent: " + property.getExpectedRent());
+
+        return "redirect:/edit/amenities";
+    }
+
+    @GetMapping("/edit/amenities")
+    public String showAmenityForm(HttpSession session, Model theModel) {
+        Property property = (Property) session.getAttribute("property");
+        if(property == null) {
+            return "redirect:/";
+        }
+        theModel.addAttribute("amenity", property.getAmenity());
+
+        return "amenities-details";
+    }
+
+    @PostMapping("/edit/amenities")
+    public String updateAmenities(@ModelAttribute Amenity amenity, HttpSession session) {
+        Property property = (Property) session.getAttribute("property");
+        if(property == null) {
+            return "redirect:/";
+        }
+        property.setAmenity(amenity);
+
+        session.setAttribute("property", property);
+
+        return "redirect:/edit/gallery";
+    }
+
+    @GetMapping("/edit/gallery")
+    public String showGalleryEditForm(HttpSession session, Model theModel) {
+        Property property = (Property) session.getAttribute("property");
+        if(property == null) {
+            return "redirect:/";
+        }
+
+        theModel.addAttribute("property", property);
+
+        return "gallary";
+    }
+
+    @PostMapping("/edit/gallery")
+    public String updateGallery(@RequestParam("propertyImages") MultipartFile[] propertyImages,
+                                HttpSession session) {
+        Property property = (Property) session.getAttribute("property");
+        if(property == null) {
+            return "redirect:/";
+        }
+        propertyService.saveImage(propertyImages);
+
+        return "redirect:/";
     }
 }

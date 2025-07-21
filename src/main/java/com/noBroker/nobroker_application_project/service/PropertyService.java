@@ -28,17 +28,20 @@ public class PropertyService {
         this.propertyRepository = propertyRepository;
     }
 
+    public Property getPropertyById(Long id) {
+        return propertyRepository.findById(id).
+                orElseThrow(() -> new IllegalArgumentException("No id found: "+id));
+    }
+
     public void saveProperty(Property property) {
         this.property = property;
     }
 
     public void saveAddress(Address address) {
-
         property.setAddress(address);
     }
 
     public void saveRentails(RentalDto rentalDto) {
-
         property.setIsSale(rentalDto.getIsSale());
         property.setExpectedRent(rentalDto.getExpectedRent());
         property.setExceptedDeposit(rentalDto.getExpectedDeposite());
@@ -49,8 +52,6 @@ public class PropertyService {
         property.setFurnishing(rentalDto.getFurnishing());
         property.setParking(rentalDto.getParking());
         property.setDescription(rentalDto.getDescription());
-
-
     }
 
     public void saveAmenities(Amenity amenity) {

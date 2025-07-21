@@ -22,15 +22,15 @@ public class Property {
 
     private String apartmentType;
     private String apartmentName;
-    private int bhkType;
-    private int floor;
-    private int totalFloors;
-    private int propertyAge;
+    private Long bhkType;
+    private Long floor;
+    private Long totalFloors;
+    private Long propertyAge;
     private String facing;
-    private double builtUpArea;
+    private Double builtUpArea;
     private String availableFor;
-    private long expectedRent;
-    private long exceptedDeposit;
+    private Long expectedRent;
+    private Long exceptedDeposit;
     private String montlyMaintenance;
     private String preferredTenets;
 
