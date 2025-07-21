@@ -30,8 +30,8 @@ public class Property {
     private Double builtUpArea;
     private String availableFor;
     private Long expectedRent;
-    private Long exceptedDeposit;
-    private String montlyMaintenance;
+    private Long expectedDeposit;
+    private String monthlyMaintenance;
     private String preferredTenets;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
@@ -60,7 +60,7 @@ public class Property {
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Image> photos = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "amenity_id")
     private Amenity amenity;
 

@@ -18,8 +18,6 @@ import java.util.Map;
 @Service
 public class PropertyService {
 
-    Property property;
-
     private final Cloudinary cloudinary;
     private final PropertyRepository propertyRepository;
 
@@ -28,39 +26,47 @@ public class PropertyService {
         this.propertyRepository = propertyRepository;
     }
 
+    public Property findById(Long id) {
+        return propertyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No id Found: " + id));
+    }
+
     public Property getPropertyById(Long id) {
-        return propertyRepository.findById(id).
-                orElseThrow(() -> new IllegalArgumentException("No id found: "+id));
+        return propertyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No property found with id: " + id));
     }
-
     public void saveProperty(Property property) {
-        this.property = property;
+        propertyRepository.save(property);
     }
 
-    public void saveAddress(Address address) {
+    public void saveAddress(Property property, Address address) {
         property.setAddress(address);
+        propertyRepository.save(property);
     }
 
-    public void saveRentails(RentalDto rentalDto) {
+    public void saveRentals(Property property, RentalDto rentalDto) {
         property.setIsSale(rentalDto.getIsSale());
         property.setExpectedRent(rentalDto.getExpectedRent());
-        property.setExceptedDeposit(rentalDto.getExpectedDeposite());
-        property.setMontlyMaintenance(rentalDto.getMontlyMaintenance());
+        property.setExpectedDeposit(rentalDto.getExpectedDeposit());
+        property.setMonthlyMaintenance(rentalDto.getMonthlyMaintenance());
         property.setNegotiation(rentalDto.getNegotiation());
         property.setAvailableFrom(rentalDto.getAvailableFrom());
         property.setPreferredTenets(rentalDto.getPreferredTenets());
         property.setFurnishing(rentalDto.getFurnishing());
         property.setParking(rentalDto.getParking());
         property.setDescription(rentalDto.getDescription());
+
+        propertyRepository.save(property);
     }
 
-    public void saveAmenities(Amenity amenity) {
+    public void saveAmenities(Property property, Amenity amenity) {
         property.setAmenity(amenity);
+        propertyRepository.save(property);
     }
 
-    public void saveImage(MultipartFile[] propertyImages) {
+    public void saveImage(Property dbProperty, MultipartFile[] propertyImages) {
         for (MultipartFile multipartFile : propertyImages) {
-            if (multipartFile== null || multipartFile.isEmpty()) {
+            if (multipartFile == null || multipartFile.isEmpty()) {
                 continue;
             }
 
@@ -74,14 +80,13 @@ public class PropertyService {
 
                 Image image = new Image();
                 image.setImageUrl(imageUrl);
-                image.setProperty(property);
-
-                property.getPhotos().add(image);
+                image.setProperty(dbProperty);
+                dbProperty.getPhotos().add(image);
             } catch (IOException e) {
                 throw new RuntimeException("Image upload failed", e);
             }
         }
 
-        propertyRepository.save(property);
+        propertyRepository.save(dbProperty);
     }
 }
