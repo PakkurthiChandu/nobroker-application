@@ -1,19 +1,18 @@
 package com.noBroker.nobroker_application_project.service;
 
 import com.noBroker.nobroker_application_project.dto.RentalDto;
-import com.noBroker.nobroker_application_project.model.Address;
+import com.noBroker.nobroker_application_project.model.*;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.noBroker.nobroker_application_project.model.Image;
-import com.noBroker.nobroker_application_project.model.Property;
 import com.noBroker.nobroker_application_project.repository.PropertyRepository;
-import com.noBroker.nobroker_application_project.model.Amenity;
 
+import com.noBroker.nobroker_application_project.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class PropertyService {
@@ -22,10 +21,13 @@ public class PropertyService {
 
     private final Cloudinary cloudinary;
     private final PropertyRepository propertyRepository;
+    private final UserRepository userRepository;
 
-    public PropertyService(Cloudinary cloudinary, PropertyRepository propertyRepository) {
+
+    public PropertyService(Cloudinary cloudinary, PropertyRepository propertyRepository, UserRepository userRepository) {
         this.cloudinary = cloudinary;
         this.propertyRepository = propertyRepository;
+        this.userRepository = userRepository;
     }
 
     public void saveProperty(Property property) {
@@ -49,8 +51,6 @@ public class PropertyService {
         property.setFurnishing(rentalDto.getFurnishing());
         property.setParking(rentalDto.getParking());
         property.setDescription(rentalDto.getDescription());
-
-
     }
 
     public void saveAmenities(Amenity amenity) {
@@ -82,5 +82,12 @@ public class PropertyService {
         }
 
         propertyRepository.save(property);
+    }
+
+    public Set<Property> getBookmarkedPropertyDTOs(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return user.getBookmarkedProperties();
     }
 }
