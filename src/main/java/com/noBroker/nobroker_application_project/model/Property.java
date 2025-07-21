@@ -22,16 +22,16 @@ public class Property {
 
     private String apartmentType;
     private String apartmentName;
-    private int bhkType;
-    private int floor;
-    private int totalFloors;
-    private int propertyAge;
+    private Long bhkType;
+    private Long floor;
+    private Long totalFloors;
+    private Long propertyAge;
     private String facing;
-    private double builtUpArea;
+    private Double builtUpArea;
     private String availableFor;
-    private long expectedRent;
-    private long exceptedDeposit;
-    private String montlyMaintenance;
+    private Long expectedRent;
+    private Long expectedDeposit;
+    private String monthlyMaintenance;
     private String preferredTenets;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
@@ -60,7 +60,7 @@ public class Property {
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Image> photos = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "amenity_id")
     private Amenity amenity;
 
