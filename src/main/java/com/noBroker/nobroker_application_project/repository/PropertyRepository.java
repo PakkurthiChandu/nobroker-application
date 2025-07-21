@@ -2,8 +2,31 @@ package com.noBroker.nobroker_application_project.repository;
 
 import com.noBroker.nobroker_application_project.model.Property;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface PropertyRepository extends JpaRepository<Property, Long> {
+
+    @Query("SELECT p FROM Property p " +
+            "JOIN p.address a " +
+            "WHERE p.isSale = :isSale " +
+            "AND LOWER(a.city) = LOWER(:city) " +
+            "AND (" +
+            "LOWER(a.locality) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(a.landmark) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(p.apartmentName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(p.facing) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "CAST(p.bhkType AS string) LIKE CONCAT('%', :keyword, '%') OR " +
+            "CAST(p.expectedRent AS string) LIKE CONCAT('%', :keyword, '%')" +
+            ") " +
+            "AND (:bhkType IS NULL OR p.bhkType IN :bhkType)")
+    List<Property> searchProperties(
+            @Param("isSale") boolean isSale,
+            @Param("city") String city,
+            @Param("keyword") String keyword,
+            @Param("bhkType") List<Integer> bhkType);
 }

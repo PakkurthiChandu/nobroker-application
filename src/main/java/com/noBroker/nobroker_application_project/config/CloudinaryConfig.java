@@ -1,6 +1,5 @@
 package com.noBroker.nobroker_application_project.config;
 
-
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;

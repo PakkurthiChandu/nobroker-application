@@ -20,9 +20,13 @@ public class Amenity {
     private Integer balcony;
     private String waterSupply;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean petAllowed;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean gym;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean nonVeg;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean gatedSecurity;
 
     private String showProperty;
@@ -30,15 +34,25 @@ public class Amenity {
     private String secondaryNumber;
     private String nearByPlace;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean lift;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean gasPipeLine;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean airConditioner;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean park;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean houseKeeping;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean internetService;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean powerBackUp;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean serventRoom;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean swimmingPool;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean fireSafety;
 
     @OneToMany(mappedBy = "amenity")

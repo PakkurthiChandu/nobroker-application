@@ -22,7 +22,7 @@ public class User {
     private String email;
     private String phone;
     private String role;
-    private boolean isSubscribed;
+    private Boolean isSubscribed;
 
     @ManyToMany()
     @JoinTable(
