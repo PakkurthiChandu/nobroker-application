@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Controller
 public class PropertyController {
 
@@ -24,12 +26,12 @@ public class PropertyController {
     }
 
     @GetMapping("/")
-    public String getForm1(){
+    public String getForm1() {
         return "property-details";
     }
 
     @PostMapping("/propertyDetails")
-    public String addPropertyDetails(Property property){
+    public String addPropertyDetails(Property property) {
         propertyService.saveProperty(property);
 
         return "locality-details";
@@ -76,5 +78,36 @@ public class PropertyController {
         propertyService.saveImage(propertyImages);
 
         return "/";
+    }
+
+    @GetMapping("/landingPage")
+    public String getLandingPage(Model model) {
+        return "landing-page";
+    }
+
+    @GetMapping("/getProperties")
+    public String getPropertyDetails(
+                            @RequestParam("type") String isSaleStr,
+                            @RequestParam("city") String city,
+                            @RequestParam("query") String searchKeyword,
+                            @RequestParam(required = false) List<Integer> bhkType,
+                            @RequestParam(required = false) String propertyStatus,
+                            @RequestParam(required = false) List<String> furnishing,
+                            @RequestParam(required = false) List<String> propertyType,
+                            @RequestParam(required = false) List<String> parking,
+                            @RequestParam(required = false) Boolean newBuilderProject,
+                            Model model) {
+        boolean isSale = "buy".equalsIgnoreCase(isSaleStr);
+
+        model.addAttribute("allProperties", propertyService.getAllProperties(isSale, city, searchKeyword,
+                bhkType,propertyStatus,furnishing,propertyType,parking
+        ));
+
+        model.addAttribute("isSale", isSaleStr);
+        model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("bhkType", bhkType);
+        model.addAttribute("city", city);
+
+        return "AllProperties";
     }
 }
