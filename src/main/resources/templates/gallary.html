@@ -2,119 +2,139 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NoBroker Header Clone</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Post Property - Upload Photos</title>
     <style>
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: Arial, sans-serif; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+        }
+
 
         .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
+            padding: 12px 24px;
             background-color: #fff;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 1000;
+            height: 60px;
         }
 
         .left-section {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
         }
 
-        .logo { width: 30px; height: 30px; }
-        .brand-name { font-weight: bold; font-size: 20px; color: #000; }
-        .menu-item { cursor: pointer; font-size: 14px; color: #333; }
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ff385c, #e91e63);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .brand-name {
+            font-weight: bold;
+            font-size: 20px;
+            color: #1f2937;
+        }
 
         .right-section {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .pay-rent, .post-property {
-            padding: 8px 12px;
-            border: none;
+            padding: 8px 16px;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
         }
 
         .pay-rent {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            color: #333;
+            background-color: transparent;
+            border: 1px solid #d1d5db;
+            color: #374151;
+        }
+
+        .pay-rent:hover {
+            background-color: #f9fafb;
         }
 
         .post-property {
-            background-color: #00aa9b;
+            background-color: #10b981;
             color: #fff;
+            border: none;
+        }
+
+        .post-property:hover {
+            background-color: #059669;
         }
 
         .profile {
-            padding: 5px 10px;
+            background-color: #f3f4f6;
+            padding: 8px 12px;
             border-radius: 20px;
-            background-color: #e6e6e6;
             font-size: 14px;
+            color: #374151;
         }
 
-        .icons span {
-            font-size: 18px;
-            margin: 0 4px;
-            cursor: pointer;
-        }
-
-        .menu {
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .view-toggle {
-            display: flex;
-            gap: 5px;
-            margin-left: 10px;
-        }
-
-        .list-view, .map-view {
-            padding: 6px 10px;
-            border-radius: 15px;
-            border: none;
-            background-color: #00aa9b;
-            color: #fff;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .content {
-            display: flex;
-        }
-
+        /* SIDEBAR */
         .sidebar {
+            margin-top: 60px;
             width: 280px;
             background-color: #fff;
-            border-right: 1px solid #e0e0e0;
-            padding: 0;
-            height: 100vh;
+            border-right: 1px solid #e5e7eb;
+            height: calc(100vh - 60px);
+            position: fixed;
         }
 
         .progress-header {
-            padding: 20px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .progress-text {
+            font-weight: 600;
+            color: #10b981;
             font-size: 14px;
-            color: #666;
         }
 
         .preview-btn {
-            background-color: #ff4c5b;
-            color: white;
-            border: none;
+            background: transparent;
+            border: 1px solid #10b981;
+            color: #10b981;
             padding: 6px 12px;
             border-radius: 4px;
             font-size: 12px;
@@ -123,63 +143,122 @@
 
         .nav-steps {
             list-style: none;
-            padding: 0;
-            margin: 0;
         }
 
         .nav-step {
             display: flex;
             align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid #f0f0f0;
-            cursor: pointer;
+            padding: 16px 24px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-step:hover {
+            background-color: #f9fafb;
         }
 
         .nav-step.active {
-            background-color: #e6f7f5;
-            border-left: 3px solid #00aa9b;
+            background-color: #ecfdf5;
+            border-left-color: #10b981;
+        }
+
+        .nav-step.active .step-text {
+            color: #10b981;
+            font-weight: 500;
         }
 
         .step-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            background-color: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             margin-right: 12px;
-            font-size: 14px;
-        }
-
-        .nav-step.active .step-icon {
-            background-color: #00aa9b;
-            color: white;
+            font-size: 18px;
         }
 
         .step-text {
             font-size: 14px;
-            color: #333;
+            color: #6b7280;
         }
 
-        .main-section {
-            flex-grow: 1;
+        /* MAIN FORM CONTENT */
+        .main-content {
+            margin-top: 60px;
+            margin-left: 280px;
+            padding: 40px;
+            flex: 1;
+            min-height: calc(100vh - 60px);
+            background-color: #f8f9fa;
+        }
+
+        .form-section {
+            max-width: 900px;
+            background-color: #fff;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            border: 1px solid #e5e7eb;
+        }
+
+        .form-header {
+            background-color: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #10b981;
+            margin: 0;
+        }
+
+        .form-content {
             padding: 30px;
         }
 
-        #imagePreview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
+        /* Upload Photos Section Styles */
+        .main-section {
+            background-color: #fff;
         }
 
-        #imagePreview img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
+        .main-section h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .upload-phone-btn {
+            float: right;
+            background-color: #00aa9b;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .upload-phone-btn:hover {
+            background-color: #008a7d;
+        }
+
+        .upload-container {
+            clear: both;
+            margin-top: 40px;
             border: 1px solid #ccc;
+            padding: 30px;
             border-radius: 8px;
+            text-align: center;
+        }
+
+        .upload-container img {
+            width: 40px;
+            margin-bottom: 15px;
+        }
+
+        .upload-container p {
+            margin-bottom: 20px;
+            color: #666;
+            line-height: 1.5;
         }
 
         .hidden-file-input {
@@ -187,125 +266,251 @@
         }
 
         .custom-upload-btn {
-            background-color: #00aa9b;
+            background-color: #10b981;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 12px 24px;
+            border-radius: 4px;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .custom-upload-btn:hover {
+            background-color: #059669;
+        }
+
+        #imagePreview {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .image-preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-separator {
+            margin: 40px 0;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+
+        .contact-options {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .contact-option {
+            border: 1px solid #ccc;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .contact-option img {
+            width: 24px !important;
+            margin-bottom: 8px;
+        }
+
+        .contact-option p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .form-actions {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #eee;
+            color: #333;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .back-btn:hover {
+            background-color: #ddd;
+        }
+
+        .submit-btn-green {
+            padding: 10px 20px;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .submit-btn-green:hover {
+            background-color: #059669;
         }
     </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header class="main-header">
     <div class="left-section">
-        <img src="https://static.thenounproject.com/png/1040629-200.png" alt="Logo" class="logo" />
-        <span class="brand-name">NOBROKER</span>
-        <div class="dropdown">
-            <span class="menu-item">Buy ▾</span>
+        <div class="logo-section">
+            <div class="logo">NB</div>
+            <span class="brand-name">NOBROKER</span>
         </div>
     </div>
-
     <div class="right-section">
         <button class="pay-rent">Pay Rent</button>
         <button class="post-property">Post Your Property</button>
         <div class="profile">Pakkurthi Chandu ▾</div>
-        <div class="icons">
-            <span>♡</span>
-            <span>🔔</span>
-        </div>
-        <div class="menu">☰ Menu</div>
-        <div class="view-toggle">
-            <button class="list-view">List</button>
-            <button class="map-view">Map</button>
-        </div>
     </div>
 </header>
 
-<div class="content">
-    <div class="sidebar">
-        <div class="progress-header">
-            <span class="progress-text">80% Done</span>
-            <button class="preview-btn">Preview</button>
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="progress-header">
+        <span class="progress-text">80% Done</span>
+        <button class="preview-btn">Preview</button>
+    </div>
+    <ul class="nav-steps">
+        <li class="nav-step">
+            <span class="step-icon">🏠</span>
+            <span class="step-text">Property Details</span>
+        </li>
+        <li class="nav-step">
+            <span class="step-icon">📍</span>
+            <span class="step-text">Locality Details</span>
+        </li>
+        <li class="nav-step">
+            <span class="step-icon">💰</span>
+            <span class="step-text">Rental Details</span>
+        </li>
+        <li class="nav-step">
+            <span class="step-icon">🎯</span>
+            <span class="step-text">Amenities</span>
+        </li>
+        <li class="nav-step active">
+            <span class="step-icon">📷</span>
+            <span class="step-text">Gallery</span>
+        </li>
+    </ul>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+    <div class="form-section">
+        <div class="form-header">
+            <h2 class="form-title">Gallery</h2>
         </div>
 
-        <ul class="nav-steps">
-            <li class="nav-step"><div class="step-icon">🏠</div><span class="step-text">Property Details</span></li>
-            <li class="nav-step"><div class="step-icon">📍</div><span class="step-text">Locality Details</span></li>
-            <li class="nav-step"><div class="step-icon">💰</div><span class="step-text">Rental Details</span></li>
-            <li class="nav-step"><div class="step-icon">🎯</div><span class="step-text">Amenities</span></li>
-            <li class="nav-step active"><div class="step-icon">📷</div><span class="step-text">Gallery</span></li>
-            <li class="nav-step"><div class="step-icon">📅</div><span class="step-text">Schedule</span></li>
-        </ul>
-    </div>
+        <div class="form-content">
+            <div class="main-section">
+                <h2>Upload photos</h2>
 
-    <div class="main-section">
-        <h2>Upload photos</h2>
-        <button style="float: right; background-color: #00aa9b; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
-            ⬆️ Upload through phone
-        </button>
+                <form action="/images" method="POST" enctype="multipart/form-data">
+                    <div class="upload-container">
+                        <div>
+                            <img src="https://img.icons8.com/ios-filled/50/image.png" alt="Upload" />
+                            <p><strong>Add photos to get 5X more responses.</strong><br>90% tenants contact on properties with photos.</p>
 
-        <form action="/images" method="POST" enctype="multipart/form-data">
-            <div style="clear: both; margin-top: 40px; border: 1px solid #ccc; padding: 30px; border-radius: 8px; text-align: center;">
-                <div>
-                    <img src="https://img.icons8.com/ios-filled/50/image.png" alt="Upload" style="width: 40px;" />
-                    <p><strong>Add photos to get 5X more responses.</strong><br>90% tenants contact on properties with photos.</p>
+                            <input type="file" name="propertyImages" id="propertyImages" multiple onchange="previewImages(event)" class="hidden-file-input" />
+                            <button type="button" class="custom-upload-btn" onclick="document.getElementById('propertyImages').click();">Add Photos</button>
 
-                    <input type="file" name="propertyImages" id="propertyImages" multiple onchange="previewImages(event)" class="hidden-file-input" />
-                    <button type="button" class="custom-upload-btn" onclick="document.getElementById('propertyImages').click();">Add Photos</button>
+                            <div id="imagePreview"></div>
+                        </div>
 
-                    <div id="imagePreview"></div>
-                </div>
+                        <hr class="upload-separator">
 
-                <hr style="margin: 40px 0;">
-
-                <p><strong>We can upload photos on your behalf</strong></p>
-                <div style="display: flex; justify-content: center; gap: 30px; margin-top: 20px;">
-                    <div style="border: 1px solid #ccc; padding: 15px 30px; border-radius: 8px;">
-                        <img src="https://img.icons8.com/color/48/000000/whatsapp.png" style="width: 24px;" />
-                        <p>Whatsapp us on<br><strong>0-9241-700-000</strong></p>
+                        <p><strong>We can upload photos on your behalf</strong></p>
+                        <div class="contact-options">
+                            <div class="contact-option">
+                                <img src="https://img.icons8.com/color/48/000000/whatsapp.png" />
+                                <p>Whatsapp us on<br><strong>0-9241-700-000</strong></p>
+                            </div>
+                            <div class="contact-option">
+                                <img src="https://img.icons8.com/fluency/48/email.png" />
+                                <p>Email to<br><strong>photos@nobroker.in</strong></p>
+                            </div>
+                        </div>
                     </div>
-                    <div style="border: 1px solid #ccc; padding: 15px 30px; border-radius: 8px;">
-                        <img src="https://img.icons8.com/fluency/48/email.png" style="width: 24px;" />
-                        <p>Email to<br><strong>photos@nobroker.in</strong></p>
-                    </div>
-                </div>
-            </div>
 
-            <div style="margin-top: 30px; text-align: right;">
-                <button type="button" style="padding: 10px 20px; border: 1px solid #ccc; border-radius: 4px; background-color: #eee;">Back</button>
-                <button type="submit" style="padding: 10px 20px; background-color: #ff4c5b; color: white; border: none; border-radius: 4px;">Save & Continue</button>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn-green">Save</button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
 <script>
-    let allFiles = [];
-
     function previewImages(event) {
-        const newFiles = Array.from(event.target.files);
+        const files = event.target.files;
         const previewContainer = document.getElementById('imagePreview');
+        previewContainer.innerHTML = '';
 
-        newFiles.forEach(file => {
-            allFiles.push(file); // Add to global array
-
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.createElement("img");
-                img.src = e.target.result;
-                previewContainer.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        });
 
-        // Update file input manually with combined FileList (optional workaround)
-        const dataTransfer = new DataTransfer();
-        allFiles.forEach(file => dataTransfer.items.add(file));
-        event.target.files = dataTransfer.files;
+            reader.onload = function(e) {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'image-preview-item';
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-image';
+                removeBtn.innerHTML = '×';
+                removeBtn.onclick = function() {
+                    previewItem.remove();
+                };
+
+                previewItem.appendChild(img);
+                previewItem.appendChild(removeBtn);
+                previewContainer.appendChild(previewItem);
+            };
+
+            reader.readAsDataURL(file);
+        }
     }
 </script>
+
 </body>
 </html>

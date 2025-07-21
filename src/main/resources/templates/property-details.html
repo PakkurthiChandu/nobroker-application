@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -7,12 +7,13 @@
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: #f8f9fa;
             display: flex;
         }
 
@@ -25,153 +26,313 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
+            padding: 12px 24px;
             background-color: #fff;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #e5e7eb;
             z-index: 1000;
+            height: 60px;
         }
 
-        .left-section, .right-section {
+        .left-section {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .logo {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ff385c, #e91e63);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
         }
 
         .brand-name {
             font-weight: bold;
             font-size: 20px;
+            color: #1f2937;
         }
 
-        .menu-item {
-            cursor: pointer;
+        .right-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .pay-rent, .post-property {
-            padding: 8px 12px;
-            border: none;
+            padding: 8px 16px;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
         }
 
         .pay-rent {
-            background-color: #fff;
-            border: 1px solid #ccc;
+            background-color: transparent;
+            border: 1px solid #d1d5db;
+            color: #374151;
+        }
+
+        .pay-rent:hover {
+            background-color: #f9fafb;
         }
 
         .post-property {
-            background-color: #00aa9b;
+            background-color: #10b981;
             color: #fff;
+            border: none;
+        }
+
+        .post-property:hover {
+            background-color: #059669;
         }
 
         .profile {
-            background-color: #eee;
-            padding: 5px 10px;
+            background-color: #f3f4f6;
+            padding: 8px 12px;
             border-radius: 20px;
-        }
-
-        .view-toggle button {
-            background-color: #00aa9b;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 15px;
-            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
         }
 
         /* SIDEBAR */
         .sidebar {
             margin-top: 60px;
-            width: 260px;
+            width: 280px;
             background-color: #fff;
-            border-right: 1px solid #e0e0e0;
+            border-right: 1px solid #e5e7eb;
             height: calc(100vh - 60px);
+            position: fixed;
         }
 
         .progress-header {
-            padding: 20px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: #10b981;
+            font-size: 14px;
+        }
+
+        .preview-btn {
+            background: transparent;
+            border: 1px solid #10b981;
+            color: #10b981;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
         }
 
         .nav-steps {
             list-style: none;
-            padding: 0;
-            margin: 0;
         }
 
         .nav-step {
             display: flex;
             align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid #f0f0f0;
-            cursor: pointer;
+            padding: 16px 24px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-step:hover {
+            background-color: #f9fafb;
         }
 
         .nav-step.active {
-            background-color: #e6f7f5;
-            border-left: 3px solid #00aa9b;
+            background-color: #ecfdf5;
+            border-left-color: #10b981;
+        }
+
+        .nav-step.active .step-text {
+            color: #10b981;
+            font-weight: 500;
         }
 
         .step-icon {
-            margin-right: 10px;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .step-text {
+            font-size: 14px;
+            color: #6b7280;
         }
 
         /* MAIN FORM CONTENT */
         .main-content {
             margin-top: 60px;
-            padding: 20px;
+            margin-left: 280px;
+            padding: 40px;
             flex: 1;
+            min-height: calc(100vh - 60px);
+            background-color: #f8f9fa;
         }
 
         .form-section {
-            max-width: 600px;
+            max-width: 900px;
             background-color: #fff;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            border: 1px solid #e5e7eb;
+        }
+
+        .form-header {
+            background-color: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #10b981;
+            margin: 0;
+        }
+
+        .form-content {
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.05);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .form-row:last-child {
+            margin-bottom: 0;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .form-group.half-width {
+            flex: 0 0 calc(50% - 15px);
+        }
+
+        .form-group.full-width {
+            flex: 1 1 100%;
         }
 
         label {
             display: block;
-            font-weight: bold;
-            margin-bottom: 6px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 14px;
         }
 
+        .required {
+            color: #ef4444;
+        }
+
+        /* Input fields */
         input[type="text"],
         select {
             width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #ccc;
+            padding: 12px 15px;
+            border: 1px solid #d1d5db;
             border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+            background-color: #fff;
+            color: #333;
         }
 
-        .form-group select option[disabled] {
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+        }
+
+        input[type="text"]::placeholder {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        /* Select styling */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23666' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 15px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 45px;
+        }
+
+        select option[disabled] {
             color: #aaa;
         }
 
+        /* Area input styling */
+        .area-input {
+            position: relative;
+        }
+
+        .area-input input {
+            padding-right: 60px;
+        }
+
+        .area-unit {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 13px;
+            pointer-events: none;
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* Action buttons */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 40px;
+            padding-top: 0;
+            border-top: none;
+        }
+
         .submit-btn {
-            background-color: #00aa9b;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s;
+            background-color: #10b981;
+            color: white;
+            border: none;
         }
 
         .submit-btn:hover {
-            background-color: #008d84;
+            background-color: #059669;
         }
     </style>
 </head>
@@ -180,111 +341,158 @@
 <!-- HEADER -->
 <header class="main-header">
     <div class="left-section">
-        <img src="https://static.thenounproject.com/png/1040629-200.png" alt="Logo" class="logo" />
-        <span class="brand-name">NOBROKER</span>
-        <span class="menu-item">Buy ▾</span>
+        <div class="logo-section">
+            <div class="logo">NB</div>
+            <span class="brand-name">NOBROKER</span>
+        </div>
     </div>
     <div class="right-section">
         <button class="pay-rent">Pay Rent</button>
         <button class="post-property">Post Your Property</button>
         <div class="profile">Pakkurthi Chandu ▾</div>
-        <div class="view-toggle">
-            <button>List</button>
-            <button>Map</button>
-        </div>
     </div>
 </header>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
     <div class="progress-header">
-        <span>80% Done</span>
+        <span class="progress-text">0% Done</span>
         <button class="preview-btn">Preview</button>
     </div>
     <ul class="nav-steps">
-        <li class="nav-step active"><span class="step-icon">🏠</span> Property Details</li>
-        <li class="nav-step"><span class="step-icon">📍</span> Locality Details</li>
-        <li class="nav-step"><span class="step-icon">💰</span> Rental Details</li>
-        <li class="nav-step"><span class="step-icon">🎯</span> Amenities</li>
-        <li class="nav-step"><span class="step-icon">📷</span> Gallery</li>
-        <li class="nav-step"><span class="step-icon">📅</span> Schedule</li>
+        <li class="nav-step active">
+            <span class="step-icon">🏠</span>
+            <span class="step-text">Property Details</span>
+        </li>
+        <li class="nav-step">
+            <span class="step-icon">📍</span>
+            <span class="step-text">Locality Details</span>
+        </li>
+        <li class="nav-step">
+            <span class="step-icon">💰</span>
+            <span class="step-text">Rental Details</span>
+        </li>
+        <li class="nav-step">
+            <span class="step-icon">🎯</span>
+            <span class="step-text">Amenities</span>
+        </li>
+        <li class="nav-step">
+            <span class="step-icon">📷</span>
+            <span class="step-text">Gallery</span>
+        </li>
+
     </ul>
 </div>
 
-<!-- FORM -->
+<!-- MAIN CONTENT -->
 <div class="main-content">
     <div class="form-section">
-        <h2>Property Details</h2>
-        <!-- Only form section is shown below, rest of your HTML remains same -->
+        <div class="form-header">
+            <h2 class="form-title">Property Details</h2>
+        </div>
 
-        <form action="/propertyDetails" method="post">
-            <div class="form-group">
-                <label>Apartment Type*</label>
-                <select name="apartmentType" required>
-                    <option disabled selected>Select Type</option>
-                    <option value="Gated Community">Gated Community</option>
-                    <option value="Villa">Villa</option>
-                </select>
-            </div>
+        <div class="form-content">
+            <form action="/propertyDetails" method="post">
+                <!-- Apartment Type and Name -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label>Apartment Type<span class="required">*</span></label>
+                        <select name="apartmentType" required>
+                            <option disabled selected>Apartment</option>
+                            <option value="Apartment">Apartment</option>
+                            <option value="Gated Community">Gated Community</option>
+                            <option value="Villa">Villa</option>
+                        </select>
+                    </div>
+                    <div class="form-group half-width">
+                        <label>Apartment Name <span class="required">*</span></label>
+                        <input type="text" name="apartmentName" placeholder="e.g. Name" required />
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Apartment Name*</label>
-                <input type="text" name="apartmentName" placeholder="e.g. Ajmera Enclave" required />
-            </div>
+                <!-- BHK, Floor, Total Floor -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>BHK Type<span class="required">*</span></label>
+                        <select name="bhkType" required>
+                            <option disabled selected>Select</option>
+                            <option value="1">1 BHK</option>
+                            <option value="2">2 BHK</option>
+                            <option value="3">3 BHK</option>
+                            <option value="4">4 BHK</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Floor<span class="required">*</span></label>
+                        <select name="floor" required>
+                            <option disabled selected>Select</option>
+                            <option value="0">Ground</option>
+                            <option value="1">1st Floor</option>
+                            <option value="2">2nd Floor</option>
+                            <option value="3">3rd Floor</option>
+                            <option value="4">4+ Floor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Floor<span class="required">*</span></label>
+                        <select name="totalFloors" required>
+                            <option disabled selected>Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4+</option>
+                        </select>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>BHK Type*</label>
-                <select name="bhkType" required>
-                    <option disabled selected>Select BHK</option>
-                    <option value="1">1 BHK</option>
-                    <option value="2">2 BHK</option>
-                    <option value="3">3 BHK</option>
-                    <option value="4">4 BHK</option>
-                </select>
-            </div>
+                <!-- Property Age and Facing -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label>Property Age<span class="required">*</span></label>
+                        <select name="propertyAge" required>
+                            <option disabled selected>Select</option>
+                            <option value="1">Less than 1 year</option>
+                            <option value="2">1 to 3 years</option>
+                            <option value="3">3 to 5 years</option>
+                            <option value="4">5 to 10 years</option>
+                            <option value="5">10+ years</option>
+                        </select>
+                    </div>
+                    <div class="form-group half-width">
+                        <label>Facing</label>
+                        <select name="facing">
+                            <option disabled selected>Select</option>
+                            <option value="East">East</option>
+                            <option value="West">West</option>
+                            <option value="North">North</option>
+                            <option value="South">South</option>
+                            <option value="North-East">North-East</option>
+                            <option value="North-West">North-West</option>
+                            <option value="South-East">South-East</option>
+                            <option value="South-West">South-West</option>
+                        </select>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>No. of Floors*</label>
-                <select name="totalFloors" required>
-                    <option disabled selected>Select</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4+">4+</option>
-                </select>
-            </div>
+                <!-- Built Up Area -->
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label>Built Up Area<span class="required">*</span></label>
+                        <div class="area-input">
+                            <input type="text" name="builtUpArea" placeholder="45354" required />
+                            <span class="area-unit">Sq.ft</span>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Property Age*</label>
-                <select name="propertyAge" required>
-                    <option disabled selected>Select Age</option>
-                    <option value="1">Less than 1 year</option>
-                    <option value="2">1 to 3 years</option>
-                    <option value="3">3 to 5 years</option>
-                    <option value="4">5+ years</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Facing</label>
-                <select name="facing">
-                    <option disabled selected>Select Facing</option>
-                    <option value="East">East</option>
-                    <option value="West">West</option>
-                    <option value="North">North</option>
-                    <option value="South">South</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Built-Up Area (in sq.ft)*</label>
-                <input type="text" name="builtUpArea" placeholder="e.g. 1200" required />
-            </div>
-
-            <button type="submit" class="submit-btn">Save & Continue</button>
-        </form>
-
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Save & Continue</button>
+                </div>
+            </form>
+        </div>
     </div>
+
 </div>
 
 </body>
