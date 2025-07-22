@@ -25,6 +25,8 @@ public class PropertyController {
         this.propertyService = propertyService;
     }
 
+//    ----------------Create Post----------------------------------
+
     @GetMapping("/")
     public String getForm1(Model theModel){
         theModel.addAttribute("property", new Property());
@@ -192,7 +194,7 @@ public class PropertyController {
         return "redirect:/";
     }
 
-    // ---- Modification Starts here for editing -----
+    // ---- Edit Property -----
 
     @GetMapping("/edit/{propertyId}")
     public String showEditForm(@PathVariable Long propertyId,
@@ -370,6 +372,8 @@ public class PropertyController {
     public String getLandingPage(Model model) {
         return "landing-page";
     }
+
+//    ---------------------Get All Properties---------------------------------
 
     @GetMapping("/getProperties")
     public String getPropertyDetails(
