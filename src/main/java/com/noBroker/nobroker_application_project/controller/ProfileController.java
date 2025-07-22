@@ -9,11 +9,8 @@ import com.noBroker.nobroker_application_project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -35,34 +32,46 @@ public class ProfileController {
 
     }
 
-    @GetMapping("/myprofile")
-    public String basicProfile(){
-        return "profile-details";
+    @GetMapping("/profile/view/{userId}")
+    public String viewProfile(@PathVariable("userId") Long userId, Model model) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        model.addAttribute("user", user);
+        return "edit-profile-details";
     }
 
-    @PostMapping("/profile")
-    public String profile(User user){
-        userService.saveProfile(user);
-        System.out.println(user.getName()+ " "+user.getEmail()+ " "+user.getMobilePhone());
-        return "profile-details";
+    @PostMapping("/profile/update")
+    public String updateProfile(@ModelAttribute("user") User updatedUser) {
+        User user = userRepository.findById(updatedUser.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setName(updatedUser.getName());
+        user.setEmail(updatedUser.getEmail());
+        user.setMobilePhone(updatedUser.getMobilePhone());
+
+        userRepository.save(user);
+        return "redirect:/profile/view/" + user.getUserId();
     }
 
-    @GetMapping("/shortlisted-properties")
-    public String showShortlisted(@RequestParam("userId") Long userId, Model model) {
+
+    @GetMapping("/shortlisted-properties/{userId}")
+    public String showShortlisted(@PathVariable("userId") Long userId, Model model) {
         Set<Property> properties = propertyService.getBookmarkedPropertyDTOs(userId);
+        User user = userRepository.findById(userId).orElse(null);
+
+        model.addAttribute("user", user);
         model.addAttribute("allProperties", properties);
         return "shortlist";
     }
 
-    @GetMapping("/your-properties")
-    public String showUserProperties(@RequestParam("userId") Long userId, Model model) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            Set<Property> properties = user.get().getProperties();
-            model.addAttribute("properties", properties);
-        } else {
-            model.addAttribute("properties", Set.of());
-        }
+    @GetMapping("/your-properties/{userId}")
+    public String showUserProperties(@PathVariable("userId") Long userId, Model model) {
+        User user = userRepository.findById(userId).orElse(null);
+        model.addAttribute("user", user);
+
+        Set<Property> properties = (user != null) ? user.getProperties() : Set.of();
+        model.addAttribute("properties", properties);
+
         return "your-properties";
     }
 

@@ -1,8 +1,8 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <meta charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NoBroker - Property Listings</title>
     <style>
@@ -508,12 +508,12 @@
             <h3>Manage your Account</h3>
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#" class="active">Basic Profile</a></li>
-            <li><a href="#">Your Shortlists</a></li>
-            <li><a href="#">Owners you Contacted</a></li>
-            <li><a href="#">Your Payments</a></li>
-            <li><a href="#">Your Properties</a></li>
-            <li><a href="#">Interested in your Properties</a></li>
+            <li><a th:href="@{'/profile/view/' + ${user.userId}}">Basic Profile</a></li>
+            <li><a th:href="@{'/shortlisted-properties/' + ${user.userId}}">Your Shortlists</a></li>
+            <li><a th:href="@{'/contacted-owners/' + ${user.userId}}">Owners you Contacted</a></li>
+            <li><a th:href="@{'/payments/' + ${user.userId}}">Your Payments</a></li>
+            <li><a th:href="@{'/your-properties/' + ${user.userId}}">Your Properties</a></li>
+            <li><a th:href="@{'/interested-buyers/' + ${user.userId}}">Interested in your Properties</a></li>
         </ul>
     </div>
 
