@@ -5,14 +5,14 @@ import com.noBroker.nobroker_application_project.model.*;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.noBroker.nobroker_application_project.repository.PropertyRepository;
-
 import com.noBroker.nobroker_application_project.repository.UserRepository;
-import org.springframework.data.domain.Page;
+
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Pageable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +52,7 @@ public class PropertyService {
         property.setFurnishing(rentalDto.getFurnishing());
         property.setParking(rentalDto.getParking());
         property.setDescription(rentalDto.getDescription());
+        property.setPrice(rentalDto.getPrice());
     }
 
     public void saveAmenities(Amenity amenity) {
@@ -90,8 +91,25 @@ public class PropertyService {
                                            String propertyStatus,
                                            List<String> furnishing,
                                            List<String> propertyType,
-                                           List<String> parking) {
+                                           List<String> parking,
+                                           Integer propertyAge,
+                                           String sortBy) {
         keyword = (keyword == null || keyword.trim().isEmpty()) ? "" : keyword;
-        return propertyRepository.searchProperties(isSale, city, keyword, bhkType);
+        Sort sort =  Sort.by(Sort.Direction.DESC, "createdAt");
+        if(sortBy != null) {
+            switch (sortBy) {
+                case "oldest": sort = Sort.by(Sort.Direction.ASC, "createdAt");
+                    break;
+                case "priceHighLow": sort = Sort.by(Sort.Direction.DESC, "price");
+                    break;
+                case "priceLowHigh": sort = Sort.by(Sort.Direction.ASC, "price");
+                    break;
+            }
+        }
+
+        Pageable pageable = PageRequest.of(0, 10, sort);
+
+        return propertyRepository.searchProperties(isSale, city, keyword.toLowerCase(), bhkType, furnishing, parking, propertyType,
+                propertyAge, propertyStatus, pageable);
     }
 }

@@ -7,14 +7,19 @@ import com.noBroker.nobroker_application_project.service.PropertyService;
 import com.noBroker.nobroker_application_project.model.Amenity;
 import com.noBroker.nobroker_application_project.model.Property;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.fasterxml.jackson.databind.type.LogicalType.Map;
 
 @Controller
 public class PropertyController {
@@ -95,19 +100,26 @@ public class PropertyController {
                             @RequestParam(required = false) List<String> furnishing,
                             @RequestParam(required = false) List<String> propertyType,
                             @RequestParam(required = false) List<String> parking,
-                            @RequestParam(required = false) Boolean newBuilderProject,
+                            @RequestParam(required = false) Integer propertyAge,
+                            @RequestParam(value = "sortBy", required = false) String sortBy,
                             Model model) {
         boolean isSale = "buy".equalsIgnoreCase(isSaleStr);
 
         model.addAttribute("allProperties", propertyService.getAllProperties(isSale, city, searchKeyword,
-                bhkType,propertyStatus,furnishing,propertyType,parking
+                bhkType,propertyStatus,furnishing,propertyType,parking,propertyAge,sortBy
         ));
 
         model.addAttribute("isSale", isSaleStr);
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("bhkType", bhkType);
         model.addAttribute("city", city);
+        model.addAttribute("furnishing", furnishing);
+        model.addAttribute("parking", parking);
+        model.addAttribute("propertyType", propertyType);
+        model.addAttribute("propertyAge", propertyAge);
+        model.addAttribute("propertyStatus", propertyStatus);
+        model.addAttribute("sortBy", sortBy);
 
-        return "AllProperties";
+        return "all-properties";
     }
 }

@@ -15,6 +15,7 @@ public class RentalDto {
     private long expectedDeposite;
     private String montlyMaintenance;
     private Boolean negotiation;
+    private Long price;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date availableFrom;
