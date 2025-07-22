@@ -3,6 +3,7 @@ package com.noBroker.nobroker_application_project.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -19,17 +20,19 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long propertyId;
 
-    private String propertyType;
-    private String propertyName;
-    private int bhkType;
-    private int floor;
-    private int totalFloors;
-    private int propertyAge;
+    private String apartmentType;
+    private String apartmentName;
+    private Long bhkType;
+    private Long floor;
+    private Long totalFloors;
+    private Long propertyAge;
     private String facing;
-    private double buildUpArea;
+    private Double builtUpArea;
     private String availableFor;
-    private long expectedRent;
-    private long exceptedDeposit;
+    private Long expectedRent;
+    private Long expectedDeposit;
+    private String monthlyMaintenance;
+    private String preferredTenets;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean negotiation;
@@ -57,7 +60,7 @@ public class Property {
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Image> photos = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "amenity_id")
     private Amenity amenity;
 

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Post Property - Locality Details</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+        }
+
+        /* HEADER STYLES */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 1000;
+            height: 60px;
+        }
+
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ff385c, #e91e63);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .brand-name {
+            font-weight: bold;
+            font-size: 20px;
+            color: #1f2937;
+        }
+
+        .right-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pay-rent, .post-property {
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .pay-rent {
+            background-color: transparent;
+            border: 1px solid #d1d5db;
+            color: #374151;
+        }
+
+        .pay-rent:hover {
+            background-color: #f9fafb;
+        }
+
+        .post-property {
+            background-color: #10b981;
+            color: #fff;
+            border: none;
+        }
+
+        .post-property:hover {
+            background-color: #059669;
+        }
+
+        .profile {
+            background-color: #f3f4f6;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            margin-top: 60px;
+            width: 280px;
+            background-color: #fff;
+            border-right: 1px solid #e5e7eb;
+            height: calc(100vh - 60px);
+            position: fixed;
+        }
+
+        .progress-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: #10b981;
+            font-size: 14px;
+        }
+
+        .preview-btn {
+            background: transparent;
+            border: 1px solid #10b981;
+            color: #10b981;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .nav-steps {
+            list-style: none;
+        }
+
+        .nav-step {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-step:hover {
+            background-color: #f9fafb;
+        }
+
+        .nav-step.active {
+            background-color: #ecfdf5;
+            border-left-color: #10b981;
+        }
+
+        .nav-step.active .step-text {
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .step-icon {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .step-text {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* MAIN FORM CONTENT */
+        .main-content {
+            margin-top: 60px;
+            margin-left: 280px;
+            padding: 40px;
+            flex: 1;
+            min-height: calc(100vh - 60px);
+            background-color: #f8f9fa;
+        }
+
+        .form-section {
+            max-width: 900px;
+            background-color: #fff;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            border: 1px solid #e5e7eb;
+        }
+
+        .form-header {
+            background-color: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #10b981;
+            margin: 0;
+        }
+
+        .form-content {
+            padding: 30px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .form-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .form-group.half-width {
+            flex: 0 0 calc(50% - 15px);
+        }
+
+        .form-group.full-width {
+            flex: 1 1 100%;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        /* Input fields */
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+            background-color: #fff;
+            color: #333;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+        }
+
+        input[type="text"]::placeholder {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        /* Select styling */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23666' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 15px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 45px;
+        }
+
+        select option[disabled] {
+            color: #aaa;
+        }
+
+        /* Location input styling */
+        .location-input {
+            position: relative;
+        }
+
+        .location-input input {
+            padding-left: 45px;
+        }
+
+        .location-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            pointer-events: none;
+        }
+
+        /* Button group styling */
+        .btn-group {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 40px;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .submit-btn {
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: #10b981;
+            color: white;
+            border: none;
+        }
+
+        .submit-btn:hover {
+            background-color: #059669;
+        }
+
+        .back-btn {
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: transparent;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            margin-right: 15px;
+        }
+
+        .back-btn:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="main-header">
+    <div class="left-section">
+        <div class="logo-section">
+            <div class="logo">NB</div>
+            <span class="brand-name">NOBROKER</span>
+        </div>
+    </div>
+    <div class="right-section">
+        <button class="pay-rent">Pay Rent</button>
+        <button class="post-property">Post Your Property</button>
+        <div class="profile">Pakkurthi Chandu ▾</div>
+    </div>
+</header>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="progress-header">
+        <span class="progress-text">20% Done</span>
+        <button class="preview-btn">Preview</button>
+    </div>
+    <ul class="nav-steps">
+        <li class="nav-step">
+            <span class="step-icon">🏠</span>
+            <span class="step-text">Property Details</span>
+        </li>
+        <li class="nav-step active">
+            <span class="step-icon">📍</span>
+            <span class="step-text">Locality Details</span>
+        </li>
+        <li class="nav-step">
+            <span class="step-icon">💰</span>
+            <span class="step-text">Rental Details</span>
+        </li>
+        <li class="nav-step">
+            <span class="step-icon">🎯</span>
+            <span class="step-text">Amenities</span>
+        </li>
+        <li class="nav-step">
+            <span class="step-icon">📷</span>
+            <span class="step-text">Gallery</span>
+        </li>
+
+    </ul>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+    <div class="form-section">
+        <div class="form-header">
+            <h2 class="form-title">Locality Details</h2>
+        </div>
+
+        <div class="form-content">
+            <form th:action="${editMode} ? @{/edit/address} : @{/localityDetails}"
+                  th:object="${address}" method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City<span class="required">*</span></label>
+                        <select th:field="*{city}" required>
+                            <option value="" selected>Enter City</option>
+                            <option value="Gurgaon">Gurgaon</option>
+                            <option value="Bangalore">Bangalore</option>
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Pune">Pune</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Locality<span class="required">*</span></label>
+                        <div class="location-input">
+                            <span class="location-icon">📍</span>
+                            <input type="text" th:field="*{locality}" placeholder="Enter location / society name" required />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Landmark / Street<span class="required">*</span></label>
+                    <input type="text" th:field="*{landmark}" placeholder="e.g. Evergreen street" required />
+                </div>
+
+                <div class="btn-group">
+                    <!--    <button type="button" class="back-btn" onclick="window.location.href='/'">Back</button> -->
+                    <button type="submit" class="submit-btn">Save & Continue</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
