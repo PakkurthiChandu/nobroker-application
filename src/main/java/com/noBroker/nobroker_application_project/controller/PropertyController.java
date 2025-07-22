@@ -9,6 +9,7 @@ import com.noBroker.nobroker_application_project.model.Property;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,5 +77,18 @@ public class PropertyController {
         propertyService.saveImage(propertyImages);
 
         return "/";
+    }
+
+    @GetMapping("/viewProperty/{id}")
+    public String viewProperty(@PathVariable Long id, Model model) {
+        Property property = propertyService.getPropertyById(id);
+
+        if (property == null || property.getAddress() == null) {
+            // Optionally log or redirect to error page
+            return "error";
+        }
+
+        model.addAttribute("property", property);
+        return "view-full-property";
     }
 }
