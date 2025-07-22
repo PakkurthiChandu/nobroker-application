@@ -95,7 +95,6 @@ public class PropertyController {
     @GetMapping("/rentalDetails")
     public String getFrom3(HttpSession session, Model theModel){
         Property property = (Property)session.getAttribute("property");
-
         if(property == null) {
             return "redirect:/";
         }
@@ -106,9 +105,9 @@ public class PropertyController {
         rentalDto.setAvailableFor(property.getAvailableFor());
         rentalDto.setAvailableFrom(property.getAvailableFrom());
         rentalDto.setExpectedRent(property.getExpectedRent() != null ?
-                                  property.getExpectedRent().longValue() : 0L);
+                                  property.getExpectedRent() : 0L);
         rentalDto.setExpectedDeposit(property.getExpectedDeposit() != null ?
-                                      property.getExpectedDeposit().longValue() : 0L);
+                                      property.getExpectedDeposit() : 0L);
         rentalDto.setNegotiation(property.getNegotiation());
         rentalDto.setMonthlyMaintenance(property.getMonthlyMaintenance());
         rentalDto.setPreferredTenets(property.getPreferredTenets());
@@ -137,7 +136,8 @@ public class PropertyController {
         property.setAvailableFor(rentalDto.getAvailableFor());
         property.setAvailableFrom(rentalDto.getAvailableFrom());
         property.setExpectedRent(rentalDto.getExpectedRent());
-        property.setExpectedDeposit(rentalDto.getExpectedDeposit());
+        property.setExpectedDeposit(rentalDto.getExpectedDeposit() != null ?
+                rentalDto.getExpectedDeposit() : 0L);
         property.setNegotiation(rentalDto.getNegotiation());
         property.setMonthlyMaintenance(rentalDto.getMonthlyMaintenance());
         property.setPreferredTenets(rentalDto.getPreferredTenets());
@@ -155,11 +155,9 @@ public class PropertyController {
     @GetMapping("/amenities")
     public String showAmenityForm(HttpSession session, Model theModel) {
         Property property = (Property) session.getAttribute("property");
-
         if(property == null) {
             return "redirect:/";
         }
-
         if(property.getAmenity() == null) {
             property.setAmenity(new Amenity());
         }
@@ -283,8 +281,10 @@ public class PropertyController {
         rentalDto.setIsSale(property.getIsSale());
         rentalDto.setAvailableFor(property.getAvailableFor());
         rentalDto.setAvailableFrom(property.getAvailableFrom());
-        rentalDto.setExpectedRent(property.getExpectedRent());
-        rentalDto.setExpectedDeposit(property.getExpectedDeposit());
+        rentalDto.setExpectedRent(property.getExpectedRent() != null ?
+                property.getExpectedRent() : 0L);
+        rentalDto.setExpectedDeposit(property.getExpectedDeposit() != null ?
+                property.getExpectedDeposit() : 0l);
         rentalDto.setNegotiation(property.getNegotiation());
         rentalDto.setMonthlyMaintenance(property.getMonthlyMaintenance());
         rentalDto.setPreferredTenets(property.getPreferredTenets());
@@ -481,5 +481,12 @@ public class PropertyController {
     @GetMapping("/logout")
     public String logoutPage() {
         return "logout";
+    }
+
+    @GetMapping("/property/{propertyId}")
+    public String deleteProperty(@PathVariable Long propertyId) {
+        propertyService.deleteById(propertyId);
+
+        return "redirect:/";
     }
 }

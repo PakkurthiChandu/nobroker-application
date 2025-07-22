@@ -143,8 +143,11 @@ public class PropertyService {
         return user.getBookmarkedProperties();
     }
 
-    public Property getPropertyById(long id) {
-        return propertyRepository.findByPropertyId(id);
-    }
+    public void deleteById(Long propertyId) {
+        Property property = propertyRepository.findById(propertyId).
+                orElseThrow(() ->
+                        new RuntimeException("No property found with id: " + propertyId));
 
+        propertyRepository.delete(property);
+    }
 }
