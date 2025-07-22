@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -525,7 +525,8 @@
         </div>
 
         <div class="form-content">
-            <form action="/amenities" method="post">
+            <form th:action="${editMode} ? @{/edit/amenities} : @{/amenities}"
+                  th:object="${amenity}" method="post">
                 <div class="section-title">Provide additional details about your property to get maximum visibility</div>
 
                 <!-- Bathroom, Balcony, and Water Supply in one row -->
@@ -536,7 +537,7 @@
                             <button type="button" class="counter-btn" onclick="decreaseCounter('bathroom')">−</button>
                             <div class="counter-display" id="bathroomCount">0</div>
                             <button type="button" class="counter-btn" onclick="increaseCounter('bathroom')">+</button>
-                            <input type="hidden" name="bathrooms" id="bathroomInput" value="0">
+                            <input type="hidden" th:field="*{bathrooms}" id="bathroomInput" th:value="*{bathrooms}">
                         </div>
                     </div>
                     <div class="form-col">
@@ -545,13 +546,13 @@
                             <button type="button" class="counter-btn" onclick="decreaseCounter('balcony')">−</button>
                             <div class="counter-display" id="balconyCount">0</div>
                             <button type="button" class="counter-btn" onclick="increaseCounter('balcony')">+</button>
-                            <input type="hidden" name="balcony" id="balconyInput" value="0">
+                            <input type="hidden" th:field="*{balcony}" id="balconyInput" value="0">
                         </div>
                     </div>
                     <div class="form-col">
                         <label>Water Supply*</label>
-                        <select name="waterSupply" required>
-                            <option disabled selected>Select</option>
+                        <select th:field="*{waterSupply}" required>
+                            <option value="" disabled selected>Select</option>
                             <option value="Corporation">Corporation</option>
                             <option value="Borewell">Borewell</option>
                             <option value="Both">Both</option>
@@ -566,7 +567,7 @@
                         <div class="toggle-group">
                             <button type="button" class="toggle-btn active" onclick="toggleOption('pet', 'false')" id="petNo">No</button>
                             <button type="button" class="toggle-btn" onclick="toggleOption('pet', 'true')" id="petYes">Yes</button>
-                            <input type="hidden" name="petAllowed" id="petInput" value="false">
+                            <input type="hidden" th:field="*{petAllowed}" id="petInput" value="false">
                         </div>
                     </div>
                     <div class="form-col">
@@ -574,7 +575,7 @@
                         <div class="toggle-group">
                             <button type="button" class="toggle-btn active" onclick="toggleOption('gym', 'false')" id="gymNo">No</button>
                             <button type="button" class="toggle-btn" onclick="toggleOption('gym', 'true')" id="gymYes">Yes</button>
-                            <input type="hidden" name="gym" id="gymInput" value="false">
+                            <input type="hidden" th:field="*{gym}" id="gymInput" value="false">
                         </div>
                     </div>
                 </div>
@@ -585,7 +586,7 @@
                         <div class="toggle-group">
                             <button type="button" class="toggle-btn active" onclick="toggleOption('nonVeg', 'false')" id="nonVegNo">No</button>
                             <button type="button" class="toggle-btn" onclick="toggleOption('nonVeg', 'true')" id="nonVegYes">Yes</button>
-                            <input type="hidden" name="nonVeg" id="nonVegInput" value="false">
+                            <input type="hidden" th:field="*{nonVeg}" id="nonVegInput" value="false">
                         </div>
                     </div>
                     <div class="form-col">
@@ -593,7 +594,7 @@
                         <div class="toggle-group">
                             <button type="button" class="toggle-btn active" onclick="toggleOption('gatedSecurity', 'false')" id="gatedSecurityNo">No</button>
                             <button type="button" class="toggle-btn" onclick="toggleOption('gatedSecurity', 'true')" id="gatedSecurityYes">Yes</button>
-                            <input type="hidden" name="gatedSecurity" id="gatedSecurityInput" value="false">
+                            <input type="hidden" th:field="*{gatedSecurity}" id="gatedSecurityInput" value="false">
                         </div>
                     </div>
                 </div>
@@ -602,8 +603,8 @@
                 <div class="form-row">
                     <div class="form-col">
                         <label>Who will show the property?*</label>
-                        <select name="showProperty" required>
-                            <option disabled selected>Select</option>
+                        <select th:field="*{showProperty}" required>
+                            <option value="" disabled selected>Select</option>
                             <option value="Owner">Owner</option>
                             <option value="Tenant">Tenant</option>
                             <option value="Neighbor">Neighbor</option>
@@ -612,8 +613,8 @@
                     </div>
                     <div class="form-col">
                         <label>Current Property Condition?</label>
-                        <select name="propertyCondition">
-                            <option disabled selected>Select</option>
+                        <select th:field="*{propertyCondition}">
+                            <option value="" disabled selected>Select</option>
                             <option value="Excellent">Excellent</option>
                             <option value="Good">Good</option>
                             <option value="Average">Average</option>
@@ -629,14 +630,14 @@
                         <div class="country-code">
                             🇮🇳 +91 ▾
                         </div>
-                        <input type="tel" name="secondaryNumber" placeholder="Secondary Number">
+                        <input type="tel" th:field="*{secondaryNumber}" placeholder="Secondary Number">
                     </div>
                 </div>
 
                 <!-- Near By Place -->
                 <div class="form-group">
                     <label>Near By Place</label>
-                    <input type="text" name="nearByPlace" placeholder="Eg. Near Metro Station, Shopping Mall, etc.">
+                    <input type="text" th:field="*{nearByPlace}" placeholder="Eg. Near Metro Station, Shopping Mall, etc.">
                 </div>
 
                 <!-- Amenities Section - Only fields from your model -->
@@ -644,52 +645,52 @@
                     <label>Select the available amenities</label>
                     <div class="amenities-grid">
                         <label class="amenity-item">
-                            <input type="checkbox" name="lift" value="true">
+                            <input type="checkbox" th:field="*{lift}" value="true">
                             <span class="amenity-icon">🏢</span>
                             <span class="amenity-label">Lift</span>
                         </label>
                         <label class="amenity-item">
-                            <input type="checkbox" name="gasPipeLine" value="true">
+                            <input type="checkbox" th:field="*{gasPipeLine}" value="true">
                             <span class="amenity-icon">⛽</span>
                             <span class="amenity-label">Gas Pipeline</span>
                         </label>
                         <label class="amenity-item">
-                            <input type="checkbox" name="airConditioner" value="true">
+                            <input type="checkbox" th:field="*{airConditioner}" value="true">
                             <span class="amenity-icon">❄️</span>
                             <span class="amenity-label">Air Conditioner</span>
                         </label>
                         <label class="amenity-item">
-                            <input type="checkbox" name="park" value="true">
+                            <input type="checkbox" th:field="*{park}" value="true">
                             <span class="amenity-icon">🌳</span>
                             <span class="amenity-label">Park</span>
                         </label>
                         <label class="amenity-item">
-                            <input type="checkbox" name="houseKeeping" value="true">
+                            <input type="checkbox" th:field="*{houseKeeping}" value="true">
                             <span class="amenity-icon">🧹</span>
                             <span class="amenity-label">House Keeping</span>
                         </label>
                         <label class="amenity-item">
-                            <input type="checkbox" name="internetService" value="true">
+                            <input type="checkbox" th:field="*{internetService}" value="true">
                             <span class="amenity-icon">📶</span>
                             <span class="amenity-label">Internet Service</span>
                         </label>
                         <label class="amenity-item">
-                            <input type="checkbox" name="powerBackUp" value="true">
+                            <input type="checkbox" th:field="*{powerBackUp}" value="true">
                             <span class="amenity-icon">🔋</span>
                             <span class="amenity-label">Power Backup</span>
                         </label>
                         <label class="amenity-item">
-                            <input type="checkbox" name="serventRoom" value="true">
+                            <input type="checkbox" th:field="*{serventRoom}" value="true">
                             <span class="amenity-icon">🏠</span>
                             <span class="amenity-label">Servant Room</span>
                         </label>
                         <label class="amenity-item">
-                            <input type="checkbox" name="swimmingPool" value="true">
+                            <input type="checkbox" th:field="*{swimmingPool}" value="true">
                             <span class="amenity-icon">🏊</span>
                             <span class="amenity-label">Swimming Pool</span>
                         </label>
                         <label class="amenity-item">
-                            <input type="checkbox" name="fireSafety" value="true">
+                            <input type="checkbox" th:field="*{fireSafety}" value="true">
                             <span class="amenity-icon">🔥</span>
                             <span class="amenity-label">Fire Safety</span>
                         </label>
@@ -745,6 +746,7 @@
         input.value = value;
     }
 </script>
+
 
 </body>
 </html>

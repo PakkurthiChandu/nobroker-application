@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -442,7 +442,8 @@
             <div class="main-section">
                 <h2>Upload photos</h2>
 
-                <form action="/images" method="POST" enctype="multipart/form-data">
+                <form th:action="${editMode} ? @{/edit/gallery} : @{/images}"
+                      method="POST" enctype="multipart/form-data">
                     <div class="upload-container">
                         <div>
                             <img src="https://img.icons8.com/ios-filled/50/image.png" alt="Upload" />

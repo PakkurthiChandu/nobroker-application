@@ -12,13 +12,15 @@ import java.util.Date;
 public class RentalDto {
     private Boolean isSale;
     private long expectedRent;
-    private long expectedDeposite;
-    private String montlyMaintenance;
+    private long expectedDeposit;
+    private String monthlyMaintenance;
     private Boolean negotiation;
     private Long price;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date availableFrom;
+
+    private String availableFor;
 
     private String preferredTenets;
     private String furnishing;
