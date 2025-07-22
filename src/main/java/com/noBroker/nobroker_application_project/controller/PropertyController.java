@@ -84,7 +84,6 @@ public class PropertyController {
         Property property = propertyService.getPropertyById(id);
 
         if (property == null || property.getAddress() == null) {
-            // Optionally log or redirect to error page
             return "error";
         }
 
