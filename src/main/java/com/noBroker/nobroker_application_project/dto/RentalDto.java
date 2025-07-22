@@ -11,8 +11,8 @@ import java.util.Date;
 @Setter
 public class RentalDto {
     private Boolean isSale;
-    private long expectedRent;
-    private long expectedDeposit;
+    private Long expectedRent;
+    private Long expectedDeposit;
     private String monthlyMaintenance;
     private Boolean negotiation;
     private Long price;

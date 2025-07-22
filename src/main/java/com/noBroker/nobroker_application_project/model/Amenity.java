@@ -21,13 +21,14 @@ public class Amenity {
     private String waterSupply;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean petAllowed;
+    private Boolean petAllowed=false;
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean gym;
+    private Boolean gym=false;
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean nonVeg;
+    private Boolean nonVeg = false;
+
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean gatedSecurity;
+    private Boolean gatedSecurity=false;
 
     private String showProperty;
     private String propertyCondition;
@@ -35,25 +36,25 @@ public class Amenity {
     private String nearByPlace;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean lift;
+    private Boolean lift=false;
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean gasPipeLine;
+    private Boolean gasPipeLine=false;
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean airConditioner;
+    private Boolean airConditioner=false;
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean park;
+    private Boolean park=false;
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean houseKeeping;
+    private Boolean houseKeeping=false;
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean internetService;
+    private Boolean internetService=false;
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean powerBackUp;
+    private Boolean powerBackUp=false;
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean serventRoom;
+    private Boolean serventRoom=false;
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean swimmingPool;
+    private Boolean swimmingPool=false;
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean fireSafety;
+    private Boolean fireSafety=false;
 
     @OneToMany(mappedBy = "amenity")
     private Set<Property> properties = new HashSet<>();
