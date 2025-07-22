@@ -445,7 +445,7 @@
                     </div>
                     <div class="radio-item">
                         <input type="radio" th:field="*{isSale}" value="true" id="only-lease" />
-                        <label for="only-lease">Only lease</label>
+                        <label for="only-lease">Sale</label>
                     </div>
                 </div>
             </div>
@@ -453,9 +453,9 @@
             <!-- Expected Rent & Deposit -->
             <div class="form-row">
                 <div class="form-group">
-                    <label>Expected Rent <span class="required">*</span></label>
+                    <label>Expected Rent <span class="required"></span></label>
                     <div class="currency-input">
-                        <input type="number" th:field="*{expectedRent}" placeholder="Enter Amount" required />
+                        <input type="number" th:field="*{expectedRent}" placeholder="Enter Amount" />
                     </div>
                     <small style="color: #6b7280; font-size: 12px;">/ Month</small>
                 </div>
@@ -466,7 +466,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Price for Sale<span class="required">*</span></label>
+                    <label>Price for Sale<span class="required"></span></label>
                     <div class="currency-input">
                         <input type="number" name="price" placeholder="Enter Amount"/>
                     </div>
@@ -488,7 +488,7 @@
             <div class="form-group">
                 <label>Monthly Maintenance</label>
                 <select th:field="*{monthlyMaintenance}">
-                    <option value="">Select</option>
+                    <option value="" selected>Select</option>
                     <option value="included">Included in Rent</option>
                     <option value="extra_500">Extra ₹500</option>
                     <option value="extra_1000">Extra ₹1000</option>
@@ -536,7 +536,7 @@
                 <div class="form-group">
                     <label>Furnishing <span class="required">*</span></label>
                     <select th:field="*{furnishing}" required>
-                        <option value="" disabled selected>Select</option>
+                        <option value="" selected>Select</option>
                         <option value="Fully Furnished">Fully Furnished</option>
                         <option value="Semi Furnished">Semi Furnished</option>
                         <option value="Unfurnished">Unfurnished</option>
@@ -545,7 +545,7 @@
                 <div class="form-group">
                     <label>Parking <span class="required">*</span></label>
                     <select th:field="*{parking}" required>
-                        <option value="" disabled selected>Select</option>
+                        <option value="" selected>Select</option>
                         <option value="Bike">Bike</option>
                         <option value="Car">Car</option>
                         <option value="Both">Both</option>

@@ -552,7 +552,7 @@
                     <div class="form-col">
                         <label>Water Supply*</label>
                         <select th:field="*{waterSupply}" required>
-                            <option value="" disabled selected>Select</option>
+                            <option value="" selected>Select</option>
                             <option value="Corporation">Corporation</option>
                             <option value="Borewell">Borewell</option>
                             <option value="Both">Both</option>
@@ -604,7 +604,7 @@
                     <div class="form-col">
                         <label>Who will show the property?*</label>
                         <select th:field="*{showProperty}" required>
-                            <option value="" disabled selected>Select</option>
+                            <option value=""  selected>Select</option>
                             <option value="Owner">Owner</option>
                             <option value="Tenant">Tenant</option>
                             <option value="Neighbor">Neighbor</option>
@@ -614,7 +614,7 @@
                     <div class="form-col">
                         <label>Current Property Condition?</label>
                         <select th:field="*{propertyCondition}">
-                            <option value="" disabled selected>Select</option>
+                            <option value=""  selected>Select</option>
                             <option value="Excellent">Excellent</option>
                             <option value="Good">Good</option>
                             <option value="Average">Average</option>
@@ -746,7 +746,6 @@
         input.value = value;
     }
 </script>
-
 
 </body>
 </html>

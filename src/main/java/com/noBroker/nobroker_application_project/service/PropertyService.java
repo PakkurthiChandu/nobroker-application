@@ -1,11 +1,9 @@
 package com.noBroker.nobroker_application_project.service;
 
-import com.noBroker.nobroker_application_project.dto.RentalDto;
 import com.noBroker.nobroker_application_project.model.*;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.noBroker.nobroker_application_project.repository.PropertyRepository;
-import com.noBroker.nobroker_application_project.repository.UserRepository;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,57 +18,17 @@ import java.util.Map;
 @Service
 public class PropertyService {
 
-    Property property;
-
     private final Cloudinary cloudinary;
     private final PropertyRepository propertyRepository;
-    private final UserRepository userRepository;
 
-    public PropertyService(Cloudinary cloudinary, PropertyRepository propertyRepository,
-                           UserRepository userRepository) {
+    public PropertyService(Cloudinary cloudinary, PropertyRepository propertyRepository) {
         this.cloudinary = cloudinary;
         this.propertyRepository = propertyRepository;
-        this.userRepository = userRepository;
-    }
-
-    public Property findById(Long id) {
-        return propertyRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("No id Found: " + id));
     }
 
     public Property getPropertyById(Long id) {
         return propertyRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("No property found with id: " + id));
-    }
-    public void saveProperty(Property property) {
-        propertyRepository.save(property);
-    }
-
-    public void saveAddress(Property property, Address address) {
-
-        property.setAddress(address);
-        propertyRepository.save(property);
-    }
-
-    public void saveRentals(Property property, RentalDto rentalDto) {
-        property.setIsSale(rentalDto.getIsSale());
-        property.setExpectedRent(rentalDto.getExpectedRent());
-        property.setExpectedDeposit(rentalDto.getExpectedDeposit());
-        property.setMonthlyMaintenance(rentalDto.getMonthlyMaintenance());
-        property.setNegotiation(rentalDto.getNegotiation());
-        property.setAvailableFrom(rentalDto.getAvailableFrom());
-        property.setPreferredTenets(rentalDto.getPreferredTenets());
-        property.setFurnishing(rentalDto.getFurnishing());
-        property.setParking(rentalDto.getParking());
-        property.setDescription(rentalDto.getDescription());
-
-        propertyRepository.save(property);
-        property.setPrice(rentalDto.getPrice());
-    }
-
-    public void saveAmenities(Property property, Amenity amenity) {
-        property.setAmenity(amenity);
-        propertyRepository.save(property);
     }
 
     public void saveImage(Property dbProperty, MultipartFile[] propertyImages) {
@@ -108,7 +66,9 @@ public class PropertyService {
                                            Integer propertyAge,
                                            String sortBy) {
         keyword = (keyword == null || keyword.trim().isEmpty()) ? "" : keyword;
+
         Sort sort =  Sort.by(Sort.Direction.DESC, "createdAt");
+
         if(sortBy != null) {
             switch (sortBy) {
                 case "oldest": sort = Sort.by(Sort.Direction.ASC, "createdAt");
