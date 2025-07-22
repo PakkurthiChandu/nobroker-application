@@ -42,4 +42,5 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             @Param("propertyAge") Integer propertyAge,
             @Param("propertyStatus") String propertyStatus,
             Pageable pageable);
+
 }

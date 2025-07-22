@@ -18,9 +18,8 @@ public class User {
     private Long userId;
 
     private String name;
-    private String password;
     private String email;
-    private String phone;
+    private String mobilePhone;
     private String role;
     private Boolean isSubscribed;
 

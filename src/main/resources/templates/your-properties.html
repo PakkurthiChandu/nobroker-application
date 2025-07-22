@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Properties - NoBroker</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap">
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: 'Roboto', sans-serif;
+          background: #f6f7f9;
+        }
+
+        /* Header (already done, keeping for completeness) */
+        .main-header {
+          background: white;
+          padding: 12px 24px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          position: sticky;
+          top: 0;
+          z-index: 100;
+        }
+
+        .left-section {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+        }
+
+        .logo {
+          width: 32px;
+          height: 32px;
+        }
+
+        .brand-name {
+          color: #e74c3c;
+          font-size: 24px;
+          font-weight: bold;
+        }
+
+        .menu-item {
+          font-size: 16px;
+          color: #333;
+        }
+
+        .right-section {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .pay-rent, .post-property {
+          padding: 8px 14px;
+          border-radius: 4px;
+          border: 1px solid #ccc;
+          font-size: 14px;
+          background: white;
+          cursor: pointer;
+        }
+
+        .post-property {
+          background: #16a085;
+          color: white;
+          border-color: #16a085;
+        }
+
+        .profile {
+          font-size: 14px;
+          cursor: pointer;
+        }
+
+        /* Layout */
+        .container {
+          display: flex;
+          max-width: 1300px;
+          margin: 20px auto;
+          gap: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+          width: 260px;
+          background: white;
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-header {
+          padding: 20px;
+          border-bottom: 1px solid #e0e0e0;
+        }
+
+        .sidebar-header h3 {
+          font-size: 16px;
+          color: #333;
+        }
+
+        .sidebar-menu {
+          list-style: none;
+        }
+
+        .sidebar-menu li {
+          border-bottom: 1px solid #f0f0f0;
+        }
+
+        .sidebar-menu a {
+          display: block;
+          padding: 14px 20px;
+          font-size: 14px;
+          color: #555;
+          text-decoration: none;
+        }
+
+        .sidebar-menu a.active {
+          background: #6c757d;
+          color: white;
+        }
+
+        .sidebar-menu a:hover {
+          background: #f5f5f5;
+        }
+
+        /* Main Content */
+        .properties-section {
+          flex: 1;
+          background: white;
+          border-radius: 8px;
+          padding: 20px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .properties-section h2 {
+          font-size: 18px;
+          margin-bottom: 20px;
+          color: #333;
+        }
+
+        .filter-buttons {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-bottom: 25px;
+        }
+
+        .filter-buttons button {
+          padding: 8px 16px;
+          background: white;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 14px;
+        }
+
+        .filter-buttons .active {
+          background: #16a085;
+          color: white;
+          border-color: #16a085;
+        }
+
+        /* Property Card */
+        .property-card {
+          position: relative;
+          background: #fdfdfd;
+          border-radius: 6px;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+          padding: 16px;
+          margin-bottom: 20px;
+        }
+
+        .property-card .status {
+          position: absolute;
+          top: -10px;
+          left: 10px;
+          background: #888;
+          color: white;
+          font-size: 12px;
+          padding: 3px 8px;
+          border-radius: 4px;
+        }
+
+        .property-card .card-body {
+          display: flex;
+          gap: 20px;
+          flex-wrap: wrap;
+        }
+
+        .card-info {
+          flex: 1;
+        }
+
+        .card-info h3 {
+          font-size: 16px;
+          margin-bottom: 6px;
+          color: #333;
+        }
+
+        .card-info p {
+          font-size: 14px;
+          color: #555;
+          margin-bottom: 6px;
+        }
+
+        .card-info .edit-btn {
+          background: #3498db;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 4px;
+          cursor: pointer;
+          margin-top: 10px;
+        }
+
+        .card-actions {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          min-width: 120px;
+        }
+
+        .image-upload-placeholder {
+          width: 80px;
+          height: 80px;
+          background: #e0e0e0;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 28px;
+          color: #777;
+          margin-bottom: 10px;
+        }
+
+        .upload-btn {
+          padding: 6px 12px;
+          font-size: 13px;
+          border-radius: 4px;
+          background: #16a085;
+          color: white;
+          border: none;
+          cursor: pointer;
+        }
+
+        .card-bottom {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 20px;
+        }
+
+        .contact-status {
+          color: #999;
+          font-size: 13px;
+        }
+
+        .premium-btn {
+          background: #e74c3c;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-size: 13px;
+          cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+          .container {
+            flex-direction: column;
+            padding: 10px;
+          }
+
+          .sidebar {
+            width: 100%;
+          }
+
+          .card-body {
+            flex-direction: column;
+          }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER (from your existing code) -->
+<header class="main-header">
+    <div class="left-section">
+        <img src="https://static.thenounproject.com/png/1040629-200.png" alt="Logo" class="logo" />
+        <span class="brand-name">NOBROKER</span>
+        <span class="menu-item">Buy ▾</span>
+    </div>
+    <div class="right-section">
+        <button class="pay-rent">Pay Rent</button>
+        <button class="post-property">Post Your Property <span style="background: #16a085; color: white; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-left: 5px;">New</span></button>
+        <div class="profile">Yandapalli Viswa ▾</div>
+    </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Manage your Account</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#">Basic Profile</a></li>
+            <li><a href="#">Your Shortlists</a></li>
+            <li><a href="#">Owners you Contacted</a></li>
+            <li><a href="#">Your Payments</a></li>
+            <li><a href="#" class="active">Your Properties</a></li>
+            <li><a href="#">Interested in your Properties</a></li>
+        </ul>
+    </div>
+
+    <!-- Properties Section -->
+    <div class="properties-section">
+        <h2>Your properties on NoBroker</h2>
+
+        <!-- Loop through Properties -->
+        <div th:each="property : ${properties}" class="property-card">
+            <div class="status" th:text="${property.propertyStatus}">In Progress</div>
+            <div class="card-body">
+                <div class="card-info">
+                    <h3 th:text="${property.bhkType + ' BHK ' + property.apartmentType + ' in ' + property.apartmentName}"></h3>
+                    <p th:text="${property.address.locality + ', ' + property.address.city}"></p>
+                    <p>
+                        <strong>Rent:</strong> ₹<span th:text="${property.expectedRent}"></span>
+                        • <span th:text="${property.address.city}"></span>
+                    </p>
+                    <button class="edit-btn" th:onclick="'editProperty(' + ${property.propertyId} + ')'">Edit</button>
+                </div>
+                <div class="card-actions">
+                    <div class="image-upload-placeholder">
+                        <img th:if="${!property.photos.isEmpty()}"
+                             th:src="${property.photos.iterator().next().imageUrl}"
+                             alt="Property Image" style="width: 80px; height: 80px; border-radius: 4px;" />
+                        <span th:if="${property.photos.isEmpty()}">📷</span>
+                    </div>
+                    <button class="upload-btn" th:onclick="'uploadMedia(' + ${property.propertyId} + ')'">Upload Media</button>
+                </div>
+            </div>
+            <div class="card-bottom">
+                <p class="contact-status">None Contacted</p>
+                <button class="premium-btn">Go Premium</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function editProperty(id) {
+      // You can navigate or open modal
+      window.location.href = "/edit-property/" + id;
+    }
+
+    function uploadMedia(id) {
+      alert("Upload media clicked for property ID: " + id);
+      // Open file dialog or modal
+    }
+</script>
+
+</body>
+</html>
