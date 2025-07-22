@@ -99,4 +99,9 @@ public class PropertyService {
 
         return user.getBookmarkedProperties();
     }
+
+    public Property getPropertyById(long id) {
+        return propertyRepository.findByPropertyId(id);
+    }
+
 }
