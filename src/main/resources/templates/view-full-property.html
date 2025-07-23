@@ -16,7 +16,7 @@
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
             color: #333;
-            margin: 0 0 0 20px;
+            margin: 0 20px 10px 30px;
             padding: 0;
         }
 
@@ -30,7 +30,7 @@
             background-color: #fff;
             border-bottom: 1px solid #ddd;
             z-index: 1000;
-            height: 60px;
+            line-height: 45px;
         }
 
         .left-section {
@@ -157,8 +157,7 @@
         /* Property Navigation Bar - Compact Design */
 
         .property-nav {
-            margin-top: 50px;
-            border: 1px solid #ddd;
+            margin-top: 70px;
             padding: 10px 20px;
         }
 
@@ -838,18 +837,29 @@
                 grid-template-columns: 1fr;
             }
         }
+        footer {
+          background-color: #f0f0f0;
+          color: #333;
+          text-align: center;
+    }
     </style>
 </head>
 <body>
 <!-- NoBroker Header -->
 <header class="main-header">
-    <div th:replace="~{fragments/header :: header}"></div>
+    <div th:replace="fragments/header :: header"></div>
 </header>
 
 <!-- Property Navigation Bar - Compact Design like Image 1 -->
-<div class="property-nav" style="margin-top: 50px">
+<div class="property-nav">
     <div class="nav-container">
-
+        <div style="border-right: 1px solid #ccc;" class="nav-left">
+            <div style="margin-left: 80px; width: 100px;">
+                <img alt="home icon logo"
+                     src="//assets.nobroker.in/static/img/resale/resale_logo_2.png"
+                     style="width:48px">
+                <div style="position:absolute; top:130px; left: 148px;">Rent</div>
+            </div>
         </div>
 
         <div style="border-right: 1px solid #ccc;" class="nav-center" th:if="${property != null and property.address != null}">
@@ -1254,5 +1264,8 @@
         }
     });
 </script>
+<footer>
+    <div th:replace="fragments/footer :: footer" ></div>
+</footer>
 </body>
 </html>
