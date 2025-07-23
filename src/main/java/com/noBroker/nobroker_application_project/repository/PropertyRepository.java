@@ -33,7 +33,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             "AND (:apartmentType IS NULL OR p.apartmentType IN :apartmentType) " +
             "AND (:propertyAge IS NULL OR p.propertyAge <= :propertyAge) " +
             "AND (:propertyStatus IS NULL OR :propertyStatus = '' OR p.propertyStatus = :propertyStatus)")
-    List<Property> searchProperties(
+    Page<Property> searchProperties(
             @Param("isSale") boolean isSale,
             @Param("city") String city,
             @Param("keyword") String keyword,
@@ -44,9 +44,6 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             @Param("propertyAge") Integer propertyAge,
             @Param("propertyStatus") String propertyStatus,
             Pageable pageable);
-
-
-
 
     @Query("SELECT p FROM Property p JOIN FETCH p.address a WHERE p.propertyId = :propertyId")
     Property findByPropertyId(long propertyId);

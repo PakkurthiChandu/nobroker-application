@@ -1,9 +1,0 @@
-<!-- fragments/property-cards.html -->
-<div th:fragment="propertyCardList">
-    <div th:each="property : ${allProperties}" class="post-card">
-        <!-- Render property info -->
-        <h3 th:text="${property.title}"></h3>
-        <p th:text="${property.description}"></p>
-        <span th:text="${property.price} + ' INR'"></span>
-    </div>
-</div>

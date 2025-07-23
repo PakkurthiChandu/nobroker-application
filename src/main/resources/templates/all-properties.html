@@ -555,360 +555,157 @@
     <!-- PROPERTY LISTINGS -->
     <div class="main-area">
         <!-- Properties Header -->
-        <div class="properties-header">
 
-            <form method="get" action="/getProperties" style="display: flex; align-items: center; gap: 10px; width: 100%;">
-                <input type="hidden" name="type" th:value="${isSale}" />
-                <input type="hidden" name="city" th:value="${city}" />
-
-                <!-- SEARCH BAR -->
-                <input
-                        type="text"
-                        name="query"
-                        placeholder="Search by locality or landmark..."
-                        class="search-bar"
-                        th:value="${searchKeyword}"
-                        style="flex: 1; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;"
-                />
-                <button type="submit" style="padding: 8px 14px; background-color: #007bff; color: white; border: none; border-radius: 4px;">Search</button>
-            </form>
-            <form method="get" action="/getProperties" id="sortForm">
-                <input type="hidden" name="type" th:value="${isSale}" />
-                <input type="hidden" name="city" th:value="${city}" />
-                <input type="hidden" name="query" th:value="${searchKeyword}" />
-                <select name="sortBy" onchange="document.getElementById('sortForm').submit()" class="sort-dropdown">
-                    <option value="">NoBroker Rank</option>
-                    <option value="newest" th:selected="${sortBy == 'newest'}">Newest to Oldest</option>
-                    <option value="oldest" th:selected="${sortBy == 'oldest'}">Oldest to Newest</option>
-                    <option value="priceHighLow" th:selected="${sortBy == 'priceHighLow'}">Price: High to Low</option>
-                    <option value="priceLowHigh" th:selected="${sortBy == 'priceLowHigh'}">Price: Low to High</option>
-                </select>
-            </form>
-        </div>
-
-        <div class="properties-container">
-            <div th:each="property : ${allProperties}" class="property-card">
-                <a th:href="@{'/viewProperty/' + ${property.propertyId}}">
-                <h3 style="font-size:18px; font-weight:600; color:#333; margin:0 0 4px 0;"
-                    th:text="${property.bhkType + ' BHK Flat in ' + property.apartmentName + ' For Rent near ' + (property.address != null ? property.address.landmark : 'your location')}">
-                    Apartment Title
-                </h3>
-                </a>
-
-
-                <p style="font-size:13px; color:#555; margin:0 0 10px 0;">
-                    <span th:if="${property.address != null}"
-                          th:text="${property.address.landmark + ' ' + property.address.locality + ', ' + property.address.city}">
-                        Address
-                    </span>
-                    <a href="#" style="color:#007bff; text-decoration:none; margin-left:10px;">🔍 Explore Nearby</a>
-                </p>
-
-                <!-- Row 3: Price | EMI | Area -->
-                <div style="display:flex; gap:12px; margin-bottom:12px;">
-                    <!-- Price -->
-                    <div style="flex:1; min-width:0; max-width:200px; border:1px solid #ddd; border-radius:6px; padding:8px; text-align:center;">
-                        <p style="margin:0; font-size:16px; font-weight:bold; color:#222; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                            ₹<span th:text="${property.price}">56789087</span>
-                        </p>
-                        <p style="margin:0; font-size:12px; color:#555;"
-                           th:if="${property.price != null and property.builtUpArea != null and property.builtUpArea > 0}">
-                            ₹<span th:text="${property.price * 0.01}">0</span>/mo
-                        </p>
-                    </div>
-
-                    <!-- EMI -->
-                    <div style="flex:1; border:1px solid #ddd; border-radius:6px; padding:8px; text-align:center;">
-                        <p style="margin:0; font-size:14px; font-weight:bold; color:#222;">
-                            ₹<span th:text="${property.price != null ? (property.price * 1000 / 100000) : 0}">0</span>/mo
-                        </p>
-                        <p style="margin:0; font-size:12px; color:#555;">Estimated EMI</p>
-                    </div>
-
-                    <!-- Area -->
-                    <div style="flex:1; border:1px solid #ddd; border-radius:6px; padding:8px; text-align:center;">
-                        <p style="margin:0; font-size:14px; font-weight:bold; color:#222;">
-                            <span th:text="${property.builtUpArea}">0</span> sqft
-                        </p>
-                        <p style="margin:0; font-size:12px; color:#555;">Built-up Area</p>
-                    </div>
-                </div>
-
-                <!-- Row 4: Split into Left Image and Right Info Blocks -->
-                <div style="display:flex; gap:12px;">
-                    <!-- Image -->
-                    <div style="width:calc(100% / 3); height:200px; border-radius:6px; overflow:hidden; background:#f5f5f5; position:relative;"
-                         onmouseover="startImageRotation(this)"
-                         onmouseout="stopImageRotation(this)">
-                        <img th:src="${!#lists.isEmpty(property.photos) ? property.photos.iterator().next().imageUrl : 'https://via.placeholder.com/200x200'}"
-                             alt="Property Image"
-                             style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; transition:opacity 0.1s ease;" />
-                        <img th:each="photo,stat : ${property.photos}"
-                             th:if="${stat.index > 0}"
-                             th:src="${photo.imageUrl}"
-                             alt="Property Image"
-                             style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; opacity:0; transition:opacity 0.5s ease;" />
-                    </div>
-
-                    <!-- Right Side: 3 Rows (A, B, C) -->
-                    <div style="flex:2; display:flex; flex-direction:column; justify-content:space-between; height:200px;">
-
-                        <!-- Row A: Facing | Apartment Type -->
-                        <div style="display:flex; gap:10px;">
-                            <div style="flex:1; border:1px solid #ddd; padding:10px; border-radius:6px; display:flex; align-items:center; justify-content:center; gap:8px;">
-                                <div style="font-size:16px;">🧭</div>
-                                <div style="text-align:center;">
-                                    <p style="margin:0; font-size:14px; font-weight:bold;" th:text="${property.facing}">East</p>
-                                    <p style="margin:0; font-size:11px; color:#777;">Facing</p>
-                                </div>
-                            </div>
-                            <div style="flex:1; border:1px solid #ddd; padding:10px; border-radius:6px; display:flex; align-items:center; justify-content:center; gap:8px;">
-                                <div style="font-size:16px;">🏠</div>
-                                <div style="text-align:center;">
-                                    <p style="margin:0; font-size:14px;" th:text="${property.apartmentType}">2 BHK</p>
-                                    <p style="margin:0; font-size:11px; color:#777;">Type</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Row B: Bathrooms | Parking -->
-                        <div style="display:flex; gap:10px;">
-                            <div style="flex:1; border:1px solid #ddd; padding:10px; border-radius:6px; display:flex; align-items:center; justify-content:center; gap:8px;">
-                                <div style="font-size:16px;">🚿</div>
-                                <div style="text-align:center;">
-                                    <p style="margin:0; font-size:14px;" th:text="${property.amenity != null ? property.amenity.bathrooms : '-'}">2</p>
-                                    <p style="margin:0; font-size:11px; color:#777;">Bathrooms</p>
-                                </div>
-                            </div>
-                            <div style="flex:1; border:1px solid #ddd; padding:10px; border-radius:6px; display:flex; align-items:center; justify-content:center; gap:8px;">
-                                <div style="font-size:16px;">🅿️</div>
-                                <div style="text-align:center;">
-                                    <p style="margin:0; font-size:14px;" th:text="${property.parking}">Car/Bike</p>
-                                    <p style="margin:0; font-size:11px; color:#777;">Parking</p>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- Row C: Buttons -->
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-                            <a th:href="@{/checkSubscribe(propertyId=${property.propertyId})}"
-                               style="padding:10px 16px; background:orangered; color:white; text-decoration:none; border-radius:6px; font-size:14px; font-weight:500;">
-                                Get Owner Details
-                            </a>
-                            <div style="display:flex; gap:12px; align-items:center;">
-                                <!-- Updated Heart Button with Bookmark Functionality -->
-                                <button
-                                        th:id="'bookmark-btn-' + ${property.propertyId}"
-                                        th:data-property-id="${property.propertyId}"
-                                        onclick="toggleBookmark(this)"
-                                        style="background:none; border:none; cursor:pointer; font-size:20px; color:#ccc; transition:color 0.3s ease;"
-                                        title="Bookmark this property">
-                                    ♥
-                                </button>
-                                <a href="#" style="font-size:13px; color:#007bff; text-decoration:underline;">Report</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="main-area">
+            <!-- Properties Header -->
+            <div class="properties-header">
+                <form method="get" action="/getProperties" style="display: flex; align-items: center; gap: 10px; width: 100%;">
+                    <input type="hidden" name="type" th:value="${isSale}" />
+                    <input type="hidden" name="city" th:value="${city}" />
+                    <input type="text" name="query" placeholder="Search by locality or landmark..." class="search-bar" th:value="${searchKeyword}" style="flex: 1; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" />
+                    <button type="submit" style="padding: 8px 14px; background-color: #007bff; color: white; border: none; border-radius: 4px;">Search</button>
+                </form>
+                <form method="get" action="/getProperties" id="sortForm">
+                    <input type="hidden" name="type" th:value="${isSale}" />
+                    <input type="hidden" name="city" th:value="${city}" />
+                    <input type="hidden" name="query" th:value="${searchKeyword}" />
+                    <select name="sortBy" onchange="document.getElementById('sortForm').submit()" class="sort-dropdown">
+                        <option value="">NoBroker Rank</option>
+                        <option value="newest" th:selected="${sortBy == 'newest'}">Newest to Oldest</option>
+                        <option value="oldest" th:selected="${sortBy == 'oldest'}">Oldest to Newest</option>
+                        <option value="priceHighLow" th:selected="${sortBy == 'priceHighLow'}">Price: High to Low</option>
+                        <option value="priceLowHigh" th:selected="${sortBy == 'priceLowHigh'}">Price: Low to High</option>
+                    </select>
+                </form>
             </div>
 
-            <script th:inline="javascript">
-                /*<![CDATA[*/
-
-                // Get current user ID (you'll need to pass this from your controller)
-                const CURRENT_USER_ID = /*[[${session.userId}]]*/ 1;
-
-                function getUrlParameter(name) {
-                    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-                    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-                    var results = regex.exec(location.search);
-                    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-                }
-
-                // Filter tab switching functionality
-                function switchTab(tabType) {
-                    const filterTabs = document.querySelectorAll('.filter-tab');
-                    const basicFilters = document.getElementById('basic-filters');
-                    const premiumFilters = document.getElementById('premium-filters');
-
-                    // Remove active class from all tabs
-                    filterTabs.forEach(tab => {
-                        tab.classList.remove('active');
-                    });
-
-                    if (tabType === 'basic') {
-                        basicFilters.style.display = 'block';
-                        premiumFilters.style.display = 'none';
-                        filterTabs[0].classList.add('active');
-                        premiumFilters.classList.remove('active');
-                    } else if (tabType === 'premium') {
-                        basicFilters.style.display = 'none';
-                        premiumFilters.style.display = 'block';
-                        filterTabs[1].classList.add('active');
-                        premiumFilters.classList.add('active');
-                    }
-                }
-
-                // Initialize page when DOM loads
-                document.addEventListener('DOMContentLoaded', function() {
-                    // Check if premium filters were used (look for filterType parameter or premium-specific parameters)
-                    const filterType = getUrlParameter('filterType');
-                    const propertyAge = getUrlParameter('propertyAge');
-                    const parking = getUrlParameter('parking');
-
-                    // If premium filter was applied OR premium-specific parameters exist, show premium tab
-                    if (filterType === 'premium' || propertyAge || parking) {
-                        switchTab('premium');
-                    } else {
-                        // Default to basic filters
-                        switchTab('basic');
-                    }
-
-                    // Add event listeners to tabs
-                    const filterTabs = document.querySelectorAll('.filter-tab');
-                    if (filterTabs.length >= 2) {
-                        filterTabs[0].addEventListener('click', function() {
-                            switchTab('basic');
-                        });
-
-                        filterTabs[1].addEventListener('click', function() {
-                            switchTab('premium');
-                        });
-                    }
-                });
-
-
-                // // =================== FILTER TAB SWITCHING ====================
-                // function switchTab(tabType) {
-                //     const filterTabs = document.querySelectorAll('.filter-tab');
-                //     const basicFilters = document.getElementById('basic-filters');
-                //     const premiumFilters = document.getElementById('premium-filters');
-                //
-                //     filterTabs.forEach(tab => tab.classList.remove('active'));
-                //
-                //     if (tabType === 'basic') {
-                //         basicFilters.style.display = 'block';
-                //         premiumFilters.style.display = 'none';
-                //         filterTabs[0].classList.add('active');
-                //         premiumFilters.classList.remove('active');
-                //     } else if (tabType === 'premium') {
-                //         basicFilters.style.display = 'none';
-                //         premiumFilters.style.display = 'block';
-                //         filterTabs[1].classList.add('active');
-                //         premiumFilters.classList.add('active');
-                //     }
-                // }
-
-                // =================== IMAGE ROTATION ====================
-                function startImageRotation(container) {
-                    var images = container.getElementsByTagName('img');
-                    if (images.length <= 1) return;
-
-                    var current = 0;
-                    container._rotationInterval = setInterval(function () {
-                        images[current].style.opacity = '0';
-                        current = (current + 1) % images.length;
-                        images[current].style.opacity = '1';
-                    }, 2000);
-                }
-
-                function stopImageRotation(container) {
-                    if (container._rotationInterval) {
-                        clearInterval(container._rotationInterval);
-                        var images = container.getElementsByTagName('img');
-                        for (var i = 1; i < images.length; i++) {
-                            images[i].style.opacity = '0';
-                        }
-                        images[0].style.opacity = '1';
-                    }
-                }
-
-                // =================== BOOKMARK FUNCTIONALITY ====================
-                function toggleBookmark(button) {
-                    const propertyId = button.getAttribute('data-property-id');
-                    button.disabled = true;
-
-                    fetch(`/api/bookmarks/toggle/${propertyId}?userId=${CURRENT_USER_ID}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' }
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                updateBookmarkButton(button, data.isBookmarked);
-                                showToast(data.message);
-                            } else {
-                                console.error('Error:', data.message);
-                                showToast('Error: ' + data.message, 'error');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            showToast('Failed to update bookmark', 'error');
-                        })
-                        .finally(() => {
-                            button.disabled = false;
-                        });
-                }
-
-                function updateBookmarkButton(button, isBookmarked) {
-                    if (isBookmarked) {
-                        button.style.color = '#e74c3c';
-                        button.title = 'Remove from bookmarks';
-                    } else {
-                        button.style.color = '#ccc';
-                        button.title = 'Bookmark this property';
-                    }
-                }
-
-                function showToast(message, type = 'success') {
-                    const toast = document.createElement('div');
-                    toast.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 20px;
-            border-radius: 5px;
-            color: white;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            z-index: 10000;
-            transition: opacity 0.3s ease;
-            background-color: ${type === 'error' ? '#e74c3c' : '#27ae60'};
-        `;
-                    toast.textContent = message;
-                    document.body.appendChild(toast);
-
-                    setTimeout(() => {
-                        toast.style.opacity = '0';
-                        setTimeout(() => document.body.removeChild(toast), 300);
-                    }, 3000);
-                }
-
-                // =================== INFINITE SCROLLING ====================
-
-                <button type="submit" class="apply-filters-btn">Apply Filters</button>
-            </form>
-        </div>
-
-        <!-- Premium Filters -->
-        <div id="premium-filters" class="filter-content premium-filter-content">
-            <form method="get" action="/getProperties">
-                <input type="hidden" name="type" th:value="${isSale}" />
-                <input type="hidden" name="city" th:value="${city}" />
-                <input type="hidden" name="query" th:value="${searchKeyword}" />
-
-                <!-- Furnishing -->
-
-                <!-- Property Age -->
-
-                /*]]>*/
-            </script>
-
+            <div id="properties-container" class="properties-container">
+                <div id="post-list" th:replace="~{fragments/postSection :: postSection(allProperties=${allProperties}, hasNext=${totalPages > currentPage + 1})}"></div>
+            </div>
         </div>
     </div>
     <div style="width: 20%"></div>
 </div>
 </body>
+
+<script>
+    let page = [[${currentPage}]];
+    let loading = false;
+    let hasMore = [[${totalPages > currentPage + 1}]];
+
+    // Build the base URL with all filter parameters
+    const params = new URLSearchParams(window.location.search);
+    params.delete('page'); // Remove page param to append it dynamically
+    const baseURL = `/loadMorePosts?${params.toString()}`;
+
+    const observer = new IntersectionObserver(async (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && !loading && hasMore) {
+            loading = true;
+            page++;
+
+            try {
+                const response = await fetch(`${baseURL}&page=${page}&size=5`);
+                if (response.ok) {
+                    const html = await response.text();
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+
+                    const newPosts = tempDiv.querySelectorAll('.property-card');
+                    const container = document.getElementById('properties-container');
+
+                    if (newPosts.length === 0) {
+                        hasMore = false;
+                    } else {
+                        newPosts.forEach(post => container.appendChild(post));
+                    }
+
+                    // Check if the response includes a new trigger point (indicating hasNext)
+                    const newTrigger = tempDiv.querySelector('#trigger-point');
+                    if (newTrigger) {
+                        container.appendChild(newTrigger);
+                        observer.observe(newTrigger);
+                    } else {
+                        hasMore = false;
+                    }
+                } else {
+                    hasMore = false;
+                }
+            } catch (error) {
+                console.error('Error loading more posts:', error);
+                hasMore = false;
+            } finally {
+                loading = false;
+            }
+        }
+    }, { threshold: 1.0 });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const trigger = document.getElementById('trigger-point');
+        if (trigger && hasMore) {
+            observer.observe(trigger);
+        }
+    });
+
+    // Get filter type from URL parameters to determine which tab should be active
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    // Filter tab switching functionality
+    function switchTab(tabType) {
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const basicFilters = document.getElementById('basic-filters');
+        const premiumFilters = document.getElementById('premium-filters');
+
+        // Remove active class from all tabs
+        filterTabs.forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        if (tabType === 'basic') {
+            basicFilters.style.display = 'block';
+            premiumFilters.style.display = 'none';
+            filterTabs[0].classList.add('active');
+            premiumFilters.classList.remove('active');
+        } else if (tabType === 'premium') {
+            basicFilters.style.display = 'none';
+            premiumFilters.style.display = 'block';
+            filterTabs[1].classList.add('active');
+            premiumFilters.classList.add('active');
+        }
+    }
+
+    // Initialize page when DOM loads
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if premium filters were used (look for filterType parameter or premium-specific parameters)
+        const filterType = getUrlParameter('filterType');
+        const propertyAge = getUrlParameter('propertyAge');
+        const parking = getUrlParameter('parking');
+
+        // If premium filter was applied OR premium-specific parameters exist, show premium tab
+        if (filterType === 'premium' || propertyAge || parking) {
+            switchTab('premium');
+        } else {
+            // Default to basic filters
+            switchTab('basic');
+        }
+
+        // Add event listeners to tabs
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        if (filterTabs.length >= 2) {
+            filterTabs[0].addEventListener('click', function() {
+                switchTab('basic');
+            });
+
+            filterTabs[1].addEventListener('click', function() {
+                switchTab('premium');
+            });
+        }
+    });
+</script>
+
 </html>

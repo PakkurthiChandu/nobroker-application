@@ -384,27 +384,32 @@ public class PropertyController {
         return "landing-page";
     }
 
-//    ---------------------Get All Properties---------------------------------
-
     @GetMapping("/getProperties")
     public String getPropertyDetails(
-                            @RequestParam("type") String isSaleStr,
-                            @RequestParam("city") String city,
-                            @RequestParam("query") String searchKeyword,
-                            @RequestParam(required = false) List<Integer> bhkType,
-                            @RequestParam(required = false) String propertyStatus,
-                            @RequestParam(required = false) List<String> furnishing,
-                            @RequestParam(required = false) List<String> propertyType,
-                            @RequestParam(required = false) List<String> parking,
-                            @RequestParam(required = false) Integer propertyAge,
-                            @RequestParam(value = "sortBy", required = false) String sortBy,
-                            Model model) {
+            @RequestParam("type") String isSaleStr,
+            @RequestParam("city") String city,
+            @RequestParam("query") String searchKeyword,
+            @RequestParam(required = false) List<Integer> bhkType,
+            @RequestParam(required = false) String propertyStatus,
+            @RequestParam(required = false) List<String> furnishing,
+            @RequestParam(required = false) List<String> propertyType,
+            @RequestParam(required = false) List<String> parking,
+            @RequestParam(required = false) Integer propertyAge,
+            @RequestParam(value = "sortBy", required = false) String sortBy,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
+            Model model) {
         boolean isSale = "buy".equalsIgnoreCase(isSaleStr);
 
-        model.addAttribute("allProperties", propertyService.getAllProperties(isSale, city, searchKeyword,
-                bhkType,propertyStatus,furnishing,propertyType,parking,propertyAge,sortBy
-        ));
+        Page<Property> propertyPage = propertyService.getAllProperties(
+                isSale, city, searchKeyword, bhkType, propertyStatus, furnishing,
+                propertyType, parking, propertyAge, sortBy, page, size);
 
+        model.addAttribute("allProperties", propertyPage.getContent());
+        model.addAttribute("currentPage", propertyPage.getNumber());
+        model.addAttribute("totalPages", propertyPage.getTotalPages());
+        model.addAttribute("totalItems", propertyPage.getTotalElements());
+        model.addAttribute("pageSize", size);
         model.addAttribute("isSale", isSaleStr);
         model.addAttribute("searchKeyword", searchKeyword);
         model.addAttribute("bhkType", bhkType);
@@ -418,6 +423,35 @@ public class PropertyController {
 
         return "all-properties";
     }
+
+    @GetMapping("/loadMorePosts")
+    public String loadMorePosts(
+            @RequestParam("type") String isSaleStr,
+            @RequestParam("city") String city,
+            @RequestParam("query") String searchKeyword,
+            @RequestParam(required = false) List<Integer> bhkType,
+            @RequestParam(required = false) String propertyStatus,
+            @RequestParam(required = false) List<String> furnishing,
+            @RequestParam(required = false) List<String> propertyType,
+            @RequestParam(required = false) List<String> parking,
+            @RequestParam(required = false) Integer propertyAge,
+            @RequestParam(value = "sortBy", required = false) String sortBy,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
+            Model model) {
+
+        boolean isSale = "buy".equalsIgnoreCase(isSaleStr);
+
+        Page<Property> propertyPage = propertyService.getAllProperties(
+                isSale, city, searchKeyword, bhkType, propertyStatus, furnishing,
+                propertyType, parking, propertyAge, sortBy, page, size);
+
+        model.addAttribute("allProperties", propertyPage.getContent());
+        model.addAttribute("hasNext", propertyPage.hasNext()); // Add hasNext flag
+
+        return "fragments/postSection :: postSection";
+    }
+
 
     @GetMapping("/viewProperty/{id}")
     public String viewProperty(@PathVariable Long id, Model model) {

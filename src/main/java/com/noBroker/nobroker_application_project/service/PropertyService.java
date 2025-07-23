@@ -69,34 +69,72 @@ public class PropertyService {
         propertyRepository.save(property);
     }
 
-    public List<Property> getAllProperties(boolean isSale, String city, String keyword,
-                                           List<Integer> bhkType,
-                                           String propertyStatus,
-                                           List<String> furnishing,
-                                           List<String> propertyType,
-                                           List<String> parking,
-                                           Integer propertyAge,
-                                           String sortBy) {
+//    public List<Property> getAllProperties(boolean isSale, String city, String keyword,
+//                                           List<Integer> bhkType,
+//                                           String propertyStatus,
+//                                           List<String> furnishing,
+//                                           List<String> propertyType,
+//                                           List<String> parking,
+//                                           Integer propertyAge,
+//                                           String sortBy) {
+//        keyword = (keyword == null || keyword.trim().isEmpty()) ? "" : keyword;
+//
+//        Sort sort =  Sort.by(Sort.Direction.DESC, "createdAt");
+//
+//        if(sortBy != null) {
+//            switch (sortBy) {
+//                case "oldest": sort = Sort.by(Sort.Direction.ASC, "createdAt");
+//                    break;
+//                case "priceHighLow": sort = Sort.by(Sort.Direction.DESC, "price");
+//                    break;
+//                case "priceLowHigh": sort = Sort.by(Sort.Direction.ASC, "price");
+//                    break;
+//            }
+//        }
+//
+//        Pageable pageable = PageRequest.of(0, 5, sort);
+//
+//        return propertyRepository.searchProperties(isSale, city, keyword.toLowerCase(), bhkType, furnishing, parking, propertyType,
+//                propertyAge, propertyStatus, pageable);
+//    }
+
+    public Page<Property> getAllProperties(boolean isSale, String city, String keyword,
+                                                    List<Integer> bhkType,
+                                                    String propertyStatus,
+                                                    List<String> furnishing,
+                                                    List<String> propertyType,
+                                                    List<String> parking,
+                                                    Integer propertyAge,
+                                                    String sortBy,
+                                                    int page,
+                                                    int size) {
+
         keyword = (keyword == null || keyword.trim().isEmpty()) ? "" : keyword;
 
-        Sort sort =  Sort.by(Sort.Direction.DESC, "createdAt");
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
 
-        if(sortBy != null) {
+        if (sortBy != null) {
             switch (sortBy) {
-                case "oldest": sort = Sort.by(Sort.Direction.ASC, "createdAt");
+                case "oldest":
+                    sort = Sort.by(Sort.Direction.ASC, "createdAt");
                     break;
-                case "priceHighLow": sort = Sort.by(Sort.Direction.DESC, "price");
+                case "priceHighLow":
+                    sort = Sort.by(Sort.Direction.DESC, "price");
                     break;
-                case "priceLowHigh": sort = Sort.by(Sort.Direction.ASC, "price");
+                case "priceLowHigh":
+                    sort = Sort.by(Sort.Direction.ASC, "price");
                     break;
             }
         }
 
-        Pageable pageable = PageRequest.of(0, 10, sort);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        return propertyRepository.searchProperties(isSale, city, keyword.toLowerCase(), bhkType, furnishing, parking, propertyType,
-                propertyAge, propertyStatus, pageable);
+        return propertyRepository.searchProperties(
+                isSale, city, keyword.toLowerCase(), bhkType, furnishing, parking, propertyType,
+                propertyAge, propertyStatus, pageable
+        );
     }
+
 
     public Set<Property> getBookmarkedPropertyDTOs(Long userId) {
         User user = userRepository.findById(userId)
