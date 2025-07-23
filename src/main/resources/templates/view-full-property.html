@@ -162,7 +162,42 @@
             padding: 10px 20px;
         }
 
+        .nav-left, .nav-center, .nav-right {
+            display: flex;
+        }
 
+            .nav-left {
+                flex: 1;
+            }
+
+            .nav-left .property-icon {
+                  font-size: 24px;
+                  margin-right: 10px;
+            }
+
+        .nav-left .nav-text {
+            font-weight: bold;
+            color: #444;
+        }
+
+        .nav-center {
+          flex: 3;
+          flex-direction: column;
+          padding: 0 20px;
+          align-items: left;
+        }
+
+        .nav-center .nav-title {
+              font-weight: bold;
+              font-size: 16px;
+              margin-bottom: 5px;
+              color: #333;
+        }
+
+        .nav-center .nav-subtitle {
+              font-size: 14px;
+              color: #777;
+        }
 
         .property-badge {
             background: #333;
