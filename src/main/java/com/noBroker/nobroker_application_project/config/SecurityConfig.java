@@ -39,7 +39,6 @@ public class SecurityConfig {
                                     return mappedAuthorities;
                                 })
                         )
-
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/landingPage")

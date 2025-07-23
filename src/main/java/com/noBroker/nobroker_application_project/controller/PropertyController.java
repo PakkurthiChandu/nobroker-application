@@ -3,11 +3,13 @@ package com.noBroker.nobroker_application_project.controller;
 import com.noBroker.nobroker_application_project.dto.RentalDto;
 import com.noBroker.nobroker_application_project.model.Address;
 import com.noBroker.nobroker_application_project.repository.PropertyRepository;
+import com.noBroker.nobroker_application_project.model.User;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 
 import com.noBroker.nobroker_application_project.model.Amenity;
 import com.noBroker.nobroker_application_project.model.Property;
 
+import com.noBroker.nobroker_application_project.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -30,13 +32,18 @@ import java.util.Map;
 @Controller
 public class PropertyController {
 
+    UserService userService;
     private final PropertyService propertyService;
     private final PropertyRepository propertyRepository;
 
     public PropertyController(PropertyService propertyService, PropertyRepository propertyRepository) {
         this.propertyService = propertyService;
+        this.userService = userService;
         this.propertyRepository = propertyRepository;
     }
+
+//    ----------------Create Post----------------------------------
+
     @GetMapping("/welcome")
     public String welcomePage() {
         return "welcome"; // loads welcome.html from /templates
@@ -78,12 +85,15 @@ public class PropertyController {
     @PostMapping("/localityDetails")
     public String addAddress(@ModelAttribute Address address, HttpSession session){
         Property property = (Property) session.getAttribute("property");
+
         if(property == null) {
             return "redirect:/";
         }
+
         property.setAddress(address);
 
         session.setAttribute("property", property);
+
 
         return "redirect:/rentalDetails";
     }
@@ -474,5 +484,30 @@ public class PropertyController {
         redirectAttributes.addFlashAttribute("message", "Property deleted successfully !!!");
 
         return "redirect:/";
+    }
+
+//    ----------------------------------------------------------------------------------------------------------------
+    @PostMapping("/toggle/{propertyId}")
+    @ResponseBody
+    public Map<String, Object> toggleBookmark(@PathVariable Long propertyId, OAuth2AuthenticationToken token) {
+        String email = token.getPrincipal().getAttribute("email");
+        User user = userService.getUserByEmail(email);
+        Property property = propertyService.getPropertyById(propertyId);
+
+        boolean isBookmarked = user.getBookmarkedProperties().contains(property);
+
+        if (isBookmarked) {
+            user.getBookmarkedProperties().remove(property);
+        } else {
+            user.getBookmarkedProperties().add(property);
+        }
+
+        userService.saveUser(user);
+
+        return Map.of(
+                "success", true,
+                "bookmarked", !isBookmarked,
+                "propertyId", propertyId
+        );
     }
 }
