@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -484,8 +485,11 @@ public class PropertyController {
     }
 
     @GetMapping("/property/{propertyId}")
-    public String deleteProperty(@PathVariable Long propertyId) {
+    public String deleteProperty(@PathVariable Long propertyId,
+                                 RedirectAttributes redirectAttributes) {
         propertyService.deleteById(propertyId);
+
+        redirectAttributes.addFlashAttribute("message", "Property deleted successfully !!!");
 
         return "redirect:/";
     }
