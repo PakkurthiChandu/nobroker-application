@@ -25,7 +25,9 @@ public class SuccessController {
 
         User user = (User) session.getAttribute("user");
 
-        userService.changeToSubscribe(user.getUserId());
+        user = userService.changeToSubscribe(user.getUserId());
+
+        session.setAttribute("user", user);
 
         return "success";
     }

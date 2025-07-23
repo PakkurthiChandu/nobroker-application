@@ -16,16 +16,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void changeToSubscribe(Long userId) {
+    public User changeToSubscribe(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
 
         if(user != null){
             user.setIsSubscribed(true);
-            userRepository.save(user);
+            return userRepository.save(user);
         }
-    }
 
-    public User findById(Long userId) {
-        return userRepository.findById(userId).orElse(null);
+        return null;
     }
 }
