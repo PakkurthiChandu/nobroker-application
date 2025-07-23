@@ -19,7 +19,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/error","/landingPage","loginPage", "/send-otp", "/verify","verify-otp").permitAll()
+                        .requestMatchers("/", "/login", "/error","/landingPage","/loginPage", "/send-otp", "/verify","/verify-otp").permitAll()
                         .requestMatchers("/viewProperty/**", "/view-full-property", "edit/**").hasAnyRole("OIDC_USER","USER")
                         .anyRequest().authenticated()
                 )
