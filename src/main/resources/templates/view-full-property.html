@@ -21,10 +21,28 @@
         }
 
         /* NoBroker Header Styles */
-        .nobroker-header {
-            background: white;
-            border-bottom: 1px solid #e0e0e0;
-            padding: 8px 0;
+
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            z-index: 1000;
+            height: 60px;
+        }
+
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .header-container {
@@ -822,29 +840,12 @@
 </head>
 <body>
 <!-- NoBroker Header -->
-<div class="nobroker-header">
-    <div class="header-container">
-        <div class="logo-section">
-            <div class="logo">
-                <span class="logo-icon">NB</span>
-                <span class="logo-text">NOBROKER</span>
-            </div>
-        </div>
-        <div class="header-actions">
-            <button class="header-btn">📄 Pay Rent</button>
-            <button class="header-btn post-property">Post Your Property <span class="new-badge">New</span></button>
-            <div class="notification-icon">🔔</div>
-            <div class="profile-section">
-                <span class="profile-name">vakaya</span>
-                <div class="profile-avatar">V</div>
-            </div>
-            <div class="menu-icon">☰ Menu</div>
-        </div>
-    </div>
-</div>
+<header class="main-header">
+    <div th:replace="~{fragments/header :: header}"></div>
+</header>
 
 <!-- Property Navigation Bar - Compact Design like Image 1 -->
-<div class="property-nav">
+<div class="property-nav" style="margin-top: 50px">
     <div class="nav-container">
         <div class="nav-left">
             <div class="property-icon">🏠</div>
@@ -879,7 +880,6 @@
                 <div class="deposit-value" th:text="'₹ ' + ${property.expectedDeposit}"></div>
                 <div class="deposit-label">Deposit</div>
             </div>
-            <button class="apply-loan-btn">Apply Loan</button>
         </div>
 
 
@@ -907,14 +907,7 @@
                             <i class="fas fa-chevron-right"></i>
                         </button>
 
-                        <div class="image-overlay">
-                            <span class="live-badge">LIVE</span>
-                            <div class="gallery-actions">
-                                <button class="action-btn">📷 Photos</button>
-                                <button class="action-btn">📍 Location</button>
-                                <button class="wishlist-btn">❤️ Shortlist</button>
-                            </div>
-                        </div>
+
                         <div class="more-photos" th:if="${property.photos.size() > 3}" th:text="'+' + (${property.photos.size()} - 3)"></div>
                     </div>
                     <div class="side-images" th:if="${property.photos.size() > 1}">

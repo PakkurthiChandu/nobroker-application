@@ -9,6 +9,8 @@ import com.noBroker.nobroker_application_project.model.Property;
 
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PropertyController {
@@ -29,6 +33,11 @@ public class PropertyController {
     }
 
 //    ----------------Create Post----------------------------------
+
+    @GetMapping("/welcome")
+    public String welcomePage() {
+        return "welcome"; // loads welcome.html from /templates
+    }
 
     @GetMapping("/")
     public String getForm1(Model theModel){

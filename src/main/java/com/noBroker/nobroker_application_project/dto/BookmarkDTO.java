@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class BookmarkDTO {
     private Long propertyId;
-    private String action; // "add" or "remove"
+    private String action;
 }

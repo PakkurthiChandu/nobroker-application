@@ -17,21 +17,18 @@
             display: flex;
         }
 
-        /* HEADER STYLES */
+        /* HEADER STYLES - Updated to match NoBroker style */
         .main-header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 24px;
             background-color: #fff;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #ddd;
             z-index: 1000;
             height: 60px;
         }
+
 
         .left-section {
             display: flex;
@@ -45,18 +42,6 @@
             gap: 8px;
         }
 
-        .logo {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #ff385c, #e91e63);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-        }
 
         .brand-name {
             font-weight: bold;
@@ -105,6 +90,92 @@
             border-radius: 20px;
             font-size: 14px;
             color: #374151;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-outline {
+            border: 1px solid #ccc;
+            background-color: white;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-filled {
+            background-color: #009587;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .new-badge {
+            background-color: #ffb300;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: -8px;
+            margin-right: 4px;
+        }
+
+        .new-label {
+            font-size: 10px;
+            color: white;
+            background-color: #009587;
+            border-radius: 8px;
+            padding: 2px 5px;
+            font-weight: bold;
+            position: absolute;
+            top: -5px;
+            right: -10px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .profile-icon {
+            background-color: #ccc;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .menu-icon {
+            font-size: 18px;
+            margin-left: 10px;
         }
 
         /* SIDEBAR */
@@ -340,17 +411,7 @@
 
 <!-- HEADER -->
 <header class="main-header">
-    <div class="left-section">
-        <div class="logo-section">
-            <div class="logo">NB</div>
-            <span class="brand-name">NOBROKER</span>
-        </div>
-    </div>
-    <div class="right-section">
-        <button class="pay-rent">Pay Rent</button>
-        <button class="post-property">Post Your Property</button>
-        <div class="profile">Pakkurthi Chandu ▾</div>
-    </div>
+    <div th:replace="~{fragments/header :: header}"></div>
 </header>
 
 <!-- SIDEBAR -->
@@ -386,6 +447,7 @@
 
 <!-- MAIN CONTENT -->
 <div class="main-content">
+    .
     <div class="form-section">
         <div class="form-header">
             <h2 class="form-title">Property Details</h2>
@@ -461,8 +523,8 @@
                         </select>
                     </div>
                     <div class="form-group half-width">
-                        <label>Facing</label>
-                        <select th:field="*{facing}">
+                        <label>Facing<span class="required">*</span></label>
+                        <select th:field="*{facing}" required>
                             <option value="" selected>Select</option>
                             <option value="East">East</option>
                             <option value="West">West</option>
@@ -486,15 +548,14 @@
                         </div>
                     </div>
                     <div class="form-group half-width">
-                        <label>Property Status</label>
-                        <select name="propertyStatus">
+                        <label>Property Status<span class="required">*</span></label>
+                        <select name="propertyStatus" required>
                             <option disabled selected>Select</option>
                             <option value="Under Construction">Under Construction </option>
                             <option value="Ready">Ready</option>
                         </select>
                     </div>
                 </div>
-                <!-- Form Actions -->
                 <div class="form-actions">
                     <button type="submit" class="submit-btn">Save & Continue</button>
                 </div>

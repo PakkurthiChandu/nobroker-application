@@ -2,6 +2,7 @@ package com.noBroker.nobroker_application_project.repository;
 
 import com.noBroker.nobroker_application_project.model.Property;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -43,6 +44,8 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             @Param("propertyAge") Integer propertyAge,
             @Param("propertyStatus") String propertyStatus,
             Pageable pageable);
+
+
 
 
     @Query("SELECT p FROM Property p JOIN FETCH p.address a WHERE p.propertyId = :propertyId")

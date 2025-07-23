@@ -1,0 +1,10 @@
+<!-- fragments/property-cards.html -->
+<div th:fragment="propertyCardsFragment (allProperties)">
+    <div th:each="property : ${allProperties}">
+        <div class="property-card">
+            <!-- Your existing HTML structure here -->
+            <p th:text="${property.apartmentName}"></p>
+            <!-- ... -->
+        </div>
+    </div>
+</div>
