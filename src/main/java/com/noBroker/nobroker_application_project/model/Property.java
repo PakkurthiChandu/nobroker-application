@@ -34,6 +34,7 @@ public class Property {
     private String monthlyMaintenance;
     private String preferredTenets;
 
+
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean negotiation;
 

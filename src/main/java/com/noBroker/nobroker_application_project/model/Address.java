@@ -20,6 +20,9 @@ public class Address {
     private String locality;
     private String landmark;
 
+    private Double latitude;
+    private Double longitude;
+
     @OneToMany(mappedBy = "address")
     private Set<Property> properties = new HashSet<>();
 }
