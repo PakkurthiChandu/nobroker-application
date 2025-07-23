@@ -21,27 +21,27 @@
 
         /* Header (already done, keeping for completeness) */
         .main-header {
-          background: white;
-          padding: 12px 20px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-          position: sticky;
-          top: 0;
-          z-index: 100;
-        }
-
-        .left-section {
-          display: flex;
-          align-items: center;
-          gap: 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            z-index: 1000;
+            height: 60px;
         }
 
         .logo {
-        display: flex;
-        align-items: center;
-        height: 50px;
+            width: auto;
+            height: 30px;
+            max-width: 150px; /* Adjust as needed */
+            object-fit: contain; /* Prevents distortion */
+        }
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px; /* Ensures enough space for logo */
         }
 
         .logo img {
@@ -390,23 +390,11 @@
 
 <!-- HEADER (from your existing code) -->
 <header class="main-header">
-    <div class="left-section">
-        <div class="logo">
-            <a href="/">
-                <img src="/images/nobroker-logo.png" alt="NoBroker Logo" />
-            </a>
-        </div>
-        <span class="menu-item">Buy ▾</span>
-    </div>
-    <div class="right-section">
-        <button class="pay-rent">Pay Rent</button>
-        <button class="post-property">Post Your Property <span style="background: #16a085; color: white; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-left: 5px;">New</span></button>
-        <div class="profile">Yandapalli Viswa ▾</div>
-    </div>
+    <div th:replace="~{fragments/header :: header}"></div>
 </header>
 
 <!-- MAIN CONTENT -->
-<div class="container">
+<div class="container" style="margin-top: 60px">
 
     <!-- Sidebar -->
     <div class="sidebar">

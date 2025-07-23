@@ -556,7 +556,22 @@
     <div class="main-area">
         <!-- Properties Header -->
         <div class="properties-header">
-            <input type="text" placeholder="Search properties..." class="search-bar" />
+
+            <form method="get" action="/getProperties" style="display: flex; align-items: center; gap: 10px; width: 100%;">
+                <input type="hidden" name="type" th:value="${isSale}" />
+                <input type="hidden" name="city" th:value="${city}" />
+
+                <!-- SEARCH BAR -->
+                <input
+                        type="text"
+                        name="query"
+                        placeholder="Search by locality or landmark..."
+                        class="search-bar"
+                        th:value="${searchKeyword}"
+                        style="flex: 1; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;"
+                />
+                <button type="submit" style="padding: 8px 14px; background-color: #007bff; color: white; border: none; border-radius: 4px;">Search</button>
+            </form>
             <form method="get" action="/getProperties" id="sortForm">
                 <input type="hidden" name="type" th:value="${isSale}" />
                 <input type="hidden" name="city" th:value="${city}" />
@@ -573,13 +588,13 @@
 
         <div class="properties-container">
             <div th:each="property : ${allProperties}" class="property-card">
-                <!-- Row 1: Title -->
+
                 <h3 style="font-size:18px; font-weight:600; color:#333; margin:0 0 4px 0;"
                     th:text="${property.bhkType + ' BHK Flat in ' + property.apartmentName + ' For Rent near ' + (property.address != null ? property.address.landmark : 'your location')}">
                     Apartment Title
                 </h3>
 
-                <!-- Row 2: Address -->
+
                 <p style="font-size:13px; color:#555; margin:0 0 10px 0;">
                     <span th:if="${property.address != null}"
                           th:text="${property.address.landmark + ' ' + property.address.locality + ', ' + property.address.city}">

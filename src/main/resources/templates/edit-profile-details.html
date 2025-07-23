@@ -18,28 +18,28 @@
         color: #333;
     }
 
-    .header {
-            background: white;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-    .logo {
-    display: flex;
-    align-items: center;
-    height: 50px;
+    .main-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      z-index: 1000;
+      height: 60px;
     }
 
-    .logo img {
-    height: 180px;
-    width: auto;
-    object-fit: contain;
+    .logo {
+      width: auto;
+      height: 30px;
+      max-width: 150px; /* Adjust as needed */
+      object-fit: contain; /* Prevents distortion */
+    }
+    .left-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 200px; /* Ensures enough space for logo */
     }
 
     .header-right {
@@ -347,23 +347,11 @@
   </style>
 </head>
 <body>
-<div class="header">
-  <div class="logo">
-    <a href="/">
-      <img src="/images/nobroker-logo.png" alt="NoBroker Logo" />
-    </a>
-  </div>
-  <div class="header-right">
-    <button class="btn-secondary">Pay Rent</button>
-    <button class="btn-primary">Post Your Property <span style="background: #ffc107; color: #000; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-left: 5px;">New</span></button>
-    <div class="user-menu">
-      <div class="user-avatar">Y</div>
-      <span>Yandapalli Viswanath</span>
-    </div>
-  </div>
-</div>
+<header class="main-header">
+  <div th:replace="~{fragments/header :: header}"></div>
+</header>
 
-<div class="container">
+<div class="container" style="margin-top: 60px">
   <div class="sidebar">
     <h3>Manage your Account</h3>
     <ul class="sidebar-menu">

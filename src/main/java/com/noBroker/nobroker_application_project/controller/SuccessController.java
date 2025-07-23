@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SuccessController {
     @GetMapping("/success")
     public String successPage() {
-        return "success"; // success.html
+        return "success";
     }
 
     @GetMapping("/cancel")
     public String cancelPage() {
-        return "cancel"; // Optional: create cancel.html
+        return "cancel";
     }
 }

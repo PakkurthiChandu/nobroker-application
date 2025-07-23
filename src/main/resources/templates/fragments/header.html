@@ -1,40 +1,42 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
   <!-- Keep head empty for fragments -->
 </head>
 <body>
 <div th:fragment="header">
   <div class="header">
-    <div class="logo">
-      <div class="logo-icon">%</div>
-      <div class="logo-text"><strong>NO</strong><span>BROKER</span></div>
+    <!-- Left Section -->
+    <div class="header-left">
+      <div class="logo">
+        <div class="logo-icon">%</div>
+        <div class="logo-text"><strong>NO</strong><span>BROKER</span></div>
+      </div>
     </div>
 
+    <!-- Right Section -->
     <div class="header-right">
-      <div style="position: relative;">
-        <button class="btn-filled">For Property owners</button>
-        <span class="new-label" style="top: -5px; right: -10px;">New</span>
-      </div>
+      <button class="btn-filled">Post Your Property</button>
 
       <div class="profile">
-        <div class="new-badge">N</div>
-        <div class="profile-icon">
-          <i class="fa-solid fa-user"></i>
-        </div>
-        <div class="profile-name">vakaya</div>
-        <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+
+<!--        <div class="profile-name">-->
+<!--          <div sec:authorize="!isAuthenticated()">-->
+<!--            <a th:href="@{/login}"><button>Sign up/Login</button></a>-->
+<!--          </div>-->
+<!--          <div sec:authorize="isAuthenticated()">-->
+<!--            <span th:text="${#authentication.name}">Username</span>-->
+<!--          </div>-->
+<!--        </div>-->
+
       </div>
 
-      <button class="icon-btn">
-        <i class="fa-regular fa-bell"></i>
-      </button>
-
-      <button class="icon-btn menu-icon">
-        <i class="fa-solid fa-bars"></i> Menu
-      </button>
+      <button class="menu-icon"> Home</button>
     </div>
   </div>
+
 
   <!-- Move CSS styles here or link to a common stylesheet -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
