@@ -588,11 +588,12 @@
 
         <div class="properties-container">
             <div th:each="property : ${allProperties}" class="property-card">
-
+                <a th:href="@{'/viewProperty/' + ${property.propertyId}}">
                 <h3 style="font-size:18px; font-weight:600; color:#333; margin:0 0 4px 0;"
                     th:text="${property.bhkType + ' BHK Flat in ' + property.apartmentName + ' For Rent near ' + (property.address != null ? property.address.landmark : 'your location')}">
                     Apartment Title
                 </h3>
+                </a>
 
 
                 <p style="font-size:13px; color:#555; margin:0 0 10px 0;">
@@ -887,6 +888,20 @@
 
                 // =================== INFINITE SCROLLING ====================
 
+                <button type="submit" class="apply-filters-btn">Apply Filters</button>
+            </form>
+        </div>
+
+        <!-- Premium Filters -->
+        <div id="premium-filters" class="filter-content premium-filter-content">
+            <form method="get" action="/getProperties">
+                <input type="hidden" name="type" th:value="${isSale}" />
+                <input type="hidden" name="city" th:value="${city}" />
+                <input type="hidden" name="query" th:value="${searchKeyword}" />
+
+                <!-- Furnishing -->
+
+                <!-- Property Age -->
 
                 /*]]>*/
             </script>

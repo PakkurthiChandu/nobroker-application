@@ -35,9 +35,9 @@ public class CloudinaryConfig {
         ));
     }
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+
+
+
+
 
 }

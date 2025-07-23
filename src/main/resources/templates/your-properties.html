@@ -419,14 +419,12 @@
             <div class="status" th:text="${property.propertyStatus}">In Progress</div>
             <div class="card-body">
                 <div class="card-info">
-                    <h3 th:text="${property.bhkType + ' BHK ' + property.apartmentType + ' in ' + property.apartmentName}"></h3>
                     <p th:text="${property.address.locality + ', ' + property.address.city}"></p>
                     <p>
                         <strong>Rent:</strong> ₹<span th:text="${property.expectedRent}"></span>
                         • <span th:text="${property.address.city}"></span>
                     </p>
-                    <button class="edit-btn" th:onclick="'editProperty(' + ${property.propertyId} + ')'">Edit</button>
-                </div>
+                    <button class="edit-btn" th:onclick="|editProperty(${property.propertyId})|">Edit</button>                </div>
                 <div class="card-actions">
                     <div class="image-upload-placeholder">
                         <img th:if="${!property.photos.isEmpty()}"
@@ -434,7 +432,6 @@
                              alt="Property Image" style="width: 80px; height: 80px; border-radius: 4px;" />
                         <span th:if="${property.photos.isEmpty()}">📷</span>
                     </div>
-                    <button class="upload-btn" th:onclick="'uploadMedia(' + ${property.propertyId} + ')'">Upload Media</button>
                 </div>
             </div>
             <div class="card-bottom">
@@ -544,11 +541,12 @@
 <script>
     function editProperty(id) {
       // You can navigate or open modal
-      window.location.href = "/edit-property/" + id;
+      window.location.href = "/edit/" + id;
     }
 
     function uploadMedia(id) {
-      alert("Upload media clicked for property ID: " + id);
+
+      window.location.href = "/edit/gallery/" + id
       // Open file dialog or modal
     }
 </script>

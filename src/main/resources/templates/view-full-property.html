@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1026,8 +1026,10 @@
                 </div>
 
                 <div class="owner-details-wrapper" style="display: flex; justify-content: center; align-items: center; height: 100px;">
-                    <button class="btn btn-primary owner-details-btn">Owner Details</button>
-                </div>
+                    <a th:href="@{/checkSubscribe(propertyId=${property.propertyId})}"
+                       style="padding:10px 16px; background:orangered; color:white; text-decoration:none; border-radius:6px; font-size:14px; font-weight:500;">
+                        Get Owner Details
+                    </a>                </div>
 
 
 
