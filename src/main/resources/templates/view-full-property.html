@@ -295,7 +295,38 @@
             color: #666;
         }
 
+        .nav-right {
+          flex: 2;
+          justify-content: space-around;
+        }
 
+        .price-info, .area-info, .deposit-info {
+              margin: 0 10px;
+              text-align: center;
+        }
+
+        .price-main, .area-value, .deposit-value {
+              font-weight: bold;
+              font-size: 16px;
+              color: #222;
+        }
+
+        .price-label, .area-label, .deposit-label {
+              font-size: 13px;
+              color: #777;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid lightgrey;
+            line-height: 30px;
+            flex-wrap: wrap;
+        }
+        .nav-container > div {
+            padding: 5px 10px;
+        }
 
         /* Main gallery and info layout */
         /* 1. Force gallery-info-wrapper to take height from tallest child */
