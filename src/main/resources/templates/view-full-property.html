@@ -631,7 +631,94 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
+        .section-title {
+            font-size: 20px;
+            font-family: monospace;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            text-decoration: underline;
+            text-decoration-color: red;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 5px;
+            padding-bottom: 5px;
+        }
 
+        .section-description {
+            min-height: 300px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Compact Overview Grid */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 2fr);
+            column-gap: 150px;
+            row-gap: 10px;
+            padding-right: 150px;
+        }
+
+        .overview-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .overview-icon {
+            min-width: 20px;
+            color: #666;
+            flex-shrink: 0;
+            font-size: 25px;
+        }
+
+        .overview-label {
+            color: #666;
+            font-size: 15px;
+            flex: 1;
+        }
+
+        .overview-value {
+            color: #333;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        /* Compact Amenities Grid */
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+        }
+
+        .amenity-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #f5f5f5;
+            width: 100px;
+            height: 130px;
+        }
+
+        .amenity-icon {
+            font-size: 40px;
+            color: #e74c3c;
+            margin-bottom: 5px;
+        }
+
+        .amenity-label {
+            font-size: 15px;
+            color: #333;
+        }
 
         .nearby-places {
             margin-top: 10px;
