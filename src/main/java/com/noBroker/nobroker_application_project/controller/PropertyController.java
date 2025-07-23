@@ -9,6 +9,8 @@ import com.noBroker.nobroker_application_project.model.Property;
 
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -196,10 +198,7 @@ public class PropertyController {
             return "redirect:/";
         }
 
-        System.out.println(propertyImages.length);
-        System.out.println(property.getAddress().getCity() + property.getAddress().getLocality());
-
-        propertyService.saveImage(property, propertyImages);
+        propertyService.saveImage(property, propertyImages, session);
 
         session.removeAttribute("property");
 
@@ -373,7 +372,7 @@ public class PropertyController {
             return "redirect:/";
         }
 
-        propertyService.saveImage(property, propertyImages);
+        propertyService.saveImage(property, propertyImages, session);
 
         session.removeAttribute("property");
 
@@ -430,5 +429,16 @@ public class PropertyController {
 
         model.addAttribute("property", property);
         return "view-full-property";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "custom-login";
+    }
+
+
+    @GetMapping("/logout")
+    public String logoutPage() {
+        return "logout";
     }
 }

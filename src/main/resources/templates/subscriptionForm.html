@@ -310,16 +310,16 @@
 <body>
 <div class="container">
     <div class="pricing-container">
-        <!-- Freedom Plan -->
-        <div class="plan-card freedom" th:each="plan, iterStat : ${plans}" th:if="${iterStat.index == 0}">
+        <!-- Freedom Plan (Static) -->
+        <div class="plan-card freedom">
             <div class="plan-header">
-                <h2 class="plan-name" th:text="${plan?.name} ?: 'Freedom Plan'">Freedom Plan</h2>
+                <h2 class="plan-name">Freedom Plan</h2>
                 <div class="plan-pricing">
-                    <span class="original-price" th:text="'₹ ' + (${plan?.originalPrice} ?: '2,149')">₹ 2,149</span>
-                    <span class="current-price" th:text="'₹ ' + (${plan?.currentPrice} ?: '1,649')">₹ 1,649</span>
+                    <span class="original-price">₹ 2,149</span>
+                    <span class="current-price">₹ 1,649</span>
                     <div class="gst-text">+18% GST</div>
                 </div>
-                <p class="plan-description" th:text="${plan?.description} ?: 'Get genuine house owner contacts matching your requirements'">
+                <p class="plan-description">
                     Get genuine house owner contacts matching your requirements
                 </p>
             </div>
@@ -340,277 +340,62 @@
                 <h3 class="features-header">Premium Filters</h3>
                 <div class="feature-item">
                     <span class="feature-name">Number of Contacts</span>
-                    <span class="feature-value" th:text="'upto ' + (${plan?.maxContacts} ?: '25')">upto 25</span>
+                    <span class="feature-value">upto 25</span>
                 </div>
                 <div class="feature-item">
                     <span class="feature-name">Instant Property Alerts on SMS</span>
-                    <span class="feature-check" th:if="${plan?.hasInstantAlerts} ?: true">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasInstantAlerts} ?: true">✗</span>
+                    <span class="feature-check">✓</span>
                 </div>
                 <div class="feature-item">
                     <span class="feature-name">Locality Experts</span>
-                    <span class="feature-cross" th:if="${plan?.hasLocalityExperts} ?: false">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasLocalityExperts} ?: false">✗</span>
+                    <span class="feature-cross">✗</span>
                 </div>
                 <div class="feature-item">
                     <span class="feature-name">Rent Negotiation</span>
-                    <span class="feature-cross" th:if="${plan?.hasRentNegotiation} ?: false">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasRentNegotiation} ?: false">✗</span>
+                    <span class="feature-cross">✗</span>
                 </div>
             </div>
-
-            <form class="subscribe-form" th:action="@{/pay}" method="get">
-                <input type="hidden" name="planId" th:value="${plan.id}" />
-                <input type="hidden" name="planPrice" th:value="${plan.currentPrice}" />
-                <button type="submit" class="subscribe-btn btn-freedom">Subscribe</button>
-            </form>
-
-        </div>
-
-        <!-- Relax Plan -->
-        <div class="plan-card relax" th:each="plan, iterStat : ${plans}" th:if="${iterStat.index == 1}">
-            <div class="plan-header">
-                <h2 class="plan-name" th:text="${plan?.name} ?: 'Relax Plan'">Relax Plan</h2>
-                <div class="plan-pricing">
-                    <span class="original-price" th:text="'₹ ' + (${plan?.originalPrice} ?: '4,499')">₹ 4,499</span>
-                    <span class="current-price" th:text="'₹ ' + (${plan?.currentPrice} ?: '3,499')">₹ 3,499</span>
-                    <div class="gst-text">+18% GST</div>
-                </div>
-                <p class="plan-description" th:text="${plan?.description} ?: 'Get Relationship Manager to help you SAVE time and money'">
-                    Get Relationship Manager to help you SAVE time and money
-                </p>
+            <div style="display: flex; justify-content: center; margin-top: 24px;">
+                <button id="pay-btn"
+                        data-price="164900"
+                        style="
+                background-color: #2563eb;    /* Blue-600 */
+                color: white;
+                padding: 14px 28px;
+                font-size: 16px;
+                font-weight: 600;
+                border: none;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            "
+                        onmouseover="this.style.backgroundColor='#1d4ed8'"
+                        onmouseout="this.style.backgroundColor='#2563eb'">
+                    Subscribe Now
+                </button>
             </div>
-
-            <div class="manager-section">
-                <div class="manager-avatar">RM</div>
-                <div class="manager-info">
-                    <h4>Relationship Manager</h4>
-                    <div class="manager-details">
-                        • Contacts owners and fixes meetings<br>
-                        • Negotiates rent on your behalf<br>
-                        • Provides locality level expertise
-                    </div>
-                </div>
-            </div>
-
-            <div class="features-section">
-                <h3 class="features-header">Premium Filters</h3>
-                <div class="feature-item">
-                    <span class="feature-name">Number of Contacts</span>
-                    <span class="feature-value" th:text="'upto ' + (${plan?.maxContacts} ?: '50')">upto 50</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-name">Instant Property Alerts</span>
-                    <span class="feature-check" th:if="${plan?.hasInstantAlerts} ?: true">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasInstantAlerts} ?: true">✗</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-name">Locality Experts</span>
-                    <span class="feature-check" th:if="${plan?.hasLocalityExperts} ?: true">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasLocalityExperts} ?: true">✗</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-name">Rent Negotiation</span>
-                    <span class="feature-check" th:if="${plan?.hasRentNegotiation} ?: true">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasRentNegotiation} ?: true">✗</span>
-                </div>
-            </div>
-
-            <form class="subscribe-form" th:action="@{/payment}" method="post">
-                <input type="hidden" name="planId" th:value="${plan?.id} ?: '2'"/>
-                <input type="hidden" name="planName" th:value="${plan?.name} ?: 'Relax Plan'"/>
-                <input type="hidden" name="planPrice" th:value="${plan?.currentPrice} ?: '3499'"/>
-                <button type="submit" class="subscribe-btn btn-relax">Subscribe</button>
-            </form>
-        </div>
-
-        <!-- MoneyBack Plan -->
-        <div class="plan-card moneyback" th:each="plan, iterStat : ${plans}" th:if="${iterStat.index == 2}">
-            <div class="plan-header">
-                <h2 class="plan-name" th:text="${plan?.name} ?: 'MoneyBack Plan'">MoneyBack Plan</h2>
-                <div class="plan-pricing">
-                    <span class="original-price" th:text="'₹ ' + (${plan?.originalPrice} ?: '7,499')">₹ 7,499</span>
-                    <span class="current-price" th:text="'₹ ' + (${plan?.currentPrice} ?: '5,999')">₹ 5,999</span>
-                    <div class="gst-text">+18% GST</div>
-                </div>
-                <p class="plan-description" th:text="${plan?.description} ?: 'Get Guaranteed home or 100% Refund'">
-                    Get Guaranteed home or 100% Refund
-                </p>
-            </div>
-
-            <div class="manager-section">
-                <div class="manager-avatar">RM</div>
-                <div class="manager-info">
-                    <h4>Relationship Manager</h4>
-                    <div class="manager-details">
-                        • Contacts owners and fixes meetings<br>
-                        • Negotiates rent on your behalf<br>
-                        • Provides locality level expertise
-                    </div>
-                </div>
-            </div>
-
-            <div class="features-section">
-                <h3 class="features-header">Premium Filters</h3>
-                <div class="feature-item">
-                    <span class="feature-name">Number of Contacts</span>
-                    <span class="feature-value" th:text="'upto ' + (${plan?.maxContacts} ?: '50')">upto 50</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-name">Instant Property Alerts</span>
-                    <span class="feature-check" th:if="${plan?.hasInstantAlerts} ?: true">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasInstantAlerts} ?: true">✗</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-name">Locality Experts</span>
-                    <span class="feature-check" th:if="${plan?.hasLocalityExperts} ?: true">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasLocalityExperts} ?: true">✗</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-name">Rent Negotiation</span>
-                    <span class="feature-check" th:if="${plan?.hasRentNegotiation} ?: true">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasRentNegotiation} ?: true">✗</span>
-                </div>
-            </div>
-
-            <form class="subscribe-form" th:action="@{/payment}" method="post">
-                <input type="hidden" name="planId" th:value="${plan?.id} ?: '3'"/>
-                <input type="hidden" name="planName" th:value="${plan?.name} ?: 'MoneyBack Plan'"/>
-                <input type="hidden" name="planPrice" th:value="${plan?.currentPrice} ?: '5999'"/>
-                <button type="submit" class="subscribe-btn btn-moneyback">Subscribe</button>
-            </form>
-        </div>
-
-        <!-- Super Relax Plan -->
-        <div class="plan-card super-relax" th:each="plan, iterStat : ${plans}" th:if="${iterStat.index == 3}">
-            <div class="badge field-assistance">FIELD ASSISTANCE</div>
-            <div class="plan-header">
-                <h2 class="plan-name" th:text="${plan?.name} ?: 'Super Relax Plan'">Super Relax Plan</h2>
-                <div class="plan-pricing">
-                    <span class="original-price" th:text="'₹ ' + (${plan?.originalPrice} ?: '9,499')">₹ 9,499</span>
-                    <span class="current-price" th:text="'₹ ' + (${plan?.currentPrice} ?: '7,499')">₹ 7,499</span>
-                    <div class="gst-text">+18% GST</div>
-                </div>
-                <p class="plan-description" th:text="${plan?.description} ?: 'GET HOME TOURS with Field Relationship Manager(FRM)'">
-                    GET HOME TOURS with Field Relationship Manager(FRM)
-                </p>
-            </div>
-
-            <div class="manager-section">
-                <div class="manager-avatar">FRM</div>
-                <div class="manager-info">
-                    <h4>Field Relationship Manager</h4>
-                    <div class="manager-details">
-                        • Gets physical and virtual tour of property<br>
-                        • Shows nearby matching properties
-                    </div>
-                </div>
-            </div>
-
-            <div class="features-section">
-                <h3 class="features-header">Premium Filters</h3>
-                <div class="feature-item">
-                    <span class="feature-name">Number of Contacts</span>
-                    <span class="feature-value" th:text="'upto ' + (${plan?.maxContacts} ?: '50')">upto 50</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-name">Instant Property Alerts</span>
-                    <span class="feature-check" th:if="${plan?.hasInstantAlerts} ?: true">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasInstantAlerts} ?: true">✗</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-name">Locality Experts</span>
-                    <span class="feature-check" th:if="${plan?.hasLocalityExperts} ?: true">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasLocalityExperts} ?: true">✗</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-name">Rent Negotiation</span>
-                    <span class="feature-check" th:if="${plan?.hasRentNegotiation} ?: true">✓</span>
-                    <span class="feature-cross" th:unless="${plan?.hasRentNegotiation} ?: true">✗</span>
-                </div>
-            </div>
-
-            <form class="subscribe-form" th:action="@{/payment}" method="post">
-                <input type="hidden" name="planId" th:value="${plan?.id} ?: '4'"/>
-                <input type="hidden" name="planName" th:value="${plan?.name} ?: 'Super Relax Plan'"/>
-                <input type="hidden" name="planPrice" th:value="${plan?.currentPrice} ?: '7499'"/>
-                <button type="submit" class="subscribe-btn btn-super-relax">Subscribe</button>
-            </form>
-        </div>
-
-        <!-- Default plans when no dynamic data -->
-        <div th:if="${plans == null or #lists.isEmpty(plans)}">
-            <!-- Freedom Plan Default -->
-            <div class="plan-card freedom">
-                <div class="plan-header">
-                    <h2 class="plan-name">Freedom Plan</h2>
-                    <div class="plan-pricing">
-                        <span class="original-price">₹ 2,149</span>
-                        <span class="current-price">₹ 1,649</span>
-                        <div class="gst-text">+18% GST</div>
-                    </div>
-                    <p class="plan-description">Get genuine house owner contacts matching your requirements</p>
-                </div>
-
-                <div class="manager-section">
-                    <div class="manager-avatar">RM</div>
-                    <div class="manager-info">
-                        <h4>Complete Relocation Assistance on Call</h4>
-                        <div class="manager-details">
-                            • Free Customized Packer and Mover Quote<br>
-                            • Free Rental Agreement consultation with expert<br>
-                            • On-Demand Support
-                        </div>
-                    </div>
-                </div>
-
-                <div class="features-section">
-                    <h3 class="features-header">Premium Filters</h3>
-                    <div class="feature-item">
-                        <span class="feature-name">Number of Contacts</span>
-                        <span class="feature-value">upto 25</span>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-name">Instant Property Alerts on SMS</span>
-                        <span class="feature-check">✓</span>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-name">Locality Experts</span>
-                        <span class="feature-cross">✗</span>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-name">Rent Negotiation</span>
-                        <span class="feature-cross">✗</span>
-                    </div>
-                </div>
-
-                <form class="subscribe-form" th:action="@{/payment}" method="post">
-                    <input type="hidden" name="planId" value="1"/>
-                    <input type="hidden" name="planName" value="Freedom Plan"/>
-                    <input type="hidden" name="planPrice" value="1649"/>
-                    <button type="submit" class="subscribe-btn btn-freedom">Subscribe</button>
-                </form>
-            </div>
-
-            <!-- Additional default plans... (similar structure) -->
         </div>
     </div>
 
-    <div class="validity-info" th:text="${validityInfo} ?: 'Plan Validity : MoneyBack & Relax ( 45 Days ) , Freedom & Basic ( 90 days ) - T&C apply'">
-        Plan Validity : MoneyBack & Relax ( 45 Days ) , Freedom & Basic ( 90 days ) - T&C apply
-    </div>
+    <script>
+        document.getElementById("pay-btn").addEventListener("click", function () {
+            const price = this.getAttribute("data-price");
 
-    <div class="owner-plans-link">
-        <a href="#" th:href="@{/owner-plans}" th:text="${ownerPlansText} ?: 'Click here for Owner Plans'">Click here for Owner Plans</a>
-    </div>
+            fetch("/api/payment/create-checkout-session", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ price: price })
+            })
+                .then(res => res.text())
+                .then(url => {
+                    window.location.href = url;
+                });
+        });
+    </script>
 
-    <div class="contact-info">
-        For assistance call us at <a th:href="'tel:' + (${contactNumber} ?: '+91-89-055-522-22')" th:text="${contactNumber} ?: '+91-89-055-522-22'">+91-89-055-522-22</a>
-    </div>
-
-    <div class="how-it-works">
-        HOW ASSISTED PLANS WORK
-    </div>
 </div>
 </body>
 </html>

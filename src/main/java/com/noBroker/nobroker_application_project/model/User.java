@@ -18,10 +18,12 @@ public class User {
     private Long userId;
 
     private String name;
+
+    @Column(unique = true)
     private String email;
     private String mobilePhone;
     private String role;
-    private Boolean isSubscribed;
+    private Boolean isSubscribed = false;
 
     @ManyToMany()
     @JoinTable(

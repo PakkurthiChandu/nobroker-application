@@ -7,6 +7,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.noBroker.nobroker_application_project.repository.PropertyRepository;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +40,7 @@ public class PropertyService {
                 .orElseThrow(() -> new IllegalArgumentException("No property found with id: " + id));
     }
 
-    public void saveImage(Property dbProperty, MultipartFile[] propertyImages) {
+    public void saveImage(Property property, MultipartFile[] propertyImages, HttpSession session) {
         for (MultipartFile multipartFile : propertyImages) {
             if (multipartFile == null || multipartFile.isEmpty()) {
                 continue;
@@ -55,14 +56,16 @@ public class PropertyService {
 
                 Image image = new Image();
                 image.setImageUrl(imageUrl);
-                image.setProperty(dbProperty);
-                dbProperty.getPhotos().add(image);
+                image.setProperty(property);
+                property.getPhotos().add(image);
             } catch (IOException e) {
                 throw new RuntimeException("Image upload failed", e);
             }
         }
 
-        propertyRepository.save(dbProperty);
+        property.setOwner((User) session.getAttribute("user"));
+
+        propertyRepository.save(property);
     }
 
     public List<Property> getAllProperties(boolean isSale, String city, String keyword,

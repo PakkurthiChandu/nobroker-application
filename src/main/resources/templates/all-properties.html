@@ -691,7 +691,10 @@
 
                         <!-- Row C: Buttons -->
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-                            <a href="#" style="padding:10px 16px; background:orangered; color:white; text-decoration:none; border-radius:6px; font-size:14px; font-weight:500;">Get Owner Details</a>
+                            <a th:href="@{/checkSubscribe(propertyId=${property.propertyId})}"
+                               style="padding:10px 16px; background:orangered; color:white; text-decoration:none; border-radius:6px; font-size:14px; font-weight:500;">
+                                Get Owner Details
+                            </a>
                             <div style="display:flex; gap:12px; align-items:center;">
                                 <!-- Updated Heart Button with Bookmark Functionality -->
                                 <button
