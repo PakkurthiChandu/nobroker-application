@@ -116,6 +116,7 @@ public class PropertyController {
         rentalDto.setParking(property.getParking());
         rentalDto.setDescription(property.getDescription());
         rentalDto.setPrice(property.getPrice());
+        rentalDto.setPropertyStatus(property.getPropertyStatus());
 
         theModel.addAttribute("property", property);
         theModel.addAttribute("rentalDto", rentalDto);
@@ -144,6 +145,7 @@ public class PropertyController {
         property.setParking(rentalDto.getParking());
         property.setDescription(rentalDto.getDescription());
         property.setPrice(rentalDto.getPrice());
+        property.setPropertyStatus(rentalDto.getPropertyStatus());
 
         session.setAttribute("property", property);
 
@@ -290,6 +292,7 @@ public class PropertyController {
         rentalDto.setParking(property.getParking());
         rentalDto.setDescription(property.getDescription());
         rentalDto.setPrice(property.getPrice());
+        rentalDto.setPropertyStatus(property.getPropertyStatus());
 
         theModel.addAttribute("rentalDto", rentalDto);
         theModel.addAttribute("editMode", true);
@@ -315,6 +318,8 @@ public class PropertyController {
         property.setFurnishing(rentalDto.getFurnishing());
         property.setParking(rentalDto.getParking());
         property.setDescription(rentalDto.getDescription());
+        property.setPropertyStatus(rentalDto.getPropertyStatus());
+        property.setPrice(rentalDto.getPrice());
 
         session.setAttribute("property", property);
 
@@ -383,6 +388,8 @@ public class PropertyController {
     public String getLandingPage(Model model) {
         return "landing-page";
     }
+
+//    ---------------------Get All Properties---------------------------------
 
     @GetMapping("/getProperties")
     public String getPropertyDetails(

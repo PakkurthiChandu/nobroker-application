@@ -26,4 +26,5 @@ public class RentalDto {
     private String furnishing;
     private String parking;
     private String description;
+    private String propertyStatus;
 }

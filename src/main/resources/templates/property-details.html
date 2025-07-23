@@ -549,9 +549,9 @@
                     </div>
                     <div class="form-group half-width">
                         <label>Property Status<span class="required">*</span></label>
-                        <select name="propertyStatus" required>
-                            <option disabled selected>Select</option>
-                            <option value="Under Construction">Under Construction </option>
+                        <select th:field="*{propertyStatus}" required>
+                            <option value="" selected>Select</option>
+                            <option value="Under Construction">Under Construction</option>
                             <option value="Ready">Ready</option>
                         </select>
                     </div>
