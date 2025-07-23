@@ -6,6 +6,7 @@ import com.noBroker.nobroker_application_project.repository.PropertyRepository;
 import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 import com.noBroker.nobroker_application_project.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,10 +34,16 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/view/{userId}")
-    public String viewProfile(@PathVariable("userId") Long userId, Model model) {
+    public String viewProfile(@PathVariable("userId") Long userId,
+                              HttpSession session,
+                              Model model) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
         model.addAttribute("user", user);
+
+        session.setAttribute("user", user);
+
         return "edit-profile-details";
     }
 
@@ -55,12 +62,19 @@ public class ProfileController {
 
 
     @GetMapping("/shortlisted-properties/{userId}")
-    public String showShortlisted(@PathVariable("userId") Long userId, Model model) {
+    public String showShortlisted(@PathVariable("userId") Long userId,
+                                  HttpSession session,
+                                  Model model) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         Set<Property> properties = propertyService.getBookmarkedPropertyDTOs(userId);
-        User user = userRepository.findById(userId).orElse(null);
 
         model.addAttribute("user", user);
         model.addAttribute("allProperties", properties);
+
+        session.setAttribute("user", user);
+
         return "shortlist";
     }
 
