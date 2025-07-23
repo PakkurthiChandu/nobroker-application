@@ -27,7 +27,7 @@ public class UserAuthenController {
 
         User user = userRepository.findByEmail(email).orElse(null);
 
-        System.out.println("coming google");
+        System.out.println("in google autho");
 
         if (user != null) {
             session.setAttribute("user", user);

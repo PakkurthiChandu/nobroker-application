@@ -22,21 +22,21 @@
 
       <div class="profile">
 
-<!--        <div class="profile-name">-->
-<!--          <div sec:authorize="!isAuthenticated()">-->
-<!--            <a th:href="@{/login}"><button>Sign up/Login</button></a>-->
-<!--          </div>-->
-<!--          <div sec:authorize="isAuthenticated()">-->
-<!--            <span th:text="${#authentication.name}">Username</span>-->
-<!--          </div>-->
-<!--        </div>-->
+        <div class="profile-name" style="display: flex; align-items: center;">
+          <img src="https://assets.nobroker.in/nb-new/public/MaterialIcons/accountCircle.svg" alt="" class="h-3.5p w-3.5p mx-0.5p border-1 border-gray-lightest text-gray-lightest mr-0.3p rounded-full">
+          <div sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}"><button>Sign up/Login</button></a>
+          </div>
+          <div sec:authorize="isAuthenticated()">
+            <span th:text="${session.user != null ? session.user.name : 'User'}" >Username</span>
+          </div>
+        </div>
 
       </div>
 
       <button class="menu-icon"> Home</button>
     </div>
   </div>
-
 
   <!-- Move CSS styles here or link to a common stylesheet -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
