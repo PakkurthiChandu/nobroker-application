@@ -23,21 +23,24 @@
     <div class="header-right">
       <button class="btn-filled" onclick="window.location.href='/'">Post Your Property</button>
 
-      <div class="profile">
+      <div class="profile" style="display: flex; align-items: center;">
+        <img src="https://assets.nobroker.in/nb-new/public/MaterialIcons/accountCircle.svg" alt="" class="h-3.5p w-3.5p mx-0.5p border-1 border-gray-lightest text-gray-lightest mr-0.3p rounded-full">
 
-        <div class="profile-name" style="display: flex; align-items: center;">
-          <img src="https://assets.nobroker.in/nb-new/public/MaterialIcons/accountCircle.svg" alt="" class="h-3.5p w-3.5p mx-0.5p border-1 border-gray-lightest text-gray-lightest mr-0.3p rounded-full">
-          <div sec:authorize="!isAuthenticated()">
-            <a th:href="@{/login}"><button>Sign up/Login</button></a>
-          </div>
-          <div sec:authorize="isAuthenticated()">
-            <span th:text="${session.user != null ? session.user.name : 'User'}" >Username</span>
-          </div>
+        <!-- If NOT logged in -->
+        <div sec:authorize="!isAuthenticated()">
+          <a th:href="@{/login}">
+            <button style="background: none; border: none; color: black; cursor: pointer;">Sign up | Login</button>
+          </a>
+        </div>
+
+        <!-- If logged in -->
+        <div sec:authorize="isAuthenticated()">
+          <span th:text="${session.user != null ? session.user.name : 'User'}"></span>
         </div>
 
       </div>
 
-      <button class="menu-icon"> Home</button>
+
     </div>
   </div>
 
@@ -50,6 +53,13 @@
       justify-content: space-between;
       padding: 10px 20px;
       border-bottom: 1px solid #ddd;
+      text-decoration: none;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      text-decoration: none
     }
     .logo {
       width: auto;
@@ -70,6 +80,11 @@
       align-items: center;
       gap: 8px;
     }
+    .logo a {
+      text-decoration: none;
+      color: inherit;
+    }
+
     .logo-icon {
       width: 32px;
       height: 32px;

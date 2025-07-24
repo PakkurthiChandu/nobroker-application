@@ -399,18 +399,29 @@ public class PropertyController {
             @RequestParam(required = false) List<String> propertyType,
             @RequestParam(required = false) List<String> parking,
             @RequestParam(required = false) Integer propertyAge,
+            @RequestParam(required = false) Double minBuiltUpArea,
+            @RequestParam(required = false) Double maxBuiltUpArea,
+            @RequestParam(required = false, defaultValue = "0") Long minRent,
+            @RequestParam(required = false, defaultValue = "500000") Long maxRent,
             @RequestParam(value = "sortBy", required = false) String sortBy,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
             Model model,
             HttpSession session) {
         boolean isSale = "buy".equalsIgnoreCase(isSaleStr);
+        System.out.println("Received minRent: " + minRent + ", maxRent: " + maxRent);
 
         User user = (User)session.getAttribute("user");
 
         Page<Property> propertyPage = propertyService.getAllProperties(
                 isSale, city, searchKeyword, bhkType, propertyStatus, furnishing,
-                propertyType, parking, propertyAge, sortBy, page, size);
+                propertyType, parking, propertyAge,minBuiltUpArea,maxBuiltUpArea, minRent, maxRent,sortBy, page, size);
+
+        propertyPage.getContent().forEach(property ->
+                System.out.println("Property ID: " + property.getPropertyId() + ", Rent: " + property.getExpectedRent()));
+
+        propertyPage.getContent().forEach(property ->
+                System.out.println("Property ID: " + property.getPropertyId() + ", area: " + property.getBuiltUpArea()));
 
         List<Long> bookmarkedIds = user.getBookmarkedProperties().stream()
                 .map(Property::getPropertyId)
@@ -433,6 +444,10 @@ public class PropertyController {
         model.addAttribute("propertyAge", propertyAge);
         model.addAttribute("propertyStatus", propertyStatus);
         model.addAttribute("sortBy", sortBy);
+        model.addAttribute("minBuiltUpArea", minBuiltUpArea);
+        model.addAttribute("maxBuiltUpArea", maxBuiltUpArea);
+        model.addAttribute("minRent", minRent);
+        model.addAttribute("maxRent", maxRent);
 
         return "all-properties";
     }
@@ -448,6 +463,10 @@ public class PropertyController {
             @RequestParam(required = false) List<String> propertyType,
             @RequestParam(required = false) List<String> parking,
             @RequestParam(required = false) Integer propertyAge,
+            @RequestParam(required = false) Double minBuiltUpArea,
+            @RequestParam(required = false) Double maxBuiltUpArea,
+            @RequestParam(required = false) Long minRent,
+            @RequestParam(required = false) Long maxRent,
             @RequestParam(value = "sortBy", required = false) String sortBy,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
@@ -457,14 +476,13 @@ public class PropertyController {
 
         Page<Property> propertyPage = propertyService.getAllProperties(
                 isSale, city, searchKeyword, bhkType, propertyStatus, furnishing,
-                propertyType, parking, propertyAge, sortBy, page, size);
+                propertyType, parking, propertyAge,minBuiltUpArea,maxBuiltUpArea,minRent, maxRent, sortBy, page, size);
 
         model.addAttribute("allProperties", propertyPage.getContent());
         model.addAttribute("hasNext", propertyPage.hasNext());
 
         return "fragments/postSection :: postSection";
     }
-
 
     @GetMapping("/viewProperty/{id}")
     public String viewProperty(@PathVariable Long id, Model model) {

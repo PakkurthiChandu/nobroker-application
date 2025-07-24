@@ -267,6 +267,64 @@
             background: #f9f9f9;
         }
 
+        /* Custom styles for range input thumbs */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            border-radius: 50%;
+            cursor: pointer;
+            pointer-events: all;
+            z-index: 4;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            border-radius: 50%;
+            cursor: pointer;
+            pointer-events: all;
+            z-index: 4;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="range"]::-ms-thumb {
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            border-radius: 50%;
+            cursor: pointer;
+            pointer-events: all;
+            z-index: 4;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Ensure the track doesn't interfere with thumb interaction */
+        input[type="range"] {
+            pointer-events: none; /* Disable pointer events on the track */
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            pointer-events: all; /* Enable pointer events on the thumb */
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            pointer-events: all; /* Enable pointer events on the thumb */
+        }
+
+        input[type="range"]::-ms-thumb {
+            pointer-events: all; /* Enable pointer events on the thumb */
+        }
+
+
+
         .properties-header {
             display: flex;
             justify-content: space-between;
@@ -351,6 +409,8 @@
     <div th:replace="~{fragments/header :: header}"></div>
 </header>
 
+<input type="hidden" id="currentUserId" th:value="${#authentication.principal.userId}" />
+
 <div class="content" style="margin-top: 50px">
     <div class="sidebar">
         <div class="filter-tabs">
@@ -393,6 +453,52 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Rent Range Filter -->
+                <!-- Rent Range Filter -->
+                <div class="filter-section">
+                    <h4>Rent Range: ₹<span id="minDisplay">0</span> to ₹<span id="maxDisplay">5,00,000</span></h4>
+
+                    <div style="position: relative; height: 60px; margin: 20px 0;">
+                        <!-- Background track -->
+                        <div style="position: absolute; width: 100%; height: 6px; background: #ddd; border-radius: 3px; top: 27px; z-index: 0;"></div>
+
+                        <!-- Active range highlight -->
+                        <div id="sliderTrack" style="position: absolute; height: 6px; background: #007bff; border-radius: 3px; top: 27px; z-index: 1;"></div>
+
+                        <!-- Min slider -->
+                        <input type="range"
+                               id="minRentSlider"
+                               name="minRent"
+                               min="0"
+                               max="500000"
+                               step="1000"
+                               value="0"
+                               oninput="syncRentRange()"
+                               style="position: absolute; width: 100%; height: 60px; background: transparent; outline: none; border: none; -webkit-appearance: none; appearance: none; pointer-events: none; z-index: 3;" />
+
+                        <!-- Max slider -->
+                        <input type="range"
+                               id="maxRentSlider"
+                               name="maxRent"
+                               min="0"
+                               max="500000"
+                               step="1000"
+                               value="500000"
+                               oninput="syncRentRange()"
+                               style="position: absolute; width: 100%; height: 60px; background: transparent; outline: none; border: none; -webkit-appearance: none; appearance: none; pointer-events: none; z-index: 2;" />
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 14px; color: #666;">
+                        <span>Min: ₹<span id="minValue">0</span></span>
+                        <span>Max: ₹<span id="maxValue">5,00,000</span></span>
+                    </div>
+                </div>
+
+
+
+
+
 
                 <!-- Availability -->
                 <h4>Property Status</h4>
@@ -511,6 +617,41 @@
                         </label>
                     </div>
                 </div>
+
+                <div class="filter-section">
+                    <h4>Built Up Area (sq. ft.): <span id="minAreaDisplay">0</span> to <span id="maxAreaDisplay">10,000</span></h4>
+                    <div style="position: relative; height: 60px; margin: 20px 0;">
+                        <!-- Background track -->
+                        <div style="position: absolute; width: 100%; height: 6px; background: #ddd; border-radius: 3px; top: 27px; z-index: 0;"></div>
+                        <!-- Active range highlight -->
+                        <div id="areaTrack" style="position: absolute; height: 6px; background: #007bff; border-radius: 3px; top: 27px; z-index: 1;"></div>
+                        <!-- Min slider -->
+                        <input type="range"
+                               id="minAreaSlider"
+                               name="minBuiltUpArea"
+                               min="0"
+                               max="10000"
+                               step="100"
+                               value="0"
+                               oninput="syncAreaRange()"
+                               style="position: absolute; width: 100%; height: 60px; background: transparent; outline: none; border: none; -webkit-appearance: none; appearance: none; pointer-events: none; z-index: 3;" />
+                        <!-- Max slider -->
+                        <input type="range"
+                               id="maxAreaSlider"
+                               name="maxBuiltUpArea"
+                               min="0"
+                               max="10000"
+                               step="100"
+                               value="10000"
+                               oninput="syncAreaRange()"
+                               style="position: absolute; width: 100%; height: 60px; background: transparent; outline: none; border: none; -webkit-appearance: none; appearance: none; pointer-events: none; z-index: 2;" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 14px; color: #666;">
+                        <span>Min: <span id="minAreaValue">0</span></span>
+                        <span>Max: <span id="maxAreaValue">10,000</span></span>
+                    </div>
+                </div>
+
 
                 <!-- Parking -->
                 <div class="filter-section">
@@ -780,7 +921,6 @@
         if (filterType === 'premium' || propertyAge || parking) {
             switchTab('premium');
         } else {
-            // Default to basic filters
             switchTab('basic');
         }
 
@@ -796,6 +936,78 @@
             });
         }
     });
+
+
+
+    function syncRentRange() {
+        const minSlider = document.getElementById("minRentSlider");
+        const maxSlider = document.getElementById("maxRentSlider");
+        let minValue = parseInt(minSlider.value);
+        let maxValue = parseInt(maxSlider.value);
+
+        // Prevent sliders from crossing
+        if (minValue > maxValue - 1000) {
+            minValue = maxValue - 1000;
+            minSlider.value = minValue;
+        } else if (maxValue < minValue + 1000) {
+            maxValue = minValue + 1000;
+            maxSlider.value = maxValue;
+        }
+
+        // Update UI display
+        document.getElementById("minDisplay").textContent = minValue.toLocaleString();
+        document.getElementById("maxDisplay").textContent = maxValue.toLocaleString();
+        document.getElementById("minValue").textContent = minValue.toLocaleString();
+        document.getElementById("maxValue").textContent = maxValue.toLocaleString();
+
+        // Update slider track
+        const sliderTrack = document.getElementById("sliderTrack");
+        const minPercent = (minValue / 500000) * 100;
+        const maxPercent = (maxValue / 500000) * 100;
+        sliderTrack.style.left = minPercent + '%';
+        sliderTrack.style.width = (maxPercent - minPercent) + '%';
+
+        // Trigger form submission or AJAX request
+        submitFilters();
+    }
+
+    function syncAreaRange() {
+        const minSlider = document.getElementById("minAreaSlider");
+        const maxSlider = document.getElementById("maxAreaSlider");
+        let minValue = parseInt(minSlider.value);
+        let maxValue = parseInt(maxSlider.value);
+
+        if (minValue > maxValue - 100) {
+            minValue = maxValue - 100;
+            minSlider.value = minValue;
+        } else if (maxValue < minValue + 100) {
+            maxValue = minValue + 100;
+            maxSlider.value = maxValue;
+        }
+
+        // Update UI display
+        document.getElementById("minAreaDisplay").textContent = minValue.toLocaleString();
+        document.getElementById("maxAreaDisplay").textContent = maxValue.toLocaleString();
+        document.getElementById("minAreaValue").textContent = minValue.toLocaleString();
+        document.getElementById("maxAreaValue").textContent = maxValue.toLocaleString();
+
+        // Update slider track
+        const sliderTrack = document.getElementById("areaTrack");
+        const minPercent = (minValue / 10000) * 100;
+        const maxPercent = (maxValue / 10000) * 100;
+        sliderTrack.style.left = minPercent + '%';
+        sliderTrack.style.width = (maxPercent - minPercent) + '%';
+
+        // Trigger form submission or AJAX request
+        submitFilters();
+    }
+
+    // Function to submit filters (implement based on your form submission logic)
+    // function submitFilters() {
+    //     document.querySelector('form').submit();
+    // }
+
+
 </script>
 
 <script>

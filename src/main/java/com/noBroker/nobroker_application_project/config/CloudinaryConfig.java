@@ -34,10 +34,4 @@ public class CloudinaryConfig {
                 "api_secret", apiSecret
         ));
     }
-
-
-
-
-
-
 }

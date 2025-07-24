@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Controller
@@ -59,7 +58,6 @@ public class MessageController {
     public String verifyOtp(@RequestParam String mobilePhone,
                             @RequestParam String otp,
                             Model model, HttpServletRequest request) {
-//        String storedOtp = otpStore.get(mobilePhone); // imp
 
         User user = null;
 

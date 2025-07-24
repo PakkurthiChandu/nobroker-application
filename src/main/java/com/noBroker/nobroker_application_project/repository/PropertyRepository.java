@@ -32,7 +32,11 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             "AND (:parking IS NULL OR p.parking IN :parking) " +
             "AND (:apartmentType IS NULL OR p.apartmentType IN :apartmentType) " +
             "AND (:propertyAge IS NULL OR p.propertyAge <= :propertyAge) " +
-            "AND (:propertyStatus IS NULL OR :propertyStatus = '' OR p.propertyStatus = :propertyStatus)")
+            "AND (:propertyStatus IS NULL OR :propertyStatus = '' OR p.propertyStatus = :propertyStatus) " +
+            "AND (:minBuiltUpArea IS NULL OR p.builtUpArea >= :minBuiltUpArea) " +
+            "AND (:maxBuiltUpArea IS NULL OR p.builtUpArea <= :maxBuiltUpArea)"  +
+            "AND (:minRent IS NULL OR p.expectedRent >= :minRent) " +
+            "AND (:maxRent IS NULL OR p.expectedRent <= :maxRent)")
     Page<Property> searchProperties(
             @Param("isSale") boolean isSale,
             @Param("city") String city,
@@ -43,6 +47,10 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             @Param("apartmentType") List<String> apartmentType,
             @Param("propertyAge") Integer propertyAge,
             @Param("propertyStatus") String propertyStatus,
+            @Param("minBuiltUpArea") Double minBuiltUpArea,
+            @Param("maxBuiltUpArea") Double maxBuiltUpArea,
+            @Param("minRent") Long minRent,
+            @Param("maxRent") Long maxRent,
             Pageable pageable);
 
     @Query("SELECT p FROM Property p JOIN FETCH p.address a WHERE p.propertyId = :propertyId")

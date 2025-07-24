@@ -70,45 +70,20 @@ public class PropertyService {
         propertyRepository.save(property);
     }
 
-//    public List<Property> getAllProperties(boolean isSale, String city, String keyword,
-//                                           List<Integer> bhkType,
-//                                           String propertyStatus,
-//                                           List<String> furnishing,
-//                                           List<String> propertyType,
-//                                           List<String> parking,
-//                                           Integer propertyAge,
-//                                           String sortBy) {
-//        keyword = (keyword == null || keyword.trim().isEmpty()) ? "" : keyword;
-//
-//        Sort sort =  Sort.by(Sort.Direction.DESC, "createdAt");
-//
-//        if(sortBy != null) {
-//            switch (sortBy) {
-//                case "oldest": sort = Sort.by(Sort.Direction.ASC, "createdAt");
-//                    break;
-//                case "priceHighLow": sort = Sort.by(Sort.Direction.DESC, "price");
-//                    break;
-//                case "priceLowHigh": sort = Sort.by(Sort.Direction.ASC, "price");
-//                    break;
-//            }
-//        }
-//
-//        Pageable pageable = PageRequest.of(0, 5, sort);
-//
-//        return propertyRepository.searchProperties(isSale, city, keyword.toLowerCase(), bhkType, furnishing, parking, propertyType,
-//                propertyAge, propertyStatus, pageable);
-//    }
-
     public Page<Property> getAllProperties(boolean isSale, String city, String keyword,
-                                                    List<Integer> bhkType,
-                                                    String propertyStatus,
-                                                    List<String> furnishing,
-                                                    List<String> propertyType,
-                                                    List<String> parking,
-                                                    Integer propertyAge,
-                                                    String sortBy,
-                                                    int page,
-                                                    int size) {
+                                           List<Integer> bhkType,
+                                           String propertyStatus,
+                                           List<String> furnishing,
+                                           List<String> propertyType,
+                                           List<String> parking,
+                                           Integer propertyAge,
+                                           Double minBuiltUpArea,
+                                           Double maxBuiltUpArea,
+                                           Long minRent,
+                                           Long maxRent,
+                                           String sortBy,
+                                           int page,
+                                           int size) {
 
         keyword = (keyword == null || keyword.trim().isEmpty()) ? "" : keyword;
 
@@ -132,7 +107,7 @@ public class PropertyService {
 
         return propertyRepository.searchProperties(
                 isSale, city, keyword.toLowerCase(), bhkType, furnishing, parking, propertyType,
-                propertyAge, propertyStatus, pageable
+                propertyAge, propertyStatus,minBuiltUpArea,maxBuiltUpArea,minRent, maxRent, pageable
         );
     }
 
