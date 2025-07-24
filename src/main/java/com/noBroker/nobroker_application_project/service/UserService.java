@@ -1,5 +1,6 @@
 package com.noBroker.nobroker_application_project.service;
 
+import com.noBroker.nobroker_application_project.model.Property;
 import com.noBroker.nobroker_application_project.model.User;
 import com.noBroker.nobroker_application_project.repository.UserRepository;
 
@@ -33,5 +34,9 @@ public class UserService {
 
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    public User findByEmail(String email) {
+        return  userRepository.findByEmail(email).orElse(null);
     }
 }

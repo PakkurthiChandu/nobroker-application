@@ -60,7 +60,6 @@ public class ProfileController {
         return "redirect:/profile/view/" + user.getUserId();
     }
 
-
     @GetMapping("/shortlisted-properties/{userId}")
     public String showShortlisted(@PathVariable("userId") Long userId,
                                   HttpSession session,

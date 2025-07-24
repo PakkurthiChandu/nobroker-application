@@ -10,6 +10,7 @@ import com.noBroker.nobroker_application_project.model.Amenity;
 import com.noBroker.nobroker_application_project.model.Property;
 
 import com.noBroker.nobroker_application_project.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -25,9 +26,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class PropertyController {
@@ -399,12 +402,21 @@ public class PropertyController {
             @RequestParam(value = "sortBy", required = false) String sortBy,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int size,
-            Model model) {
+            Model model,
+            HttpSession session) {
         boolean isSale = "buy".equalsIgnoreCase(isSaleStr);
+
+        User user = (User)session.getAttribute("user");
 
         Page<Property> propertyPage = propertyService.getAllProperties(
                 isSale, city, searchKeyword, bhkType, propertyStatus, furnishing,
                 propertyType, parking, propertyAge, sortBy, page, size);
+
+        List<Long> bookmarkedIds = user.getBookmarkedProperties().stream()
+                .map(Property::getPropertyId)
+                .collect(Collectors.toList());
+
+        model.addAttribute("bookmarkedProperties", bookmarkedIds);
 
         model.addAttribute("allProperties", propertyPage.getContent());
         model.addAttribute("currentPage", propertyPage.getNumber());
@@ -448,7 +460,7 @@ public class PropertyController {
                 propertyType, parking, propertyAge, sortBy, page, size);
 
         model.addAttribute("allProperties", propertyPage.getContent());
-        model.addAttribute("hasNext", propertyPage.hasNext()); // Add hasNext flag
+        model.addAttribute("hasNext", propertyPage.hasNext());
 
         return "fragments/postSection :: postSection";
     }
@@ -470,7 +482,6 @@ public class PropertyController {
         return "custom-login";
     }
 
-
     @GetMapping("/logout")
     public String logoutPage() {
         return "logout";
@@ -487,27 +498,25 @@ public class PropertyController {
     }
 
 //    ----------------------------------------------------------------------------------------------------------------
-    @PostMapping("/toggle/{propertyId}")
+
+    @PostMapping("/toggleBookmark/{propertyId}")
     @ResponseBody
-    public Map<String, Object> toggleBookmark(@PathVariable Long propertyId, OAuth2AuthenticationToken token) {
-        String email = token.getPrincipal().getAttribute("email");
-        User user = userService.getUserByEmail(email);
-        Property property = propertyService.getPropertyById(propertyId);
+    public Map<String, Object> toggleBookmark(@PathVariable Long propertyId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
 
-        boolean isBookmarked = user.getBookmarkedProperties().contains(property);
-
-        if (isBookmarked) {
-            user.getBookmarkedProperties().remove(property);
-        } else {
-            user.getBookmarkedProperties().add(property);
-        }
-
-        userService.saveUser(user);
+        boolean bookmarked = propertyService.saveBookMarks(propertyId, user);
 
         return Map.of(
                 "success", true,
-                "bookmarked", !isBookmarked,
-                "propertyId", propertyId
+                "bookmarked", bookmarked
         );
+    }
+
+    @PostMapping("/removeBookMarks/{userId}/{propertyId}")
+    public String removeBookMarka(@PathVariable("userId") Long userId, @PathVariable("propertyId") Long propertyId,HttpSession session) {
+
+        propertyService.removeBookmarks(propertyId, userId);
+
+        return "redirect:/shortlisted-properties/"+userId;
     }
 }

@@ -8,6 +8,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.noBroker.nobroker_application_project.repository.PropertyRepository;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -135,7 +136,6 @@ public class PropertyService {
         );
     }
 
-
     public Set<Property> getBookmarkedPropertyDTOs(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -149,5 +149,30 @@ public class PropertyService {
                         new RuntimeException("No property found with id: " + propertyId));
 
         propertyRepository.delete(property);
+    }
+    public boolean saveBookMarks(Long propertyId, User user) {
+        Property property = propertyRepository.findById(propertyId).orElse(null);
+        user = userRepository.findByEmail(user.getEmail()).orElse(null);
+
+        if(user != null && property != null) {
+            user.getBookmarkedProperties().add(property);
+            property.getBookmarkedByUsers().add(user);
+
+            userRepository.save(user);
+        }
+
+        return true;
+    }
+
+    public void removeBookmarks(Long propertyId, Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        Property property = propertyRepository.findById(propertyId).orElse(null);
+
+        if(user != null && property != null) {
+            user.getBookmarkedProperties().remove(property);
+            property.getBookmarkedByUsers().remove(user);
+        }
+
+        userRepository.save(user);
     }
 }

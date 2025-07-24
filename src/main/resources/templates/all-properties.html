@@ -373,6 +373,17 @@
                     <span class="premium-badge">NEW</span>
                 </div>
             </div>
+<div class="content" style="margin-top: 50px">
+    <div class="sidebar">
+        <div class="filter-tabs">
+            <div class="filter-tab active" onclick="switchTab('basic')">
+                Filters
+            </div>
+            <div class="filter-tab" onclick="checkSubscriptionAndRedirect(event)">
+                Premium Filters
+                <span class="premium-badge">NEW</span>
+            </div>
+        </div>
 
             <!-- Basic Filters -->
             <div id="basic-filters" class="filter-content">
@@ -477,24 +488,22 @@
                 </form>
             </div>
 
-            <!-- Premium Filters -->
-            <div id="premium-filters" class="filter-content premium-filter-content">
-                <form method="get" action="/getProperties">
-                    <input type="hidden" name="type" th:value="${isSale}" />
-                    <input type="hidden" name="city" th:value="${city}" />
-                    <input type="hidden" name="query" th:value="${searchKeyword}" />
 
-                    <!-- Furnishing -->
+        <div id="premium-filters" class="filter-content premium-filter-content"
+             onclick="checkSubscriptionAndRedirect(event)">
+            <form id="premium-filter-form" method="get" action="/getProperties">
+                <input type="hidden" name="type" th:value="${isSale}" />
+                <input type="hidden" name="city" th:value="${city}" />
+                <input type="hidden" name="query" th:value="${searchKeyword}" />
 
-                    <!-- Property Age -->
-                    <div class="filter-section">
-                        <h4>Property Age</h4>
-                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                            <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                                <input type="radio" name="propertyAge" value="1"
-                                       th:checked="${propertyAge != null and propertyAge == 1}" />
-                                <span style="margin-left: 5px; white-space: nowrap;">&lt; 1 year</span>
-                            </label>
+                <div class="filter-section">
+                    <h4>Property Age</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                            <input type="radio" name="propertyAge" value="1"
+                                   th:checked="${propertyAge != null and propertyAge == 1}" />
+                            <span style="margin-left: 5px; white-space: nowrap;">&lt; 1 year</span>
+                        </label>
 
                             <label style="flex: 1 1 30%; display: flex; align-items: center;">
                                 <input type="radio" name="propertyAge" value="2"
@@ -606,118 +615,207 @@
     </div>
     </body>
 
-    <script>
-        let page = [[${currentPage}]];
-        let loading = false;
-        let hasMore = [[${totalPages > currentPage + 1}]];
+<script>
+    // static/js/bookmark.js
+    function toggleBookmark(button) {
+        const propertyId = button.getAttribute('data-property-id');
 
-        // Build the base URL with all filter parameters
-        const params = new URLSearchParams(window.location.search);
-        params.delete('page'); // Remove page param to append it dynamically
-        const baseURL = `/loadMorePosts?${params.toString()}`;
+        console.log("Bookmark clicked:", propertyId);
 
-        const observer = new IntersectionObserver(async (entries) => {
-            const entry = entries[0];
-            if (entry.isIntersecting && !loading && hasMore) {
-                loading = true;
-                page++;
+        fetch(`/toggleBookmark/${propertyId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => {
+                if (!res.ok) throw new Error("Network response was not ok");
+                return res.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    button.style.color = data.bookmarked ? 'red' : '#ccc';
+                } else {
+                    alert("Failed to update bookmark");
+                }
+            })
+            .catch(err => {
+                console.error("Bookmark error:", err);
+                alert("Something went wrong while bookmarking.");
+            });
+    }
 
-                try {
-                    const response = await fetch(`${baseURL}&page=${page}&size=5`);
-                    if (response.ok) {
-                        const html = await response.text();
-                        const tempDiv = document.createElement('div');
-                        tempDiv.innerHTML = html;
 
-                        const newPosts = tempDiv.querySelectorAll('.property-card');
-                        const container = document.getElementById('properties-container');
+    // Add this function to handle premium filter clicks
+    function checkSubscriptionAndRedirect(event) {
+        // Check if the click was on a form element (we don't want to intercept those)
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'BUTTON' || event.target.tagName === 'SELECT') {
+            return; // Let the normal form behavior happen
+        }
 
-                        if (newPosts.length === 0) {
-                            hasMore = false;
-                        } else {
-                            newPosts.forEach(post => container.appendChild(post));
-                        }
+        event.preventDefault();
 
-                        // Check if the response includes a new trigger point (indicating hasNext)
-                        const newTrigger = tempDiv.querySelector('#trigger-point');
-                        if (newTrigger) {
-                            container.appendChild(newTrigger);
-                            observer.observe(newTrigger);
-                        } else {
-                            hasMore = false;
-                        }
+        fetch("/subscribeOrNot")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.subscribed === true) {
+                    // If subscribed, switch to premium tab
+                    switchTab('premium');
+                } else {
+                    // If not subscribed, redirect to subscription page
+                    window.location.href = "/subscriptionForm";
+                }
+            })
+            .catch(error => {
+                console.error("Error checking subscription:", error);
+                alert("Something went wrong while checking subscription status.");
+            });
+    }
+
+    // Modify your premium filter form submission
+    document.getElementById('premium-filter-form')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        fetch("/subscribeOrNot")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.subscribed === true) {
+                    // If subscribed, submit the form
+                    this.submit();
+                } else {
+                    // If not subscribed, redirect to subscription page
+                    window.location.href = "/subscribe";
+                }
+            })
+            .catch(error => {
+                console.error("Error checking subscription:", error);
+                alert("Something went wrong while checking subscription status.");
+            });
+    });
+</script>
+
+<script>
+    let page = [[${currentPage}]];
+    let loading = false;
+    let hasMore = [[${totalPages > currentPage + 1}]];
+
+    // Build the base URL with all filter parameters
+    const params = new URLSearchParams(window.location.search);
+    params.delete('page'); // Remove page param to append it dynamically
+    const baseURL = `/loadMorePosts?${params.toString()}`;
+
+    const observer = new IntersectionObserver(async (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && !loading && hasMore) {
+            loading = true;
+            page++;
+
+            try {
+                const response = await fetch(`${baseURL}&page=${page}&size=5`);
+                if (response.ok) {
+                    const html = await response.text();
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+
+                    const newPosts = tempDiv.querySelectorAll('.property-card');
+                    const container = document.getElementById('properties-container');
+
+                    if (newPosts.length === 0) {
+                        hasMore = false;
+                    } else {
+                        newPosts.forEach(post => container.appendChild(post));
+                    }
+
+                    // Check if the response includes a new trigger point (indicating hasNext)
+                    const newTrigger = tempDiv.querySelector('#trigger-point');
+                    if (newTrigger) {
+                        container.appendChild(newTrigger);
+                        observer.observe(newTrigger);
                     } else {
                         hasMore = false;
                     }
-                } catch (error) {
-                    console.error('Error loading more posts:', error);
+                } else {
                     hasMore = false;
-                } finally {
-                    loading = false;
                 }
+            } catch (error) {
+                console.error('Error loading more posts:', error);
+                hasMore = false;
+            } finally {
+                loading = false;
             }
-        }, { threshold: 1.0 });
+        }
+    }, { threshold: 1.0 });
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const trigger = document.getElementById('trigger-point');
-            if (trigger && hasMore) {
-                observer.observe(trigger);
-            }
+    window.addEventListener('DOMContentLoaded', () => {
+        const trigger = document.getElementById('trigger-point');
+        if (trigger && hasMore) {
+            observer.observe(trigger);
+        }
+    });
+
+    // Get filter type from URL parameters to determine which tab should be active
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    // Filter tab switching functionality
+    function switchTab(tabType) {
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const basicFilters = document.getElementById('basic-filters');
+        const premiumFilters = document.getElementById('premium-filters');
+
+        // Remove active class from all tabs
+        filterTabs.forEach(tab => {
+            tab.classList.remove('active');
         });
 
-        // Get filter type from URL parameters to determine which tab should be active
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        if (tabType === 'basic') {
+            basicFilters.style.display = 'block';
+            premiumFilters.style.display = 'none';
+            filterTabs[0].classList.add('active');
+            premiumFilters.classList.remove('active');
+        } else if (tabType === 'premium') {
+            basicFilters.style.display = 'none';
+            premiumFilters.style.display = 'block';
+            filterTabs[1].classList.add('active');
+            premiumFilters.classList.add('active');
+        }
+    }
+
+    // Initialize page when DOM loads
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if premium filters were used (look for filterType parameter or premium-specific parameters)
+        const filterType = getUrlParameter('filterType');
+        const propertyAge = getUrlParameter('propertyAge');
+        const parking = getUrlParameter('parking');
+
+        // If premium filter was applied OR premium-specific parameters exist, show premium tab
+        if (filterType === 'premium' || propertyAge || parking) {
+            switchTab('premium');
+        } else {
+            // Default to basic filters
+            switchTab('basic');
         }
 
-        // Filter tab switching functionality
-        function switchTab(tabType) {
-            const filterTabs = document.querySelectorAll('.filter-tab');
-            const basicFilters = document.getElementById('basic-filters');
-            const premiumFilters = document.getElementById('premium-filters');
-
-            // Remove active class from all tabs
-            filterTabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-
-            if (tabType === 'basic') {
-                basicFilters.style.display = 'block';
-                premiumFilters.style.display = 'none';
-                filterTabs[0].classList.add('active');
-                premiumFilters.classList.remove('active');
-            } else if (tabType === 'premium') {
-                basicFilters.style.display = 'none';
-                premiumFilters.style.display = 'block';
-                filterTabs[1].classList.add('active');
-                premiumFilters.classList.add('active');
-            }
-        }
-
-        // Initialize page when DOM loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if premium filters were used (look for filterType parameter or premium-specific parameters)
-            const filterType = getUrlParameter('filterType');
-            const propertyAge = getUrlParameter('propertyAge');
-            const parking = getUrlParameter('parking');
-
-            // If premium filter was applied OR premium-specific parameters exist, show premium tab
-            if (filterType === 'premium' || propertyAge || parking) {
-                switchTab('premium');
-            } else {
-                // Default to basic filters
+        // Add event listeners to tabs
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        if (filterTabs.length >= 2) {
+            filterTabs[0].addEventListener('click', function() {
                 switchTab('basic');
-            }
-
-            // Add event listeners to tabs
-            const filterTabs = document.querySelectorAll('.filter-tab');
-            if (filterTabs.length >= 2) {
-                filterTabs[0].addEventListener('click', function() {
-                    switchTab('basic');
-                });
+            });
 
                 filterTabs[1].addEventListener('click', function() {
                     switchTab('premium');

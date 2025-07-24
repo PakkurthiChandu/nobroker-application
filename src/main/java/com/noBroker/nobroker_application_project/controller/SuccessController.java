@@ -1,6 +1,8 @@
 package com.noBroker.nobroker_application_project.controller;
 
+import com.noBroker.nobroker_application_project.model.Transaction;
 import com.noBroker.nobroker_application_project.model.User;
+import com.noBroker.nobroker_application_project.repository.TransactionRepository;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 import com.noBroker.nobroker_application_project.service.UserService;
 
@@ -15,10 +17,12 @@ public class SuccessController {
 
     UserService userService;
     PropertyService propertyService;
+    TransactionRepository transactionRepository;
 
-    public SuccessController(UserService userService, PropertyService propertyService) {
+    public SuccessController(UserService userService, PropertyService propertyService, TransactionRepository transactionRepository) {
         this.userService = userService;
         this.propertyService = propertyService;
+        this.transactionRepository = transactionRepository;
     }
 
     @GetMapping("/success")
@@ -26,11 +30,18 @@ public class SuccessController {
 
         User user = (User) session.getAttribute("user");
 
+        Transaction tx = new Transaction();
+        tx.setAmount(164900L);
+        tx.setPaymentStatus("SUCCESS");
+        tx.setUser(user);
+
+        transactionRepository.save(tx);
+
         user = userService.changeToSubscribe(user.getUserId());
 
         session.setAttribute("user", user);
 
-        return "success";
+        return "redirect:" + (String) session.getAttribute("tagetUrl").toString();
     }
 
     @GetMapping("/cancel")

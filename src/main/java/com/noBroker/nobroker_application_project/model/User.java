@@ -25,7 +25,7 @@ public class User {
     private String role;
     private Boolean isSubscribed = false;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_bookmarks",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -35,4 +35,7 @@ public class User {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Property> properties = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<Transaction> transactions = new HashSet<>();
 }
