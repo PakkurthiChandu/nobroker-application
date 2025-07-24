@@ -48,9 +48,12 @@
       border-bottom: 1px solid #ddd;
     }
     .logo {
-      width: 20px;
-      height: 20px; /* Slightly larger */
-      max-width: 20px;
+      display: flex;
+      align-items: center;
+    }
+      .logo-img {
+      height: 120px;
+      width: auto;
       object-fit: contain;
     }
 
@@ -61,11 +64,6 @@
       gap: 10px;
       min-width: 200px; /* Ensures enough space for logo */
     }
-    .logo-img {
-  height: 170px;
-  width: auto;
-  object-fit: contain;
-}
     .logo-icon {
       width: 32px;
       height: 32px;
