@@ -30,7 +30,7 @@ public class OpenRouterService {
                 Map.of("role", "system", "content",
                         "You are Natasha, an AI assistant for the NoBroker real estate website. " +
                                 "Answer only property-related questions. Keep answers short (2-3 lines), " +
-                                "and use bullet points with '•' symbol with new line. Do not greet, and avoid unnecessary info."),
+                                "and use bullet points with '•' symbol with new line, and avoid unnecessary info."),
                 Map.of("role", "user", "content", userMessage)));
 
 
