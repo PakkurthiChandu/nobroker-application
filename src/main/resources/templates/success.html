@@ -11,6 +11,30 @@
             padding: 0;
         }
 
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            z-index: 1000;
+            height: 60px;
+        }
+
+        .logo {
+            width: auto;
+            height: 30px;
+            max-width: 150px; /* Adjust as needed */
+            object-fit: contain; /* Prevents distortion */
+        }
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px; /* Ensures enough space for logo */
+        }
+
         .container {
             max-width: 600px;
             margin: 80px auto;
@@ -68,6 +92,9 @@
     </style>
 </head>
 <body>
+<header class="main-header">
+    <div th:replace="~{fragments/header :: header}"></div>
+</header>
 <div class="container">
     <div class="emoji">🎉</div>
     <h2>Owner Deails</h2>

@@ -1,16 +1,21 @@
 package com.noBroker.nobroker_application_project.controller;
 
 import com.noBroker.nobroker_application_project.model.Property;
+import com.noBroker.nobroker_application_project.model.Transaction;
 import com.noBroker.nobroker_application_project.model.User;
 import com.noBroker.nobroker_application_project.repository.PropertyRepository;
 import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.noBroker.nobroker_application_project.service.PropertyService;
+import com.noBroker.nobroker_application_project.service.TransactionService;
 import com.noBroker.nobroker_application_project.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 
 import java.util.Set;
 
@@ -26,6 +31,9 @@ public class ProfileController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TransactionService transactionService;
 
     public ProfileController(UserService userService, PropertyRepository propertyRepository) {
         this.userService = userService;
@@ -75,6 +83,21 @@ public class ProfileController {
         session.setAttribute("user", user);
 
         return "shortlist";
+    }
+
+    @GetMapping("/shortlisted-payments/{userId}")
+    public String showPayments(@PathVariable("userId") Long userId,
+                                  HttpSession session,
+                                  Model model) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Transaction> transactions = transactionService.getTransactionsByUserId(userId);
+        model.addAttribute("transactions", transactions);
+
+       model.addAttribute("user",user);
+
+        return "payments";
     }
 
     @GetMapping("/your-properties/{userId}")

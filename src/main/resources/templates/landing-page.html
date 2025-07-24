@@ -185,16 +185,6 @@
                 transition: all 0.3s ease;
             }
 
-            .feature-item:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            }
-
-            .feature-icon {
-                margin-right: 10px;
-                color: #20bf6b;
-                font-size: 18px;
-            }
 
             .search-section {
                 background: white;
@@ -406,14 +396,8 @@
                 transition: transform 0.3s ease;
             }
 
-            .service-card:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            }
 
-            .service-card:hover::before {
-                transform: scaleX(1);
-            }
+
 
             .service-icon {
                 width: 60px;
@@ -429,9 +413,6 @@
                 transition: all 0.3s ease;
             }
 
-            .service-card:hover .service-icon {
-                transform: scale(1.1);
-            }
 
             .service-title {
                 font-size: 16px;
@@ -526,12 +507,6 @@
                 border: 2px solid transparent;
             }
 
-            .why-feature-card:hover {
-                transform: translateY(-10px);
-                border-color: #ff4757;
-                box-shadow: 0 15px 35px rgba(255, 71, 87, 0.15);
-                background: white;
-            }
 
             .why-feature-icon {
                 margin: 0 auto 20px;
@@ -546,10 +521,7 @@
                 transition: all 0.3s ease;
             }
 
-            .why-feature-card:hover .why-feature-icon {
-                transform: scale(1.1);
-                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            }
+
 
             .why-feature-title {
                 font-size: 18px;
@@ -607,11 +579,7 @@
                 letter-spacing: 1px;
             }
 
-            .enquire-btn:hover {
-                background: linear-gradient(135deg, #ff3838, #ff2828);
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(255, 71, 87, 0.3);
-            }
+
 
             .builder-contact {
                 color: #20bf6b;
@@ -926,7 +894,7 @@
 
         <!-- Services Grid -->
         <div class="services-grid">
-            <div class="service-card" onclick="navigateToService('packers-movers')">
+            <div class="service-card">
                 <div class="service-badge">Lowest Price</div>
                 <div class="service-icon">
                     <i class="fas fa-box"></i>
@@ -934,7 +902,7 @@
                 <div class="service-title">Packers & Movers</div>
             </div>
 
-            <div class="service-card" onclick="navigateToService('pay-rent')">
+            <div class="service-card" >
                 <div class="service-badge">New Offers</div>
                 <div class="service-icon">
                     <i class="fas fa-credit-card"></i>
@@ -942,7 +910,7 @@
                 <div class="service-title">Pay rent</div>
             </div>
 
-            <div class="service-card" onclick="navigateToService('rental-agreement')">
+            <div class="service-card" >
                 <div class="service-badge">Flat 30% off</div>
                 <div class="service-icon">
                     <i class="fas fa-file-signature"></i>

@@ -564,7 +564,8 @@
         </div>
         <ul class="sidebar-menu">
             <li><a th:href="@{'/profile/view/' + ${user.userId}}">Basic Profile</a></li>
-            <li><a th:href="@{'/shortlisted-properties/' + ${user.userId}}">Your Shortlist</a></li>
+            <li ><a class="active" th:href="@{'/shortlisted-properties/' + ${user.userId}}">Your Shortlist</a></li>
+            <li><a th:href="@{'/shortlisted-payments/' + ${user.userId}}">Your Payments</a></li>
             <li><a th:href="@{'/your-properties/' + ${user.userId}}">Your Properties</a></li>
             <!-- need to change-->
             <li><a th:href="@{'/logout'}">Sign Out</a></li>
@@ -574,21 +575,9 @@
     <!-- Main Content -->
     <div class="main-content">
         <!-- Filter Tabs -->
-        <div class="filter-tabs">
-            <div class="filter-tab active">All</div>
-            <div class="filter-tab">Rent</div>
-            <div class="filter-tab">Sale</div>
-            <div class="filter-tab">Commercial-Rent</div>
-            <div class="filter-tab">Commercial-Sale</div>
-            <div class="filter-tab">PG/Hostel</div>
-            <div class="filter-tab">Flatmates</div>
-            <div class="filter-tab">Land/Plot</div>
-            <div class="filter-tab">Projects</div>
-        </div>
 
         <!-- Content Header -->
-        <div class="content-header">
-            <button class="compare-btn">Compare Properties</button>
+        <div class="content-header" style="margin-top: 20px;margin-right: 20px">
             <h2>Shortlisted Properties</h2>
             <div class="availability-status">
                 <span class="status-indicator"></span>
@@ -601,7 +590,7 @@
         <div th:each="property : ${allProperties}" style="margin-bottom:30px; border-bottom:1px solid #ddd; padding-bottom:20px;width: 70%;background-color: white">
             <a th:href="@{'/viewProperty/' + ${property.propertyId}}">
                 <h3 style="font-size:18px; font-weight:600; color:#333; margin:0 0 4px 0;"
-                    th:text="${property.bhkType + ' BHK Flat in ' + property.apartmentName + ' For ' + (property.isSale ? 'Sale' : 'Rent') + ' near ' + (property.address != null ? property.address.landmark : 'your location')}"
+                    th:text="${property.bhkType + ' BHK Flat in ' + property.apartmentName + ' For ' + (property.isSale ? 'Sale' : 'Rent') + ' near ' + (property.address != null ? property.address.landmark : 'your location')}">
                     Apartment Title
                 </h3>
             </a>
