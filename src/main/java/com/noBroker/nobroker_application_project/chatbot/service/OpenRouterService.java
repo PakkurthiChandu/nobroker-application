@@ -27,6 +27,10 @@ public class OpenRouterService {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", "mistralai/mistral-7b-instruct:free");
         requestBody.put("messages", List.of(
+                Map.of("role", "system", "content",
+                        "You are Natasha, an AI assistant for the NoBroker real estate website. " +
+                                "Answer only property-related questions. Keep answers short (2-3 lines), " +
+                                "and use bullet points with '•' symbol with new line. Do not greet, and avoid unnecessary info."),
                 Map.of("role", "user", "content", userMessage)));
 
 
