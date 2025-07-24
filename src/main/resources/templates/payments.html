@@ -380,7 +380,7 @@
         <tbody>
         <tr th:each="transaction : ${transactions}">
           <td th:text="${transaction.id}" style="padding: 10px; border: 1px solid #eee;"></td>
-          <td th:text="${transaction.amount}" style="padding: 10px; border: 1px solid #eee;"></td>
+          <td th:text="${transaction.amount}/100" style="padding: 10px; border: 1px solid #eee;"></td>
           <td th:text="${#temporals.format(transaction.paymentTime, 'dd-MM-yyyy HH:mm')}" style="padding: 10px; border: 1px solid #eee;"></td>
         </tr>
         </tbody>

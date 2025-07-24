@@ -420,7 +420,8 @@
         <div th:each="property : ${properties}" style="margin-bottom:30px; border-bottom:1px solid #ddd; padding-bottom:20px;width: 70%;background-color: white">
             <a th:href="@{'/viewProperty/' + ${property.propertyId}}">
                 <h3 style="font-size:18px; font-weight:600; color:#333; margin:0 0 4px 0;"
-                    th:text="${property.bhkType + ' BHK Flat in ' + property.apartmentName + ' For ' + (property.isSale ? 'Sale' : 'Rent') + ' near ' + (property.address != null ? property.address.landmark : 'your location')}"
+                    th:text="${property.bhkType + ' BHK Flat in ' + property.apartmentName + ' For ' +
+                     (property.isSale ? 'Sale' : 'Rent') + ' near ' + (property.address != null ? property.address.landmark : 'your location')}">
                     Apartment Title
                 </h3>
             </a>
@@ -434,11 +435,18 @@
             <div style="display:flex; gap:12px; margin-bottom:12px;">
                 <div style="flex:1; min-width:0; max-width:200px; border:1px solid #ddd; border-radius:6px; padding:8px; text-align:center;">
                     <p style="margin:0; font-size:16px; font-weight:bold; color:#222; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                        ₹<span th:text="${property.price}">56789087</span>
                     </p>
+<!--                    <p style="margin:0; font-size:12px; color:#555;"-->
+<!--                       th:if="${property.price != null and property.builtUpArea != null and property.builtUpArea > 0}">-->
+<!--                        ₹<span th:text="${property.price * 0.01}">0</span>/mo-->
+<!--                    </p>-->
+
                     <p style="margin:0; font-size:12px; color:#555;"
-                       th:if="${property.price != null and property.builtUpArea != null and property.builtUpArea > 0}">
-                        ₹<span th:text="${property.price * 0.01}">0</span>/mo
+                       th:if="${(property.isSale and property.price != null) or (!property.isSale and property.expectedRent != null)}">
+                    <p style="margin:0; font-size:14px; font-weight:bold; color:#222;">
+                        ₹<span th:text="${property.isSale ? property.price : property.expectedRent}">0</span>
+                        <span th:if="${!property.isSale}">/mo</span>
+                    </p>
                     </p>
                 </div>
                 <div style="flex:1; border:1px solid #ddd; border-radius:6px; padding:8px; text-align:center;">
