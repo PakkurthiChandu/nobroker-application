@@ -17,7 +17,7 @@
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
             color: #333;
-            margin: 0 20px 10px 30px;
+            margin: 0;
             padding: 0;
         }
 
@@ -824,6 +824,22 @@
                 align-items: flex-start;
                 gap: 15px;
             }
+            #autocomplete {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 12px;
+    }
+
+    #autocomplete:focus {
+        border-color: #ff5722; /* NoBroker orange theme */
+        box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.2);
+    }
 
             .overview-grid {
                 grid-template-columns: 1fr;
@@ -843,6 +859,25 @@
           color: #333;
           text-align: center;
     }
+    </style>
+
+    <style>
+        #autocomplete {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 12px;
+        }
+
+        #autocomplete:focus {
+            border-color: #ff5722; /* NoBroker orange theme */
+            box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -878,7 +913,7 @@
         <div style="border-right: 1px solid #ccc; width: 100px" class="nav-right" th:if="${property != null}">
             <div class="price-info">
                 <div class="price-main">
-                    <span th:text="'₹' + ${property.expectedRent}"></span>
+      [[              <span th:text="'₹' + ${property.expectedRent}"></span>
 
                 </div>
                 <div class="price-label">Rent</div>
@@ -1180,6 +1215,16 @@
     </div>
 </div>
 
+<div class="form-group full-width" th:if="${property.address.latitude != null and property.address.longitude != null}">
+    <label>Location on Map</label>
+
+    <input id="autocomplete" type="text" placeholder="Search location..." class="form-control mb-2" />
+
+    <div id="map" style="height: 400px; width: 100%; margin-top: 10px;"></div>
+</div>
+
+
+
 
 <script>
     // Image gallery navigation functionality
@@ -1266,6 +1311,58 @@
         }
     });
 </script>
+
+<script th:inline="javascript">
+    let map, marker;
+
+    function initMap() {
+        const lat = [[${property.address.latitude}]] || 12.9716;
+        const lng = [[${property.address.longitude}]] || 77.5946;
+        const location = { lat: lat, lng: lng };
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: location,
+            zoom: 16
+        });
+
+        marker = new google.maps.Marker({
+            position: location,
+            map: map,
+            draggable: true,
+            title: "Property Location"
+        });
+
+        marker.addListener('dragend', () => {
+            const pos = marker.getPosition();
+            document.getElementById('latDisplay').textContent = pos.lat().toFixed(6);
+            document.getElementById('lngDisplay').textContent = pos.lng().toFixed(6);
+        });
+
+        const input = document.getElementById('autocomplete');
+        if (input) {
+            const autocomplete = new google.maps.places.Autocomplete(input, {
+                types: ['geocode'],
+                componentRestrictions: { country: 'in' }
+            });
+
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+                if (!place.geometry) return;
+
+                const newLoc = place.geometry.location;
+                map.setCenter(newLoc);
+                marker.setPosition(newLoc);
+                document.getElementById('latDisplay').textContent = newLoc.lat().toFixed(6);
+                document.getElementById('lngDisplay').textContent = newLoc.lng().toFixed(6);
+            });
+        }
+    }
+</script>
+
+<script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDp61ELXZR0XrMJZYzd4gLt30-1zI8F2A4&libraries=places&callback=initMap">
+</script>
+
 <footer>
     <div th:replace="fragments/footer :: footer" ></div>
 </footer>

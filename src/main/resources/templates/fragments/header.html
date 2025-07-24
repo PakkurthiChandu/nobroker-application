@@ -11,7 +11,11 @@
     <!-- Left Section -->
     <div class="header-left">
       <div class="logo">
-        <img src="/images/nobroker-logo.png" alt="NoBroker Logo" class="logo-img">
+        <a th:href="@{/landingPage}" class="logo" style="text-decoration: none; color: inherit;">
+          <div class="logo-icon">%</div>
+          <div class="logo-text"><strong>NO</strong><span>BROKER</span></div>
+        </a>
+
       </div>
     </div>
 
@@ -48,12 +52,9 @@
       border-bottom: 1px solid #ddd;
     }
     .logo {
-      display: flex;
-      align-items: center;
-    }
-      .logo-img {
-      height: 120px;
       width: auto;
+      height: 35px; /* Slightly larger */
+      max-width: 200px;
       object-fit: contain;
     }
 
@@ -63,6 +64,11 @@
       align-items: center;
       gap: 10px;
       min-width: 200px; /* Ensures enough space for logo */
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .logo-icon {
       width: 32px;
@@ -74,10 +80,10 @@
       justify-content: center;
       color: white;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 14px;
     }
     .logo-text {
-      font-size: 24px;
+      font-size: 18px;
       font-weight: bold;
     }
     .logo-text span {

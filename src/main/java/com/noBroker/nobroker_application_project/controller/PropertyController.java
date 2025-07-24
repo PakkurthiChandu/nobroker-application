@@ -2,6 +2,7 @@ package com.noBroker.nobroker_application_project.controller;
 
 import com.noBroker.nobroker_application_project.dto.RentalDto;
 import com.noBroker.nobroker_application_project.model.Address;
+import com.noBroker.nobroker_application_project.repository.PropertyRepository;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 
 import com.noBroker.nobroker_application_project.model.Amenity;
@@ -29,14 +30,13 @@ import java.util.Map;
 @Controller
 public class PropertyController {
 
-    PropertyService propertyService;
+    private final PropertyService propertyService;
+    private final PropertyRepository propertyRepository;
 
-    public PropertyController(PropertyService propertyService) {
+    public PropertyController(PropertyService propertyService, PropertyRepository propertyRepository) {
         this.propertyService = propertyService;
+        this.propertyRepository = propertyRepository;
     }
-
-//    ----------------Create Post----------------------------------
-
     @GetMapping("/welcome")
     public String welcomePage() {
         return "welcome"; // loads welcome.html from /templates

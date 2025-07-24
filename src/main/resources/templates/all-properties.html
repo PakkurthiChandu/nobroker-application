@@ -9,704 +9,751 @@
         * {
             box-sizing: border-box;
         }
+    <!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>NoBroker Clone</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background: #f9f9f9;
-        }
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                background: #f9f9f9;
+            }
 
-        /* HEADER */
-        .main-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: #fff;
-            border-bottom: 1px solid #ddd;
-            z-index: 1000;
-            height: 60px;
-        }
+            /* HEADER */
+            .main-header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background-color: #fff;
+                border-bottom: 1px solid #ddd;
+                z-index: 1000;
+                height: 60px;
+            }
 
-        .logo {
-            width: auto;
-            height: 30px;
-            max-width: 150px; /* Adjust as needed */
-            object-fit: contain; /* Prevents distortion */
-        }
-        .left-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 200px; /* Ensures enough space for logo */
-        }
+            .logo {
+                width: auto;
+                height: 30px;
+                max-width: 150px; /* Adjust as needed */
+                object-fit: contain; /* Prevents distortion */
+            }
+            .left-section {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                min-width: 200px; /* Ensures enough space for logo */
+            }
 
 
 
-        .left-section, .right-section {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+            .left-section, .right-section {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
 
-        .logo {
-            width: 30px;
-            height: 30px;
-        }
+            .logo {
+                width: 30px;
+                height: 30px;
+            }
 
-        .brand-name {
-            font-weight: bold;
-            font-size: 20px;
-            color: #000;
-        }
+            .brand-name {
+                font-weight: bold;
+                font-size: 20px;
+                color: #000;
+            }
 
-        .menu-item {
-            cursor: pointer;
-            font-size: 14px;
-            color: #333;
-        }
+            .menu-item {
+                cursor: pointer;
+                font-size: 14px;
+                color: #333;
+            }
 
-        .pay-rent {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            color: #333;
-        }
+            .pay-rent {
+                background-color: #fff;
+                border: 1px solid #ccc;
+                color: #333;
+            }
 
-        .post-property {
-            background-color: #00aa9b;
-            color: #fff;
-        }
+            .post-property {
+                background-color: #00aa9b;
+                color: #fff;
+            }
 
-        .pay-rent,
-        .post-property {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+            .pay-rent,
+            .post-property {
+                padding: 8px 12px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+            }
 
-        .profile {
-            padding: 5px 10px;
-            border-radius: 20px;
-            background-color: #e6e6e6;
-            font-size: 14px;
-        }
+            .profile {
+                padding: 5px 10px;
+                border-radius: 20px;
+                background-color: #e6e6e6;
+                font-size: 14px;
+            }
 
-        .icons span {
-            font-size: 18px;
-            margin: 0 4px;
-            cursor: pointer;
-        }
+            .icons span {
+                font-size: 18px;
+                margin: 0 4px;
+                cursor: pointer;
+            }
 
-        .menu {
-            font-size: 18px;
-            cursor: pointer;
-        }
+            .menu {
+                font-size: 18px;
+                cursor: pointer;
+            }
 
-        .view-toggle {
-            display: flex;
-            gap: 5px;
-        }
+            .view-toggle {
+                display: flex;
+                gap: 5px;
+            }
 
-        .list-view,
-        .map-view {
-            padding: 6px 10px;
-            border-radius: 15px;
-            border: none;
-            background-color: #00aa9b;
-            color: #fff;
-            font-size: 14px;
-            cursor: pointer;
-        }
+            .list-view,
+            .map-view {
+                padding: 6px 10px;
+                border-radius: 15px;
+                border: none;
+                background-color: #00aa9b;
+                color: #fff;
+                font-size: 14px;
+                cursor: pointer;
+            }
 
-        /* MAIN LAYOUT */
-        .content {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-            background: #f9f9f9;
-        }
+            /* MAIN LAYOUT */
+            .content {
+                flex: 1;
+                display: flex;
+                overflow: hidden;
+                background: #f9f9f9;
+            }
 
-        /* SIDEBAR FILTERS */
-        .sidebar {
-            width: 340px;
-            background-color: white;
-            border-right: 1px solid #ddd;
-            flex-shrink: 0;
-            overflow-y: auto;
-            height: 100%;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-        }
+            /* SIDEBAR FILTERS */
+            .sidebar {
+                width: 340px;
+                background-color: white;
+                border-right: 1px solid #ddd;
+                flex-shrink: 0;
+                overflow-y: auto;
+                height: 100%;
+                box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            }
 
-        /* Filter Tabs */
-        .filter-tabs {
-            display: flex;
-            border-bottom: 1px solid #ddd;
-        }
+            /* Filter Tabs */
+            .filter-tabs {
+                display: flex;
+                border-bottom: 1px solid #ddd;
+            }
 
-        .filter-tab {
-            flex: 1;
-            padding: 15px 20px;
-            text-align: center;
-            cursor: pointer;
-            font-weight: 500;
-            background: #f8f9fa;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
+            .filter-tab {
+                flex: 1;
+                padding: 15px 20px;
+                text-align: center;
+                cursor: pointer;
+                font-weight: 500;
+                background: #f8f9fa;
+                border-bottom: 3px solid transparent;
+                transition: all 0.3s ease;
+            }
 
-        .filter-tab.active {
-            background: white;
-            border-bottom: 3px solid #00aa9b;
-            color: #00aa9b;
-        }
+            .filter-tab.active {
+                background: white;
+                border-bottom: 3px solid #00aa9b;
+                color: #00aa9b;
+            }
 
-        .filter-tab:hover {
-            background: #e9ecef;
-        }
+            .filter-tab:hover {
+                background: #e9ecef;
+            }
 
-        /* Filter Content */
-        .filter-content {
-            padding: 20px;
-        }
+            /* Filter Content */
+            .filter-content {
+                padding: 20px;
+            }
 
-        .filter-section {
-            margin-bottom: 25px;
-        }
+            .filter-section {
+                margin-bottom: 25px;
+            }
 
-        .filter-section h4 {
-            font-size: 16px;
-            margin-bottom: 15px;
-            color: #333;
-            font-weight: 600;
-        }
+            .filter-section h4 {
+                font-size: 16px;
+                margin-bottom: 15px;
+                color: #333;
+                font-weight: 600;
+            }
 
-        .bhk-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+            .bhk-options {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
 
-        .bhk-options label {
-            flex: 1 1 45%;
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+            .bhk-options label {
+                flex: 1 1 45%;
+                display: flex;
+                align-items: center;
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
 
-        .bhk-options label:hover {
-            border-color: #00aa9b;
-            background: #f0fffe;
-        }
+            .bhk-options label:hover {
+                border-color: #00aa9b;
+                background: #f0fffe;
+            }
 
-        .bhk-options input[type="checkbox"]:checked + span,
-        .radio-group input[type="radio"]:checked + span {
-            color: #00aa9b;
-            font-weight: 600;
-        }
+            .bhk-options input[type="checkbox"]:checked + span,
+            .radio-group input[type="radio"]:checked + span {
+                color: #00aa9b;
+                font-weight: 600;
+            }
 
-        .radio-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+            .radio-group {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
 
-        .radio-group label,
-        .checkbox-group label {
-            flex: 1 1 45%;
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+            .radio-group label,
+            .checkbox-group label {
+                flex: 1 1 45%;
+                display: flex;
+                align-items: center;
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
 
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+            .checkbox-group {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
 
-        .radio-group label:hover,
-        .checkbox-group label:hover {
-            border-color: #00aa9b;
-            background: #f0fffe;
-        }
+            .radio-group label:hover,
+            .checkbox-group label:hover {
+                border-color: #00aa9b;
+                background: #f0fffe;
+            }
 
-        .apply-filters-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #ff4c5b;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 20px;
-        }
+            .apply-filters-btn {
+                width: 100%;
+                padding: 12px;
+                background-color: #ff4c5b;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 600;
+                margin-top: 20px;
+            }
 
-        .apply-filters-btn:hover {
-            background-color: #e43e4d;
-        }
+            .apply-filters-btn:hover {
+                background-color: #e43e4d;
+            }
 
-        /* MAIN AREA */
-        .main-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            background: #f9f9f9;
-        }
+            /* MAIN AREA */
+            .main-area {
+                flex: 1;
+                overflow-y: auto;
+                padding: 20px;
+                background: #f9f9f9;
+            }
 
-        .properties-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 15px 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+            .properties-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+                padding: 15px 20px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
 
-        .properties-header h2 {
-            margin: 0;
-            font-size: 20px;
-            color: #333;
-        }
+            .properties-header h2 {
+                margin: 0;
+                font-size: 20px;
+                color: #333;
+            }
 
-        .sort-dropdown {
-            padding: 10px 15px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            background: white;
-            cursor: pointer;
-        }
+            .sort-dropdown {
+                padding: 10px 15px;
+                border-radius: 6px;
+                border: 1px solid #ddd;
+                background: white;
+                cursor: pointer;
+            }
 
-        .properties-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+            .properties-container {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
 
-        /* Property Card Styles (keeping your existing styles) */
-        .property-card {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            max-width: 100%;
-            width: 100%;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            margin-bottom: 16px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+            /* Property Card Styles (keeping your existing styles) */
+            .property-card {
+                background: white;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                max-width: 100%;
+                width: 100%;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+                margin-bottom: 16px;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
 
-        .property-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-        }
+            .property-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            }
 
-        /* Premium Filter Styles */
-        .premium-filter-content {
-            display: none;
-        }
+            /* Premium Filter Styles */
+            .premium-filter-content {
+                display: none;
+            }
 
-        .premium-filter-content.active {
-            display: block;
-        }
+            .premium-filter-content.active {
+                display: block;
+            }
 
-        .premium-badge {
-            background: linear-gradient(45deg, #ffd700, #ffed4a);
-            color: #333;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-left: 8px;
-        }
+            .premium-badge {
+                background: linear-gradient(45deg, #ffd700, #ffed4a);
+                color: #333;
+                padding: 2px 8px;
+                border-radius: 12px;
+                font-size: 10px;
+                font-weight: bold;
+                text-transform: uppercase;
+                margin-left: 8px;
+            }
 
-        input[type="checkbox"], input[type="radio"] {
-            margin-right: 8px;
-            accent-color: #00aa9b;
-        }
-    </style>
-</head>
-<body>
+            input[type="checkbox"], input[type="radio"] {
+                margin-right: 8px;
+                accent-color: #00aa9b;
+            }
+        </style>
+    </head>
+    <body>
 
-<!-- HEADER -->
-<header class="main-header">
-    <div th:replace="~{fragments/header :: header}"></div>
-</header>
+    <!-- HEADER -->
+    <header class="main-header">
+        <div th:replace="~{fragments/header :: header}"></div>
+    </header>
 
-<div class="content" style="margin-top: 50px">
-    <div class="sidebar">
-        <div class="filter-tabs">
-            <div class="filter-tab active" onclick="switchTab('basic')">
-                Filters
+    <div class="content" style="margin-top: 50px">
+        <div class="sidebar">
+            <div class="filter-tabs">
+                <div class="filter-tab active" onclick="switchTab('basic')">
+                    Filters
+                </div>
+                <div class="filter-tab" onclick="switchTab('premium')">
+                    Premium Filters
+                    <span class="premium-badge">NEW</span>
+                </div>
             </div>
-            <div class="filter-tab" onclick="switchTab('premium')">
-                Premium Filters
-                <span class="premium-badge">NEW</span>
-            </div>
-        </div>
 
-        <!-- Basic Filters -->
-        <div id="basic-filters" class="filter-content">
-            <form id="filterForm" method="get" action="/getProperties">
-                <input type="hidden" name="type" th:value="${isSale}" />
-                <input type="hidden" name="city" th:value="${city}" />
-                <input type="hidden" name="query" th:value="${searchKeyword}" />
-
-                <!-- BHK Type -->
-                <div class="filter-section">
-                    <h4>BHK Type</h4>
-                    <div class="bhk-options">
-                        <div class="bhk-options" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                            <label style="flex: 1 1 45%;">
-                                <input type="checkbox" name="bhkType" value="1" th:checked="${bhkType != null and bhkType.contains(1)}" /> 1 BHK
-                            </label>
-                            <label style="flex: 1 1 45%;">
-                                <input type="checkbox" name="bhkType" value="2" th:checked="${bhkType != null and bhkType.contains(2)}" /> 2 BHK
-                            </label>
-                            <label style="flex: 1 1 45%;">
-                                <input type="checkbox" name="bhkType" value="3" th:checked="${bhkType != null and bhkType.contains(3)}" /> 3 BHK
-                            </label>
-                            <label style="flex: 1 1 45%;">
-                                <input type="checkbox" name="bhkType" value="4" th:checked="${bhkType != null and bhkType.contains(4)}" /> 4 BHK
-                            </label>
-                            <label style="flex: 1 1 45%;">
-                                <input type="checkbox" name="bhkType" value="5" th:checked="${bhkType != null and bhkType.contains(5)}" /> 4+ BHK
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- Availability -->
-                <h4>Property Status</h4>
-                <div class="filter-section" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    <label style="flex: 1 1 45%; display: flex; align-items: center;">
-                        <input type="radio" name="propertyStatus" value="Under Construction"
-                               th:checked="${propertyStatus != null and propertyStatus == 'Under Construction'}" />
-                        <span style="margin-left: 5px; white-space: nowrap;">Under Construction</span>
-                    </label>
-
-                    <label style="flex: 1 1 45%; display: flex; align-items: center;">
-                        <input type="radio" name="propertyStatus" value="Ready"
-                               th:checked="${propertyStatus != null and propertyStatus == 'Ready'}" />
-                        <span style="margin-left: 5px; white-space: nowrap;">Ready</span>
-                    </label>
-
-                    <label style="flex: 1 1 45%; display: flex; align-items: center;">
-                        <input type="radio" name="propertyStatus" value=""
-                               th:checked="${propertyStatus == null or propertyStatus == ''}" />
-                        <span style="margin-left: 5px; white-space: nowrap;">Any Status</span>
-                    </label>
-                </div>
-
-                <!-- Property Status -->
-                <h4>Furnishing</h4>
-                <div class="filter-section" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                        <input type="checkbox" name="furnishing" value="Fully Furnished"
-                               th:checked="${furnishing != null and furnishing.contains('Fully Furnished')}" />
-                        <span style="margin-left: 5px;">Full</span>
-                    </label>
-
-                    <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                        <input type="checkbox" name="furnishing" value="Semi Furnished"
-                               th:checked="${furnishing != null and furnishing.contains('Semi Furnished')}" />
-                        <span style="margin-left: 5px;">Semi</span>
-                    </label>
-
-                    <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                        <input type="checkbox" name="furnishing" value="Unfurnished"
-                               th:checked="${furnishing != null and furnishing.contains('Unfurnished')}" />
-                        <span style="margin-left: 5px;">None</span>
-                    </label>
-                </div>
-
-
-
-                <h4>Property Type</h4>
-                <div class="filter-section" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                        <input type="checkbox" name="propertyType" value="Apartment"
-                               th:checked="${propertyType != null and propertyType.contains('Apartment')}" />
-                        <span style="margin-left: 5px;">Apartment</span>
-                    </label>
-
-                    <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                        <input type="checkbox" name="propertyType" value="Gated Community"
-                               th:checked="${propertyType != null and propertyType.contains('Gated Community')}" />
-                        <span style="margin-left: 5px;">Gated Community</span>
-                    </label>
-
-                    <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                        <input type="checkbox" name="propertyType" value="Villa"
-                               th:checked="${propertyType != null and propertyType.contains('Villa')}" />
-                        <span style="margin-left: 5px;">Villa</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="apply-filters-btn">Apply Filters</button>
-            </form>
-        </div>
-
-        <!-- Premium Filters -->
-        <div id="premium-filters" class="filter-content premium-filter-content">
-            <form method="get" action="/getProperties">
-                <input type="hidden" name="type" th:value="${isSale}" />
-                <input type="hidden" name="city" th:value="${city}" />
-                <input type="hidden" name="query" th:value="${searchKeyword}" />
-
-                <!-- Furnishing -->
-
-                <!-- Property Age -->
-                <div class="filter-section">
-                    <h4>Property Age</h4>
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="radio" name="propertyAge" value="1"
-                                   th:checked="${propertyAge != null and propertyAge == 1}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">&lt; 1 year</span>
-                        </label>
-
-                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="radio" name="propertyAge" value="2"
-                                   th:checked="${propertyAge != null and propertyAge == 2}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">&lt; 3 years</span>
-                        </label>
-
-                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="radio" name="propertyAge" value="3"
-                                   th:checked="${propertyAge != null and propertyAge == 3}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">&lt; 5 years</span>
-                        </label>
-
-                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="radio" name="propertyAge" value="4"
-                                   th:checked="${propertyAge != null and propertyAge == 4}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">&lt; 10 years</span>
-                        </label>
-
-                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="radio" name="propertyAge" value="5"
-                                   th:checked="${propertyAge != null and propertyAge == 5}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">10 years +</span>
-                        </label>
-
-                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="radio" name="propertyAge" value=""
-                                   th:checked="${propertyAge == null}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">Any Age</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Parking -->
-                <div class="filter-section">
-                    <h4>Parking</h4>
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="checkbox" name="parking" value="Bike"
-                                   th:checked="${parking != null and parking.contains('Bike')}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">Bike</span>
-                        </label>
-
-                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="checkbox" name="parking" value="Car"
-                                   th:checked="${parking != null and parking.contains('Car')}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">Car</span>
-                        </label>
-
-                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="checkbox" name="parking" value="None"
-                                   th:checked="${parking != null and parking.contains('None')}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">None</span>
-                        </label>
-
-                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="checkbox" name="parking" value="Both"
-                                   th:checked="${parking != null and parking.contains('None')}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">Both</span>
-                        </label>
-                    </div>
-                </div>
-
-                <button type="submit" class="apply-filters-btn">Apply Filters</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- PROPERTY LISTINGS -->
-    <div class="main-area">
-        <!-- Properties Header -->
-
-        <div class="main-area">
-            <!-- Properties Header -->
-            <div class="properties-header">
-                <form method="get" action="/getProperties" style="display: flex; align-items: center; gap: 10px; width: 100%;">
-                    <input type="hidden" name="type" th:value="${isSale}" />
-                    <input type="hidden" name="city" th:value="${city}" />
-                    <input type="text" name="query" placeholder="Search by locality or landmark..." class="search-bar" th:value="${searchKeyword}" style="flex: 1; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" />
-                    <button type="submit" style="padding: 8px 14px; background-color: #007bff; color: white; border: none; border-radius: 4px;">Search</button>
-                </form>
-                <form method="get" action="/getProperties" id="sortForm">
+            <!-- Basic Filters -->
+            <div id="basic-filters" class="filter-content">
+                <form id="filterForm" method="get" action="/getProperties">
                     <input type="hidden" name="type" th:value="${isSale}" />
                     <input type="hidden" name="city" th:value="${city}" />
                     <input type="hidden" name="query" th:value="${searchKeyword}" />
-                    <select name="sortBy" onchange="document.getElementById('sortForm').submit()" class="sort-dropdown">
-                        <option value="">NoBroker Rank</option>
-                        <option value="newest" th:selected="${sortBy == 'newest'}">Newest to Oldest</option>
-                        <option value="oldest" th:selected="${sortBy == 'oldest'}">Oldest to Newest</option>
-                        <option value="priceHighLow" th:selected="${sortBy == 'priceHighLow'}">Price: High to Low</option>
-                        <option value="priceLowHigh" th:selected="${sortBy == 'priceLowHigh'}">Price: Low to High</option>
-                    </select>
+
+                    <!-- BHK Type -->
+                    <div class="filter-section">
+                        <h4>BHK Type</h4>
+                        <div class="bhk-options">
+                            <div class="bhk-options" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                <label style="flex: 1 1 45%;">
+                                    <input type="checkbox" name="bhkType" value="1" th:checked="${bhkType != null and bhkType.contains(1)}" /> 1 BHK
+                                </label>
+                                <label style="flex: 1 1 45%;">
+                                    <input type="checkbox" name="bhkType" value="2" th:checked="${bhkType != null and bhkType.contains(2)}" /> 2 BHK
+                                </label>
+                                <label style="flex: 1 1 45%;">
+                                    <input type="checkbox" name="bhkType" value="3" th:checked="${bhkType != null and bhkType.contains(3)}" /> 3 BHK
+                                </label>
+                                <label style="flex: 1 1 45%;">
+                                    <input type="checkbox" name="bhkType" value="4" th:checked="${bhkType != null and bhkType.contains(4)}" /> 4 BHK
+                                </label>
+                                <label style="flex: 1 1 45%;">
+                                    <input type="checkbox" name="bhkType" value="5" th:checked="${bhkType != null and bhkType.contains(5)}" /> 4+ BHK
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Availability -->
+                    <h4>Property Status</h4>
+                    <div class="filter-section" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <label style="flex: 1 1 45%; display: flex; align-items: center;">
+                            <input type="radio" name="propertyStatus" value="Under Construction"
+                                   th:checked="${propertyStatus != null and propertyStatus == 'Under Construction'}" />
+                            <span style="margin-left: 5px; white-space: nowrap;">Under Construction</span>
+                        </label>
+
+                        <label style="flex: 1 1 45%; display: flex; align-items: center;">
+                            <input type="radio" name="propertyStatus" value="Ready"
+                                   th:checked="${propertyStatus != null and propertyStatus == 'Ready'}" />
+                            <span style="margin-left: 5px; white-space: nowrap;">Ready</span>
+                        </label>
+
+                        <label style="flex: 1 1 45%; display: flex; align-items: center;">
+                            <input type="radio" name="propertyStatus" value=""
+                                   th:checked="${propertyStatus == null or propertyStatus == ''}" />
+                            <span style="margin-left: 5px; white-space: nowrap;">Any Status</span>
+                        </label>
+                    </div>
+
+                    <!-- Property Status -->
+                    <h4>Furnishing</h4>
+                    <div class="filter-section" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                            <input type="checkbox" name="furnishing" value="Fully Furnished"
+                                   th:checked="${furnishing != null and furnishing.contains('Fully Furnished')}" />
+                            <span style="margin-left: 5px;">Full</span>
+                        </label>
+
+                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                            <input type="checkbox" name="furnishing" value="Semi Furnished"
+                                   th:checked="${furnishing != null and furnishing.contains('Semi Furnished')}" />
+                            <span style="margin-left: 5px;">Semi</span>
+                        </label>
+
+                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                            <input type="checkbox" name="furnishing" value="Unfurnished"
+                                   th:checked="${furnishing != null and furnishing.contains('Unfurnished')}" />
+                            <span style="margin-left: 5px;">None</span>
+                        </label>
+                    </div>
+
+
+
+                    <h4>Property Type</h4>
+                    <div class="filter-section" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                            <input type="checkbox" name="propertyType" value="Apartment"
+                                   th:checked="${propertyType != null and propertyType.contains('Apartment')}" />
+                            <span style="margin-left: 5px;">Apartment</span>
+                        </label>
+
+                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                            <input type="checkbox" name="propertyType" value="Gated Community"
+                                   th:checked="${propertyType != null and propertyType.contains('Gated Community')}" />
+                            <span style="margin-left: 5px;">Gated Community</span>
+                        </label>
+
+                        <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                            <input type="checkbox" name="propertyType" value="Villa"
+                                   th:checked="${propertyType != null and propertyType.contains('Villa')}" />
+                            <span style="margin-left: 5px;">Villa</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="apply-filters-btn">Apply Filters</button>
                 </form>
             </div>
 
-            <div id="properties-container" class="properties-container">
-                <div id="post-list" th:replace="~{fragments/postSection :: postSection(allProperties=${allProperties}, hasNext=${totalPages > currentPage + 1})}"></div>
+            <!-- Premium Filters -->
+            <div id="premium-filters" class="filter-content premium-filter-content">
+                <form method="get" action="/getProperties">
+                    <input type="hidden" name="type" th:value="${isSale}" />
+                    <input type="hidden" name="city" th:value="${city}" />
+                    <input type="hidden" name="query" th:value="${searchKeyword}" />
+
+                    <!-- Furnishing -->
+
+                    <!-- Property Age -->
+                    <div class="filter-section">
+                        <h4>Property Age</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                                <input type="radio" name="propertyAge" value="1"
+                                       th:checked="${propertyAge != null and propertyAge == 1}" />
+                                <span style="margin-left: 5px; white-space: nowrap;">&lt; 1 year</span>
+                            </label>
+
+                            <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                                <input type="radio" name="propertyAge" value="2"
+                                       th:checked="${propertyAge != null and propertyAge == 2}" />
+                                <span style="margin-left: 5px; white-space: nowrap;">&lt; 3 years</span>
+                            </label>
+
+                            <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                                <input type="radio" name="propertyAge" value="3"
+                                       th:checked="${propertyAge != null and propertyAge == 3}" />
+                                <span style="margin-left: 5px; white-space: nowrap;">&lt; 5 years</span>
+                            </label>
+
+                            <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                                <input type="radio" name="propertyAge" value="4"
+                                       th:checked="${propertyAge != null and propertyAge == 4}" />
+                                <span style="margin-left: 5px; white-space: nowrap;">&lt; 10 years</span>
+                            </label>
+
+                            <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                                <input type="radio" name="propertyAge" value="5"
+                                       th:checked="${propertyAge != null and propertyAge == 5}" />
+                                <span style="margin-left: 5px; white-space: nowrap;">10 years +</span>
+                            </label>
+
+                            <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                                <input type="radio" name="propertyAge" value=""
+                                       th:checked="${propertyAge == null}" />
+                                <span style="margin-left: 5px; white-space: nowrap;">Any Age</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Parking -->
+                    <div class="filter-section">
+                        <h4>Parking</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                                <input type="checkbox" name="parking" value="Bike"
+                                       th:checked="${parking != null and parking.contains('Bike')}" />
+                                <span style="margin-left: 5px; white-space: nowrap;">Bike</span>
+                            </label>
+
+                            <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                                <input type="checkbox" name="parking" value="Car"
+                                       th:checked="${parking != null and parking.contains('Car')}" />
+                                <span style="margin-left: 5px; white-space: nowrap;">Car</span>
+                            </label>
+
+                            <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                                <input type="checkbox" name="parking" value="None"
+                                       th:checked="${parking != null and parking.contains('None')}" />
+                                <span style="margin-left: 5px; white-space: nowrap;">None</span>
+                            </label>
+
+                            <label style="flex: 1 1 30%; display: flex; align-items: center;">
+                                <input type="checkbox" name="parking" value="Both"
+                                       th:checked="${parking != null and parking.contains('None')}" />
+                                <span style="margin-left: 5px; white-space: nowrap;">Both</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="apply-filters-btn">Apply Filters</button>
+                </form>
             </div>
         </div>
+
+        <!-- PROPERTY LISTINGS -->
+        <div class="main-area">
+            <!-- Properties Header -->
+
+            <div class="main-area">
+                <!-- Properties Header -->
+                <div class="properties-header">
+                    <form method="get" action="/getProperties" style="display: flex; align-items: center; gap: 10px; width: 100%;">
+                        <input type="hidden" name="type" th:value="${isSale}" />
+                        <input type="hidden" name="city" th:value="${city}" />
+                        <input id="autocomplete"
+                               class="search-input"
+                               placeholder="Search locality or landmark"
+                               name="query"
+                               th:value="${searchQuery}"
+
+                               style="flex: 1; padding: 8px;
+                               font-size: 14px; border: 1px solid #ccc; border-radius: 4px;" />
+                        <button type="submit" style="padding: 8px 14px; background-color: #ff4c5b; color: white; border: none; border-radius: 4px; ">Search</button>
+                    </form>
+                    <form method="get" action="/getProperties" id="sortForm">
+                        <input type="hidden" name="type" th:value="${isSale}" />
+                        <input type="hidden" name="city" th:value="${city}" />
+                        <input type="hidden" name="query" th:value="${searchKeyword}" />
+                        <select name="sortBy" onchange="document.getElementById('sortForm').submit()" class="sort-dropdown">
+                            <option value="">NoBroker Rank</option>
+                            <option value="newest" th:selected="${sortBy == 'newest'}">Newest to Oldest</option>
+                            <option value="oldest" th:selected="${sortBy == 'oldest'}">Oldest to Newest</option>
+                            <option value="priceHighLow" th:selected="${sortBy == 'priceHighLow'}">Price: High to Low</option>
+                            <option value="priceLowHigh" th:selected="${sortBy == 'priceLowHigh'}">Price: Low to High</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div id="properties-container" class="properties-container">
+                    <div id="post-list" th:replace="~{fragments/postSection :: postSection(allProperties=${allProperties}, hasNext=${totalPages > currentPage + 1})}"></div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 20%"></div>
     </div>
-    <div style="width: 20%"></div>
-</div>
-</body>
+    </body>
 
-<script>
-    let page = [[${currentPage}]];
-    let loading = false;
-    let hasMore = [[${totalPages > currentPage + 1}]];
+    <script>
+        let page = [[${currentPage}]];
+        let loading = false;
+        let hasMore = [[${totalPages > currentPage + 1}]];
 
-    // Build the base URL with all filter parameters
-    const params = new URLSearchParams(window.location.search);
-    params.delete('page'); // Remove page param to append it dynamically
-    const baseURL = `/loadMorePosts?${params.toString()}`;
+        // Build the base URL with all filter parameters
+        const params = new URLSearchParams(window.location.search);
+        params.delete('page'); // Remove page param to append it dynamically
+        const baseURL = `/loadMorePosts?${params.toString()}`;
 
-    const observer = new IntersectionObserver(async (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting && !loading && hasMore) {
-            loading = true;
-            page++;
+        const observer = new IntersectionObserver(async (entries) => {
+            const entry = entries[0];
+            if (entry.isIntersecting && !loading && hasMore) {
+                loading = true;
+                page++;
 
-            try {
-                const response = await fetch(`${baseURL}&page=${page}&size=5`);
-                if (response.ok) {
-                    const html = await response.text();
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = html;
+                try {
+                    const response = await fetch(`${baseURL}&page=${page}&size=5`);
+                    if (response.ok) {
+                        const html = await response.text();
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = html;
 
-                    const newPosts = tempDiv.querySelectorAll('.property-card');
-                    const container = document.getElementById('properties-container');
+                        const newPosts = tempDiv.querySelectorAll('.property-card');
+                        const container = document.getElementById('properties-container');
 
-                    if (newPosts.length === 0) {
-                        hasMore = false;
+                        if (newPosts.length === 0) {
+                            hasMore = false;
+                        } else {
+                            newPosts.forEach(post => container.appendChild(post));
+                        }
+
+                        // Check if the response includes a new trigger point (indicating hasNext)
+                        const newTrigger = tempDiv.querySelector('#trigger-point');
+                        if (newTrigger) {
+                            container.appendChild(newTrigger);
+                            observer.observe(newTrigger);
+                        } else {
+                            hasMore = false;
+                        }
                     } else {
-                        newPosts.forEach(post => container.appendChild(post));
-                    }
-
-                    // Check if the response includes a new trigger point (indicating hasNext)
-                    const newTrigger = tempDiv.querySelector('#trigger-point');
-                    if (newTrigger) {
-                        container.appendChild(newTrigger);
-                        observer.observe(newTrigger);
-                    } else {
                         hasMore = false;
                     }
-                } else {
+                } catch (error) {
+                    console.error('Error loading more posts:', error);
                     hasMore = false;
+                } finally {
+                    loading = false;
                 }
-            } catch (error) {
-                console.error('Error loading more posts:', error);
-                hasMore = false;
-            } finally {
-                loading = false;
             }
-        }
-    }, { threshold: 1.0 });
+        }, { threshold: 1.0 });
 
-    window.addEventListener('DOMContentLoaded', () => {
-        const trigger = document.getElementById('trigger-point');
-        if (trigger && hasMore) {
-            observer.observe(trigger);
-        }
-    });
-
-    // Get filter type from URL parameters to determine which tab should be active
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
-
-    // Filter tab switching functionality
-    function switchTab(tabType) {
-        const filterTabs = document.querySelectorAll('.filter-tab');
-        const basicFilters = document.getElementById('basic-filters');
-        const premiumFilters = document.getElementById('premium-filters');
-
-        // Remove active class from all tabs
-        filterTabs.forEach(tab => {
-            tab.classList.remove('active');
+        window.addEventListener('DOMContentLoaded', () => {
+            const trigger = document.getElementById('trigger-point');
+            if (trigger && hasMore) {
+                observer.observe(trigger);
+            }
         });
 
-        if (tabType === 'basic') {
-            basicFilters.style.display = 'block';
-            premiumFilters.style.display = 'none';
-            filterTabs[0].classList.add('active');
-            premiumFilters.classList.remove('active');
-        } else if (tabType === 'premium') {
-            basicFilters.style.display = 'none';
-            premiumFilters.style.display = 'block';
-            filterTabs[1].classList.add('active');
-            premiumFilters.classList.add('active');
-        }
-    }
-
-    // Initialize page when DOM loads
-    document.addEventListener('DOMContentLoaded', function() {
-        // Check if premium filters were used (look for filterType parameter or premium-specific parameters)
-        const filterType = getUrlParameter('filterType');
-        const propertyAge = getUrlParameter('propertyAge');
-        const parking = getUrlParameter('parking');
-
-        // If premium filter was applied OR premium-specific parameters exist, show premium tab
-        if (filterType === 'premium' || propertyAge || parking) {
-            switchTab('premium');
-        } else {
-            // Default to basic filters
-            switchTab('basic');
+        // Get filter type from URL parameters to determine which tab should be active
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
 
-        // Add event listeners to tabs
-        const filterTabs = document.querySelectorAll('.filter-tab');
-        if (filterTabs.length >= 2) {
-            filterTabs[0].addEventListener('click', function() {
-                switchTab('basic');
+        // Filter tab switching functionality
+        function switchTab(tabType) {
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            const basicFilters = document.getElementById('basic-filters');
+            const premiumFilters = document.getElementById('premium-filters');
+
+            // Remove active class from all tabs
+            filterTabs.forEach(tab => {
+                tab.classList.remove('active');
             });
 
-            filterTabs[1].addEventListener('click', function() {
+            if (tabType === 'basic') {
+                basicFilters.style.display = 'block';
+                premiumFilters.style.display = 'none';
+                filterTabs[0].classList.add('active');
+                premiumFilters.classList.remove('active');
+            } else if (tabType === 'premium') {
+                basicFilters.style.display = 'none';
+                premiumFilters.style.display = 'block';
+                filterTabs[1].classList.add('active');
+                premiumFilters.classList.add('active');
+            }
+        }
+
+        // Initialize page when DOM loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if premium filters were used (look for filterType parameter or premium-specific parameters)
+            const filterType = getUrlParameter('filterType');
+            const propertyAge = getUrlParameter('propertyAge');
+            const parking = getUrlParameter('parking');
+
+            // If premium filter was applied OR premium-specific parameters exist, show premium tab
+            if (filterType === 'premium' || propertyAge || parking) {
                 switchTab('premium');
+            } else {
+                // Default to basic filters
+                switchTab('basic');
+            }
+
+            // Add event listeners to tabs
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            if (filterTabs.length >= 2) {
+                filterTabs[0].addEventListener('click', function() {
+                    switchTab('basic');
+                });
+
+                filterTabs[1].addEventListener('click', function() {
+                    switchTab('premium');
+                });
+            }
+        });
+    </script>
+
+    <script>
+        let autocomplete;
+
+        function initAutocomplete() {
+            autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById("autocomplete"),
+                {
+                    types: ['geocode'],
+                    componentRestrictions: { country: "in" }
+                }
+            );
+
+            autocomplete.addListener("place_changed", function () {
+                const place = autocomplete.getPlace();
+                console.log("Selected:", place.formatted_address || place.name);
+
+                // Optional: If you want lat/lng, use:
+                const loc = place.geometry?.location;
+                if (loc) {
+                    console.log("Lat:", loc.lat(), "Lng:", loc.lng());
+                }
             });
         }
-    });
-</script>
+    </script>
 
-</html>
+    <script async
+            defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDp61ELXZR0XrMJZYzd4gLt30-1zI8F2A4&libraries=places&callback=initAutocomplete">
+    </script>
+
+    </html>

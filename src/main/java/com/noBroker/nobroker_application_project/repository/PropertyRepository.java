@@ -47,4 +47,5 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     @Query("SELECT p FROM Property p JOIN FETCH p.address a WHERE p.propertyId = :propertyId")
     Property findByPropertyId(long propertyId);
+
 }

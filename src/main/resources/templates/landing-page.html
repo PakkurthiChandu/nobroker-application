@@ -643,7 +643,6 @@
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%);
                 text-align: center;
             }
 
@@ -820,8 +819,9 @@
                 </div>
 
                 <input type="text"
+                       id="autocomplete"
                        class="search-input"
-                       placeholder="Search up to 3 localities or landmarks"
+                       placeholder="Search locality or landmark"
                        name="query"
                        th:value="${searchQuery}">
 
@@ -1105,12 +1105,8 @@
     </main>
 
     <!-- Chat Widget -->
-    <div class="chat-container">
-        <div id="chat-box" class="chat-box"></div>
-        <form id="chat-form">
-            <input type="text" id="user-input" placeholder="Ask me anything..." autocomplete="off" required />
-            <button type="submit">Send</button>
-        </form>
+    <div class="chat-widget" onclick="openChat()">
+        <i class="fas fa-comment chat-icon"></i>
     </div>
 
     <script>
@@ -1267,28 +1263,33 @@
         });
     </script>
 
-    <!-- Script for chat widget AI Assistant -->
     <script>
-        document.getElementById("chat-form").addEventListener("submit", async function(e) {
-            e.preventDefault();
-            const userInput = document.getElementById("user-input").value;
-            if (!userInput.trim()) return;
+        let autocomplete;
 
-            // Display user message
-            const chatBox = document.getElementById("chat-box");
-            chatBox.innerHTML += `<div class="user-msg"><b>You:</b> ${userInput}</div>`;
+        function initAutocomplete() {
+            autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById("autocomplete"),
+                {
+                    types: ['geocode'],
+                    componentRestrictions: { country: "in" }
+                }
+            );
 
-            // Send to backend
-            const response = await fetch('/chatbot', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: userInput })
+            autocomplete.addListener("place_changed", function () {
+                const place = autocomplete.getPlace();
+                console.log("Selected:", place.formatted_address || place.name);
+
+                // Optional: If you want lat/lng, use:
+                const loc = place.geometry?.location;
+                if (loc) {
+                    console.log("Lat:", loc.lat(), "Lng:", loc.lng());
+                }
             });
-
-            const data = await response.json();
-            chatBox.innerHTML += `<div class="bot-msg"><b>Bot:</b> ${data.response}</div>`;
-            document.getElementById("user-input").value = "";
-        });
+        }
+    </script>
+    <script async
+            defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDp61ELXZR0XrMJZYzd4gLt30-1zI8F2A4&libraries=places&callback=initAutocomplete">
     </script>
     </body>
     </html>
