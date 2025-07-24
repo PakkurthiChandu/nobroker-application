@@ -1,9 +1,9 @@
 <!-- templates/fragments/postSection.html -->
-<div th:fragment="postSection(allProperties, hasNext)">
+<div th:fragment="postSection(allProperties, hasNext)" xmlns:th="http://www.w3.org/1999/xhtml">
     <div th:each="property : ${allProperties}" class="property-card">
         <a th:href="@{'/viewProperty/' + ${property.propertyId}}">
             <h3 style="font-size:18px; font-weight:600; color:#333; margin:0 0 4px 0;"
-                th:text="${property.bhkType + ' BHK Flat in ' + property.apartmentName + ' For Rent near ' + (property.address != null ? property.address.landmark : 'your location')}">
+                th:text="${property.bhkType + ' BHK Flat in ' + property.apartmentName + (property.isSale ? ' For Buy near ' : ' For Rent near ') + (property.address != null ? property.address.landmark : 'your location')}">
                 Apartment Title
             </h3>
         </a>

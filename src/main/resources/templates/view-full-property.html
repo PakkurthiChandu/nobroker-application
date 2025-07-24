@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1 BHK Flat For Rent In Btm Layout 2nd Stage</title>
+    <title th:text="${property.apartmentName + ' ' + property.address.locality + ' ' + property.address.landmark}"></title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/images/nobroker-favicon.png">
     <style>
         * {
             margin: 0;
@@ -858,12 +859,13 @@
                 <img alt="home icon logo"
                      src="//assets.nobroker.in/static/img/resale/resale_logo_2.png"
                      style="width:48px">
-                <div style="position:absolute; top:130px; left: 148px;">Rent</div>
+                <div style="position:absolute; top:130px; left: 148px;"
+                        th:text="${property.isSale} ? 'Buy' : 'Rent'"></div>
             </div>
         </div>
 
         <div style="border-right: 1px solid #ccc;" class="nav-center" th:if="${property != null and property.address != null}">
-            <span class="nav-title" th:text="${property.bhkType + ' BHK Flat For Rent In ' + property.address.locality}"></span>
+            <span class="nav-title" th:text="${property.bhkType + ' BHK ' + (property.isSale ? ' For Buy near ' : ' For Rent near ') + property.address.locality}"></span>
             <span class="nav-subtitle" th:text="${'Standalone building, ' + property.address.landmark + ', ' + property.address.locality + ', ' + property.address.city + ', India'}"></span>
         </div>
 
