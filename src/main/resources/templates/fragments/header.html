@@ -23,21 +23,27 @@
     <div class="header-right">
       <button class="btn-filled" onclick="window.location.href='/'">Post Your Property</button>
 
-      <div class="profile" style="display: flex; align-items: center;">
-        <img src="https://assets.nobroker.in/nb-new/public/MaterialIcons/accountCircle.svg" alt="" class="h-3.5p w-3.5p mx-0.5p border-1 border-gray-lightest text-gray-lightest mr-0.3p rounded-full">
 
-        <!-- If NOT logged in -->
-        <div sec:authorize="!isAuthenticated()">
+      <div class="profile-name" style="display: flex; align-items: center;">
+        <img src="https://assets.nobroker.in/nb-new/public/MaterialIcons/accountCircle.svg"
+             alt="Profile Icon"
+             class="h-3.5p w-3.5p mx-0.5p border-1 border-gray-lightest text-gray-lightest mr-0.3p rounded-full">
+
+        <!-- If user is NOT logged in -->
+        <div th:if="${session.user == null}">
           <a th:href="@{/login}">
-            <button style="background: none; border: none; color: black; cursor: pointer;">Sign up | Login</button>
+            <button>Sign up/Login</button>
           </a>
         </div>
 
-        <!-- If logged in -->
-        <div sec:authorize="isAuthenticated()">
-          <span th:text="${session.user != null ? session.user.name : 'User'}"></span>
+        <!-- If user IS logged in -->
+        <div th:if="${session.user != null}">
+          <a th:href="@{'/profile/view/' + ${session.user.userId}}"
+             style="text-decoration: none; color: black;"
+             th:text="${session.user.name}">
+            Username
+          </a>
         </div>
-
       </div>
 
 
