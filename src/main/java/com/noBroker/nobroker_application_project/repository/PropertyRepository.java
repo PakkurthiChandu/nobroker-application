@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,8 +23,8 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             "LOWER(a.landmark) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(p.apartmentName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(p.facing) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "CAST(p.bhkType AS string) LIKE CONCAT('%', :keyword, '%') OR " +
-            "CAST(CASE WHEN p.isSale = true THEN p.price ELSE p.expectedRent END AS string) LIKE CONCAT('%', :keyword, '%')" +
+            "STR(p.bhkType) LIKE CONCAT('%', :keyword, '%') OR " +
+            "STR(CASE WHEN p.isSale = true THEN p.price ELSE p.expectedRent END) LIKE CONCAT('%', :keyword, '%')" +
             ") " +
             "AND (:bhkType IS NULL OR p.bhkType IN :bhkType) " +
             "AND (:furnishing IS NULL OR p.furnishing IN :furnishing) " +
