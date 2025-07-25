@@ -1153,10 +1153,8 @@
         msgDiv.scrollTop = msgDiv.scrollHeight;
     }
 </script>
-<footer>
-    <!--    <div th:replace="fragments/footer :: footer" ></div>-->
-    <div th:insert="~{fragments/footer :: footer}"></div>
-
-</footer>
+<script async
+        th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} + '&libraries=places&callback=initMap'">
+</script>
 </body>
 </html>
