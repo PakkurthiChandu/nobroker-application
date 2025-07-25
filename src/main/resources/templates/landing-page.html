@@ -1360,47 +1360,35 @@
     }
 </script>
 
-<script>
-    let autocomplete;
 
-    function initAutocomplete() {
-        autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById("autocomplete"),
-            {
-                types: ['geocode'],
-                componentRestrictions: { country: "in" }
-            }
-        );
-
-        autocomplete.addListener("place_changed", function () {
-            const place = autocomplete.getPlace();
-            console.log("Selected:", place.formatted_address || place.name);
-
-            // Optional: If you want lat/lng, use:
-            const loc = place.geometry?.location;
-            if (loc) {
-                console.log("Lat:", loc.lat(), "Lng:", loc.lng());
-            }
-        });
-
-    }
-</script>
 
 <!--<script-->
 <!--        th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} + '&libraries=places'}">-->
 <!--    async defer</script>-->
 
-<script
-        th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} + '&libraries=places'}"
-        async defer>
-</script>
 
 
 <footer>
     <div th:replace="~{fragments/footer :: footer}"></div>
 </footer>
 
+<script>
+    let autocomplete;
 
+    function initAutocomplete() {
+      const input = document.getElementById("autocomplete");
+      if (!input) {
+        console.error("Autocomplete input field not found!");
+        return;
+      }
+      autocomplete = new google.maps.places.Autocomplete(input, {
+        types: ['geocode'],
+        componentRestrictions: { country: "in" }
+      });
+    }
+</script>
+
+<script th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} + '&libraries=places&callback=initAutocomplete'" async defer></script>
 
 </body>
 </html>
