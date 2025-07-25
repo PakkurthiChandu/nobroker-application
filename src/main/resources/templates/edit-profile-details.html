@@ -440,7 +440,6 @@
   <div class="main-content">
     <div class="profile-section">
 
-      <!-- Flash messages -->
       <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}" style="margin-bottom: 15px;"></div>
       <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}" style="margin-bottom: 15px;"></div>
 
@@ -467,9 +466,9 @@
         <button class="save-btn" type="submit">Save Profile</button>
         <div style="clear: both;"></div>
       </form>
-
     </div>
   </div>
+</div>
 <!-- Chat Widget -->
 <div id="chat-icon" onclick="toggleChatbox()">
   <img src="https://assets.nobroker.in/nb-new/public/Common/chatLightBg.svg" alt="Chat"
@@ -590,7 +589,7 @@
 </footer>
 
 
-  💬
+💬
 </div>
 
 <script>
