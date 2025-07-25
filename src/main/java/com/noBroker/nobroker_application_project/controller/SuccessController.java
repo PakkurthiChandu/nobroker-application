@@ -31,6 +31,7 @@ public class SuccessController {
         User user = (User) session.getAttribute("user");
 
         Transaction tx = new Transaction();
+
         tx.setAmount(164900L);
         tx.setPaymentStatus("SUCCESS");
         tx.setUser(user);

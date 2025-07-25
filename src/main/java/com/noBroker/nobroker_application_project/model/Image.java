@@ -6,10 +6,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "Photos")
 @Getter
 @Setter
-@ToString
+@Table(name = "Photos", indexes = {
+        @Index(name = "idx_image_property", columnList = "property_id")
+})
 public class Image {
 
     @Id

@@ -11,6 +11,10 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Table(name = "transaction", indexes = {
+        @Index(name = "idx_transaction_user", columnList = "user_id")
+})
+
 public class Transaction {
 
     @Id

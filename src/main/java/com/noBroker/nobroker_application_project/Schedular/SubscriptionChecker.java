@@ -24,7 +24,7 @@ public class SubscriptionChecker {
     @Autowired
     private EmailService emailService;
 
-    @Scheduled(cron = "0 16 18 * * ?", zone = "Asia/Kolkata")
+    @Scheduled(cron = "0 09 14 * * ?", zone = "Asia/Kolkata")
     public void checkExpiredSubscriptions() {
         List<User> users = userRepository.findByIsSubscribedTrue();
 

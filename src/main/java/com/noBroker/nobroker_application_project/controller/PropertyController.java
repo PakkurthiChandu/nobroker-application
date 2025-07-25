@@ -114,9 +114,9 @@ public class PropertyController {
         rentalDto.setAvailableFor(property.getAvailableFor());
         rentalDto.setAvailableFrom(property.getAvailableFrom());
         rentalDto.setExpectedRent(property.getExpectedRent() != null ?
-                                  property.getExpectedRent() : 0L);
+                property.getExpectedRent() : 0L);
         rentalDto.setExpectedDeposit(property.getExpectedDeposit() != null ?
-                                      property.getExpectedDeposit() : 0L);
+                property.getExpectedDeposit() : 0L);
         rentalDto.setNegotiation(property.getNegotiation());
         rentalDto.setMonthlyMaintenance(property.getMonthlyMaintenance());
         rentalDto.setPreferredTenets(property.getPreferredTenets());

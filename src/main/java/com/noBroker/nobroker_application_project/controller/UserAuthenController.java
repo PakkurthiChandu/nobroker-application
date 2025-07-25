@@ -81,8 +81,6 @@ public class UserAuthenController {
 
         Boolean isSubscriptionValid = isSubscriptionValid(user);
 
-//        session.setAttribute("isSubscriptionValid", isSubscriptionValid);
-
         Map<String, Boolean> response = new HashMap<>();
         response.put("subscribed", user != null && !user.getTransactions().isEmpty() && isSubscriptionValid);
 
@@ -92,6 +90,7 @@ public class UserAuthenController {
     @GetMapping("/subscriptionForm")
     public  String subscribe(HttpSession session) {
         session.setAttribute("tagetUrl", "/landingPage");
+
         User user = (User) session.getAttribute("user");
 
         if(user == null || user.getTransactions().isEmpty()) {

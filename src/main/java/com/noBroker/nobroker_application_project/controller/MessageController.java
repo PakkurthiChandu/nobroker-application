@@ -30,7 +30,6 @@ public class MessageController {
 
     private String storedOtp = "";
 
-    // In production, use Redis or DB for OTP. For now, simulate DB-based storage.
     private final java.util.Map<String, String> otpStore = new java.util.HashMap<>();
 
     @GetMapping("/loginPage")
@@ -43,8 +42,8 @@ public class MessageController {
     public String sendOtp(@RequestParam("mobilePhone") String mobile, Model model) {
 
         String otp = String.valueOf(new Random().nextInt(900000) + 100000);
-//        otpService.sendOtp(mobile, otp); // imp
-//        otpStore.put(mobile, otp); // imp
+//        otpService.sendOtp(mobile, otp);
+//        otpStore.put(mobile, otp);
 
         System.out.println("otp: " + otp);
 
@@ -64,8 +63,6 @@ public class MessageController {
         if (storedOtp != null && storedOtp.equals(otp)) {
             user = userRepository.findByMobilePhone(mobilePhone).orElse(null);
 
-            System.out.println("opt - verified");
-
             if (user != null) {
 
                 UsernamePasswordAuthenticationToken authToken =
@@ -82,15 +79,12 @@ public class MessageController {
                 return "redirect:/landingPage";
             } else {
                 user = new User();
+
                 user.setMobilePhone(mobilePhone);
                 user.setRole("USER");
                 user.setIsSubscribed(false);
 
-                System.out.println("new User");
-
                 user = userRepository.save(user);
-
-                System.out.println("userId " + user.getUserId());
 
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
@@ -109,7 +103,6 @@ public class MessageController {
         }
 
         model.addAttribute("mobilePhone", mobilePhone);
-
         model.addAttribute("error", "Invalid OTP");
 
         return "verify";

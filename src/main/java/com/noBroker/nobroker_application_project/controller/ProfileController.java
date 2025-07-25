@@ -8,7 +8,9 @@ import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 import com.noBroker.nobroker_application_project.service.TransactionService;
 import com.noBroker.nobroker_application_project.service.UserService;
+
 import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -103,6 +105,7 @@ public class ProfileController {
     @GetMapping("/your-properties/{userId}")
     public String showUserProperties(@PathVariable("userId") Long userId, Model model) {
         User user = userRepository.findById(userId).orElse(null);
+
         model.addAttribute("user", user);
 
         Set<Property> properties = (user != null) ? user.getProperties() : Set.of();
