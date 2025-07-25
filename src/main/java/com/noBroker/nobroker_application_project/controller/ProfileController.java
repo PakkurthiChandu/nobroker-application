@@ -25,7 +25,7 @@ public class ProfileController {
     private final UserService userService;
 
     private PropertyRepository propertyRepository;
-
+    
     @Autowired
     private PropertyService propertyService;
 

@@ -528,10 +528,14 @@
                 <!-- Rent Range Filter -->
                 <!-- Rent Range Filter -->
                 <div class="filter-section">
-<!--                    <h4>Rent Range: ₹<span id="minDisplay">0</span> to ₹<span id="maxDisplay">5,00,000</span></h4>-->
+                    <!--                    <h4>Rent Range: ₹<span id="minDisplay">0</span> to ₹<span id="maxDisplay">5,00,000</span></h4>-->
 
-                    <h4 th:text="${isSale.equalsIgnoreCase('buy') ? 'For Sale Range: ₹' + minRent + ' to ₹' + maxRent : 'For Rent Range: ₹' + minRent + ' to ₹' + maxRent}"></h4>
+                    <!--                    <h4 th:text="${isSale.equalsIgnoreCase('buy') ? 'For Sale Range: ₹' + minRent + ' to ₹' + maxRent : 'For Rent Range: ₹' + minRent + ' to ₹' + maxRent}"></h4>-->
 
+                    <h4>
+                        <span th:text="${isSale.equalsIgnoreCase('buy') ? 'For Sale Range: ₹' : 'For Rent Range: ₹'}"></span>
+                        <span id="minDisplay">0</span> to ₹<span id="maxDisplay">5,00,000</span>
+                    </h4>
                     <div style="position: relative; height: 60px; margin: 20px 0;">
                         <!-- Background track -->
                         <div style="position: absolute; width: 100%; height: 6px; background: #ddd; border-radius: 3px; top: 27px; z-index: 0;"></div>
@@ -577,15 +581,15 @@
                 <h4>Property Status</h4>
                 <div class="filter-section" style="display: flex; flex-wrap: wrap; gap: 10px;">
                     <label style="flex: 1 1 45%; display: flex; align-items: center;">
-                        <input type="radio" name="propertyStatus" value="Under Construction"
-                               th:checked="${propertyStatus != null and propertyStatus == 'Under Construction'}" />
-                        <span style="margin-left: 5px; white-space: nowrap;">Under Construction</span>
+                        <input type="radio" name="propertyStatus" value="Available"
+                               th:checked="${propertyStatus != null and propertyStatus == 'Available'}" />
+                        <span style="margin-left: 5px; white-space: nowrap;">Available</span>
                     </label>
 
                     <label style="flex: 1 1 45%; display: flex; align-items: center;">
-                        <input type="radio" name="propertyStatus" value="Ready"
-                               th:checked="${propertyStatus != null and propertyStatus == 'Ready'}" />
-                        <span style="margin-left: 5px; white-space: nowrap;">Ready</span>
+                        <input type="radio" name="propertyStatus" value="Not Available"
+                               th:checked="${propertyStatus != null and propertyStatus == 'Not Available'}" />
+                        <span style="margin-left: 5px; white-space: nowrap;">Not Available</span>
                     </label>
 
                     <label style="flex: 1 1 45%; display: flex; align-items: center;">
@@ -599,21 +603,21 @@
                 <h4>Furnishing</h4>
                 <div class="filter-section" style="display: flex; flex-wrap: wrap; gap: 10px;">
                     <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                        <input type="checkbox" name="furnishing" value="Fully Furnished"
-                               th:checked="${furnishing != null and furnishing.contains('Fully Furnished')}" />
+                        <input type="checkbox" name="furnishing" value="Fully-Furnished"
+                               th:checked="${furnishing != null and furnishing.contains('Fully-Furnished')}" />
                         <span style="margin-left: 5px;">Full</span>
                     </label>
 
                     <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                        <input type="checkbox" name="furnishing" value="Semi Furnished"
-                               th:checked="${furnishing != null and furnishing.contains('Semi Furnished')}" />
+                        <input type="checkbox" name="furnishing" value="Semi-Furnished"
+                               th:checked="${furnishing != null and furnishing.contains('Semi-Furnished')}" />
                         <span style="margin-left: 5px;">Semi</span>
                     </label>
 
                     <label style="flex: 1 1 30%; display: flex; align-items: center;">
                         <input type="checkbox" name="furnishing" value="Unfurnished"
                                th:checked="${furnishing != null and furnishing.contains('Unfurnished')}" />
-                        <span style="margin-left: 5px;">None</span>
+                        <span style="margin-left: 5px;">Unfurnished</span>
                     </label>
                 </div>
 
@@ -731,21 +735,21 @@
                     <h4>Parking</h4>
                     <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                         <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="checkbox" name="parking" value="Bike"
-                                   th:checked="${parking != null and parking.contains('Bike')}" />
+                            <input type="checkbox" name="parking" value="2-Wheeler"
+                                   th:checked="${parking != null and parking.contains('2-Wheeler')}" />
                             <span style="margin-left: 5px; white-space: nowrap;">Bike</span>
                         </label>
 
                         <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="checkbox" name="parking" value="Car"
-                                   th:checked="${parking != null and parking.contains('Car')}" />
+                            <input type="checkbox" name="parking" value="4-Wheeler"
+                                   th:checked="${parking != null and parking.contains('4-Wheeler')}" />
                             <span style="margin-left: 5px; white-space: nowrap;">Car</span>
                         </label>
 
                         <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="checkbox" name="parking" value="None"
-                                   th:checked="${parking != null and parking.contains('None')}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">None</span>
+                            <input type="checkbox" name="parking" value="both"
+                                   th:checked="${parking != null and parking.contains('both')}" />
+                            <span style="margin-left: 5px; white-space: nowrap;">Both</span>
                         </label>
 
                     </div>

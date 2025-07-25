@@ -59,14 +59,14 @@
             display: flex;
         }
 
-            .nav-left {
-                flex: 1;
-            }
+        .nav-left {
+            flex: 1;
+        }
 
-            .nav-left .property-icon {
-                  font-size: 24px;
-                  margin-right: 10px;
-            }
+        .nav-left .property-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
 
         .nav-left .nav-text {
             font-weight: bold;
@@ -74,22 +74,22 @@
         }
 
         .nav-center {
-          flex: 3;
-          flex-direction: column;
-          padding: 0 20px;
-          align-items: left;
+            flex: 3;
+            flex-direction: column;
+            padding: 0 20px;
+            align-items: left;
         }
 
         .nav-center .nav-title {
-              font-weight: bold;
-              font-size: 16px;
-              margin-bottom: 5px;
-              color: #333;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #333;
         }
 
         .nav-center .nav-subtitle {
-              font-size: 14px;
-              color: #777;
+            font-size: 14px;
+            color: #777;
         }
 
 
@@ -102,24 +102,24 @@
 
 
         .nav-right {
-          flex: 2;
-          justify-content: space-around;
+            flex: 2;
+            justify-content: space-around;
         }
 
         .price-info, .area-info, .deposit-info {
-              margin: 0 10px;
-              text-align: center;
+            margin: 0 10px;
+            text-align: center;
         }
 
         .price-main, .area-value, .deposit-value {
-              font-weight: bold;
-              font-size: 16px;
-              color: #222;
+            font-weight: bold;
+            font-size: 16px;
+            color: #222;
         }
 
         .price-label, .area-label, .deposit-label {
-              font-size: 13px;
-              color: #777;
+            font-size: 13px;
+            color: #777;
         }
 
         .nav-container {
@@ -482,21 +482,21 @@
                 gap: 15px;
             }
             #autocomplete {
-        width: 100%;
-        padding: 10px 14px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        outline: none;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        margin-bottom: 12px;
-    }
+                width: 100%;
+                padding: 10px 14px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+                outline: none;
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                margin-bottom: 12px;
+            }
 
-    #autocomplete:focus {
-        border-color: #ff5722; /* NoBroker orange theme */
-        box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.2);
-    }
+            #autocomplete:focus {
+                border-color: #ff5722; /* NoBroker orange theme */
+                box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.2);
+            }
 
             .overview-grid {
                 grid-template-columns: 1fr;
@@ -512,10 +512,10 @@
             }
         }
         footer {
-          background-color: #f0f0f0;
-          color: #333;
-          text-align: center;
-    }
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+        }
 
         #chat-icon {
             position: fixed;
@@ -624,7 +624,7 @@
                      src="//assets.nobroker.in/static/img/resale/resale_logo_2.png"
                      style="width:48px">
                 <div style="position:absolute; top:130px; left: 148px;"
-                        th:text="${property.isSale} ? 'Sale' : 'Rent'"></div>
+                     th:text="${property.isSale} ? 'Sale' : 'Rent'"></div>
             </div>
         </div>
 
@@ -642,11 +642,17 @@
         <div style="border-right: 1px solid #ccc; width: 100px" class="nav-right" th:if="${property != null}">
             <div class="price-info">
                 <div class="price-main">
-                    <span th:text="'₹' + ${property.expectedRent}"></span>
+                    <!-- Show Price if isSale is true -->
+                    <span th:if="${property.isSale}" th:text="'₹' + ${property.price}"></span>
 
+                    <!-- Show Expected Rent if isSale is false -->
+                    <span th:unless="${property.isSale}" th:text="'₹' + ${property.expectedRent}"></span>
                 </div>
-                <div class="price-label">Rent</div>
+
+                <!-- Change label based on isSale -->
+                <div class="price-label" th:text="${property.isSale} ? 'Price' : 'Rent'"></div>
             </div>
+
 
             <div class="area-info" style="border-right: 1px solid #ccc; border-left: 1px solid #ccc;width: 150px">
                 <div class="area-value" th:text="${property.builtUpArea}"></div>
@@ -777,7 +783,7 @@
                     <div class="info-item-right">
                         <i class="fas fa-tools info-icon"></i>
                         <div class="info-content">
-                            <span class="info-value" th:text="${property.monthlyMaintenance}"></span>
+                            <span class="info-value" th:text="${property.monthlyMaintenance}">1500</span>
                             <span class="info-label">Maintenance</span>
                         </div>
                     </div>
@@ -1148,7 +1154,9 @@
     }
 </script>
 <footer>
-    <div th:replace="fragments/footer :: footer" ></div>
+    <!--    <div th:replace="fragments/footer :: footer" ></div>-->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+
 </footer>
 </body>
 </html>

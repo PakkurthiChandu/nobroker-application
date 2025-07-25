@@ -36,7 +36,7 @@
                 </p>
 
                 <p style="margin:0; font-size:14px; font-weight:bold; color:#222;">
-                    ₹<span th:text="${property.isSale ? T(java.lang.Math).round(property.price * 8.5) : property.expectedRent}">0</span>/mo
+                    ₹<span th:text="${property.isSale ? (property.price)/60 : property.expectedRent}">0</span>/mo
                 </p>
             </div>
 
