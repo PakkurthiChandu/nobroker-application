@@ -405,7 +405,7 @@ public class PropertyController {
             @RequestParam(required = false, defaultValue = "500000") Long maxRent,
             @RequestParam(value = "sortBy", required = false) String sortBy,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size,
+            @RequestParam(value = "size", defaultValue = "10") int size,
             Model model,
             HttpSession session) {
         boolean isSale = "buy".equalsIgnoreCase(isSaleStr);
@@ -469,7 +469,7 @@ public class PropertyController {
             @RequestParam(required = false) Long maxRent,
             @RequestParam(value = "sortBy", required = false) String sortBy,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size,
+            @RequestParam(value = "size", defaultValue = "10") int size,
             Model model) {
         boolean isSale = "buy".equalsIgnoreCase(isSaleStr);
 

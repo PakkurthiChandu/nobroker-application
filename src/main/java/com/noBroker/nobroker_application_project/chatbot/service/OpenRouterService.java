@@ -27,9 +27,6 @@ public class OpenRouterService {
 
         Map<String, Object> requestBody = new HashMap<>();
 
-        System.out.println("Sending to OpenRouter: " + requestBody);
-        System.out.println("Headers: " + headers);
-
         requestBody.put("model", "mistralai/mistral-7b-instruct");
         requestBody.put("messages", List.of(
                 Map.of("role", "system", "content",

@@ -1382,14 +1382,19 @@
                 console.log("Lat:", loc.lat(), "Lng:", loc.lng());
             }
         });
+
     }
 </script>
-<script async
-        th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} + '&libraries=places&callback=initMap'">
-</script>
+
+<script
+        th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} + '&libraries=places'}">
+    async defer</script>
 
 <footer>
     <div th:replace="~{fragments/footer :: footer}"></div>
 </footer>
+
+
+
 </body>
 </html>
