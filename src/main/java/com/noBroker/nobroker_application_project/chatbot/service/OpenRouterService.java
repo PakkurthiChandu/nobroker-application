@@ -19,13 +19,18 @@ public class OpenRouterService {
     private final RestTemplate restTemplate = new RestTemplate();
     private static final String API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
+
     public String getChatBotResponse(String userMessage) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + apiKey);
 
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", "mistralai/mistral-7b-instruct:free");
+
+        System.out.println("Sending to OpenRouter: " + requestBody);
+        System.out.println("Headers: " + headers);
+
+        requestBody.put("model", "mistralai/mistral-7b-instruct");
         requestBody.put("messages", List.of(
                 Map.of("role", "system", "content",
                         "You are Natasha, an AI assistant for the NoBroker real estate website. " +
