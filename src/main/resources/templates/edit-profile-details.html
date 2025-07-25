@@ -439,35 +439,37 @@
 
   <div class="main-content">
     <div class="profile-section">
-      <form th:action="@{/profile/update}" method="post" >
+
+      <!-- Flash messages -->
+      <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}" style="margin-bottom: 15px;"></div>
+      <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}" style="margin-bottom: 15px;"></div>
+
+      <form th:action="@{/profile/update}" method="post">
         <div class="form-group">
           <label>Name</label>
-          <input type="text" th:value="${user.name}" name="name">
+          <input type="text" th:value="${user.name}" name="name" class="form-control">
         </div>
 
         <div class="form-group">
           <label>Email Address</label>
-          <input type="email" th:value="${user.email}" name="email">
+          <input type="email" th:value="${user.email}" name="email" class="form-control">
         </div>
 
         <div class="form-group">
           <label>Mobile Phone</label>
-          <input type="tel" th:value="${user.mobilePhone}" name="mobilePhone" style="max-width: 200px;">
+          <input type="tel" th:value="${user.mobilePhone}" name="mobilePhone" class="form-control" style="max-width: 200px;">
           <span style="color: #28a745; margin-left: 10px;">✓</span>
         </div>
 
         <!-- Hidden field for userId -->
         <input type="hidden" th:value="${user.userId}" name="userId">
 
-
-
         <button class="save-btn" type="submit">Save Profile</button>
         <div style="clear: both;"></div>
-
       </form>
+
     </div>
   </div>
-</div>
 <!-- Chat Widget -->
 <div id="chat-icon" onclick="toggleChatbox()">
   <img src="https://assets.nobroker.in/nb-new/public/Common/chatLightBg.svg" alt="Chat"

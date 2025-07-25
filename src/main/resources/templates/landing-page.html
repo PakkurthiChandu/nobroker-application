@@ -1386,9 +1386,15 @@
     }
 </script>
 
+<!--<script-->
+<!--        th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} + '&libraries=places'}">-->
+<!--    async defer</script>-->
+
 <script
-        th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} + '&libraries=places'}">
-    async defer</script>
+        th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} + '&libraries=places'}"
+        async defer>
+</script>
+
 
 <footer>
     <div th:replace="~{fragments/footer :: footer}"></div>
