@@ -108,7 +108,7 @@ public class PropertyService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         return propertyRepository.searchProperties(
-                isSale, city, keyword.toLowerCase(), bhkType, furnishing, parking, propertyType,
+                isSale, city, keyword.toLowerCase().split(",")[0].trim(), bhkType, furnishing, parking, propertyType,
                 propertyAge, propertyStatus, minBuiltUpArea, maxBuiltUpArea, minRent, maxRent, pageable
         );
     }
