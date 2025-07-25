@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 @ControllerAdvice
 public class GlobalModelAttributes {
 
-    @Value("${GOOGLE_API_KEY}")
+    @Value("${google.api.key}")
     private String googleApiKey;
 
     @ModelAttribute

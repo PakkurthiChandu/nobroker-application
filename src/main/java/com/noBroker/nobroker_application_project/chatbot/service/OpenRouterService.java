@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 public class OpenRouterService {
-    @Value("${OPENROUTER_API_KEY}")
+    @Value("${openrouter.api.key}")
     private String apiKey;
     private final RestTemplate restTemplate = new RestTemplate();
     private static final String API_URL = "https://openrouter.ai/api/v1/chat/completions";
