@@ -572,24 +572,19 @@
                     </div>
                 </div>
 
-
-
-
-
-
                 <!-- Availability -->
                 <h4>Property Status</h4>
                 <div class="filter-section" style="display: flex; flex-wrap: wrap; gap: 10px;">
                     <label style="flex: 1 1 45%; display: flex; align-items: center;">
-                        <input type="radio" name="propertyStatus" value="Available"
-                               th:checked="${propertyStatus != null and propertyStatus == 'Available'}" />
-                        <span style="margin-left: 5px; white-space: nowrap;">Available</span>
+                        <input type="radio" name="propertyStatus" value="Under Construction"
+                               th:checked="${propertyStatus != null and propertyStatus == 'Under Construction'}" />
+                        <span style="margin-left: 5px; white-space: nowrap;">Under Construction</span>
                     </label>
 
                     <label style="flex: 1 1 45%; display: flex; align-items: center;">
-                        <input type="radio" name="propertyStatus" value="Not Available"
-                               th:checked="${propertyStatus != null and propertyStatus == 'Not Available'}" />
-                        <span style="margin-left: 5px; white-space: nowrap;">Not Available</span>
+                        <input type="radio" name="propertyStatus" value="Ready"
+                               th:checked="${propertyStatus != null and propertyStatus == 'Ready'}" />
+                        <span style="margin-left: 5px; white-space: nowrap;">Ready</span>
                     </label>
 
                     <label style="flex: 1 1 45%; display: flex; align-items: center;">

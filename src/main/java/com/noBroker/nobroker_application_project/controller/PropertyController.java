@@ -504,7 +504,7 @@ public class PropertyController {
         return "logout";
     }
 
-    @GetMapping("/property/{propertyId}")
+    @PostMapping("/property/{propertyId}")
     public String deleteProperty(@PathVariable Long propertyId,
                                  RedirectAttributes redirectAttributes) {
         propertyService.deleteById(propertyId);

@@ -95,10 +95,12 @@ public class PropertyService {
                     sort = Sort.by(Sort.Direction.ASC, "createdAt");
                     break;
                 case "priceHighLow":
-                    sort = Sort.by(Sort.Direction.DESC, "price");
+                    String priceField = isSale ? "price" : "expectedRent";
+                    sort = Sort.by(Sort.Direction.DESC, priceField);
                     break;
                 case "priceLowHigh":
-                    sort = Sort.by(Sort.Direction.ASC, "price");
+                    String priceFieldAsc = isSale ? "price" : "expectedRent";
+                    sort = Sort.by(Sort.Direction.ASC, priceFieldAsc);
                     break;
             }
         }
@@ -107,9 +109,10 @@ public class PropertyService {
 
         return propertyRepository.searchProperties(
                 isSale, city, keyword.toLowerCase(), bhkType, furnishing, parking, propertyType,
-                propertyAge, propertyStatus,minBuiltUpArea,maxBuiltUpArea,minRent, maxRent, pageable
+                propertyAge, propertyStatus, minBuiltUpArea, maxBuiltUpArea, minRent, maxRent, pageable
         );
     }
+
 
     public Set<Property> getBookmarkedPropertyDTOs(Long userId) {
         User user = userRepository.findById(userId)

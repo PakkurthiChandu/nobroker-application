@@ -23,6 +23,7 @@ public class User {
 
     @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String mobilePhone;
     private String role;
     private Boolean isSubscribed = false;

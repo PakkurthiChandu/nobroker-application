@@ -25,7 +25,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             "LOWER(p.apartmentName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(p.facing) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "CAST(p.bhkType AS string) LIKE CONCAT('%', :keyword, '%') OR " +
-            "CAST(p.expectedRent AS string) LIKE CONCAT('%', :keyword, '%')" +
+            "CAST(CASE WHEN p.isSale = true THEN p.price ELSE p.expectedRent END AS string) LIKE CONCAT('%', :keyword, '%')" +
             ") " +
             "AND (:bhkType IS NULL OR p.bhkType IN :bhkType) " +
             "AND (:furnishing IS NULL OR p.furnishing IN :furnishing) " +
@@ -34,9 +34,11 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             "AND (:propertyAge IS NULL OR p.propertyAge <= :propertyAge) " +
             "AND (:propertyStatus IS NULL OR :propertyStatus = '' OR p.propertyStatus = :propertyStatus) " +
             "AND (:minBuiltUpArea IS NULL OR p.builtUpArea >= :minBuiltUpArea) " +
-            "AND (:maxBuiltUpArea IS NULL OR p.builtUpArea <= :maxBuiltUpArea)"  +
-            "AND (:minRent IS NULL OR p.expectedRent >= :minRent) " +
-            "AND (:maxRent IS NULL OR p.expectedRent <= :maxRent)")
+            "AND (:maxBuiltUpArea IS NULL OR p.builtUpArea <= :maxBuiltUpArea) " +
+            "AND (:minRent IS NULL OR " +
+            "    (CASE WHEN :isSale = true THEN p.price ELSE p.expectedRent END) >= :minRent) " +
+            "AND (:maxRent IS NULL OR " +
+            "    (CASE WHEN :isSale = true THEN p.price ELSE p.expectedRent END) <= :maxRent)")
     Page<Property> searchProperties(
             @Param("isSale") boolean isSale,
             @Param("city") String city,

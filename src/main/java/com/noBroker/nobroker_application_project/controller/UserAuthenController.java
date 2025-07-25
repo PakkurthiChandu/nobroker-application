@@ -136,7 +136,7 @@ public class UserAuthenController {
 
             if ("SUCCESS".equalsIgnoreCase(latestTransaction.getPaymentStatus())) {
                 LocalDateTime paymentTime = latestTransaction.getPaymentTime();
-                return paymentTime.plusMinutes(1).isAfter(LocalDateTime.now());
+                return paymentTime.plusMonths(1).isAfter(LocalDateTime.now());
             }
         }
 

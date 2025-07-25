@@ -24,7 +24,7 @@ public class SubscriptionChecker {
     @Autowired
     private EmailService emailService;
 
-    @Scheduled(cron = "0 09 14 * * ?", zone = "Asia/Kolkata")
+    @Scheduled(cron = "0 00 9 * * ?", zone = "Asia/Kolkata")
     public void checkExpiredSubscriptions() {
         List<User> users = userRepository.findByIsSubscribedTrue();
 
@@ -32,7 +32,7 @@ public class SubscriptionChecker {
             Transaction latestTransaction = transactionRepository.findTopByUserOrderByPaymentTimeDesc(user).orElse(null);
 
             if (latestTransaction != null) {
-                LocalDateTime expiryDate = latestTransaction.getPaymentTime().plusMinutes(1);
+                LocalDateTime expiryDate = latestTransaction.getPaymentTime().plusMonths(1);
 
                 if (expiryDate.isBefore(LocalDateTime.now())) {
                     user.setIsSubscribed(false);
