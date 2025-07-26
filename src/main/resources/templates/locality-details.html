@@ -584,24 +584,18 @@
 <script th:inline="javascript">
     let map, marker, autocomplete;
 
-    function initMap() {
-        let lat = /*[[${address.latitude}]]*/ 12.9716;
-        let lng = /*[[${address.longitude}]]*/ 77.5946;
-
-        const defaultLoc = {
-            lat: parseFloat(lat) || 12.9716,
-            lng: parseFloat(lng) || 77.5946
-        };
+    function loadMapAtLocation(lat, lng) {
+        const loc = { lat, lng };
 
         // Initialize Map
         map = new google.maps.Map(document.getElementById("localityMap"), {
-            center: defaultLoc,
+            center: loc,
             zoom: 15
         });
 
         // Draggable Marker
         marker = new google.maps.Marker({
-            position: defaultLoc,
+            position: loc,
             map: map,
             draggable: true,
             title: "Drag to set exact location"
@@ -624,14 +618,14 @@
             const place = autocomplete.getPlace();
             if (!place.geometry || !place.geometry.location) return;
 
-            const loc = place.geometry.location;
-            map.setCenter(loc);
-            marker.setPosition(loc);
-            updateLatLngInputs(loc.lat(), loc.lng());
+            const placeLoc = place.geometry.location;
+            map.setCenter(placeLoc);
+            marker.setPosition(placeLoc);
+            updateLatLngInputs(placeLoc.lat(), placeLoc.lng());
         });
 
-        // Initial load
-        updateLatLngInputs(defaultLoc.lat, defaultLoc.lng);
+        // Set initial hidden input values
+        updateLatLngInputs(lat, lng);
     }
 
     function updateLatLngInputs(lat, lng) {
@@ -639,10 +633,33 @@
         document.getElementById("longitude").value = lng;
     }
 
-    // Required for callback to work with async script loading
+    function initMap() {
+        let lat = /*[[${address.latitude}]]*/ 12.9716;
+        let lng = /*[[${address.longitude}]]*/ 77.5946;
+
+        const fallbackLat = parseFloat(lat) || 12.9716;
+        const fallbackLng = parseFloat(lng) || 77.5946;
+
+        // Try to get live location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    loadMapAtLocation(position.coords.latitude, position.coords.longitude);
+                },
+                (error) => {
+                    console.warn("Geolocation failed or was denied. Using fallback.", error);
+                    loadMapAtLocation(fallbackLat, fallbackLng);
+                }
+            );
+        } else {
+            console.warn("Geolocation not supported. Using fallback.");
+            loadMapAtLocation(fallbackLat, fallbackLng);
+        }
+    }
+
+    // Required for async script callback
     window.initMap = initMap;
 </script>
-
 
 <!-- Google Maps API with callback -->
 <script async defer
