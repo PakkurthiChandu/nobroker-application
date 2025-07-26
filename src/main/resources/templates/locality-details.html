@@ -502,13 +502,17 @@
                 <div class="form-group full-width">
                     <label>Pin Location on Map <span class="required">*</span></label>
 
-                    <!-- Search bar -->
-                    <input id="autocompleteLocality" placeholder="Search for location..." type="text" />
+                    <!-- Search Input -->
+                    <input id="autocompleteLocality" placeholder="Search for location..." type="text" class="form-control mb-2"/>
+
+                    <!-- Map Div -->
                     <div id="localityMap" style="height: 400px;"></div>
+
+                    <!-- Hidden Inputs for Coordinates -->
                     <input type="hidden" id="latitude" name="latitude" th:value="${address.latitude}" />
                     <input type="hidden" id="longitude" name="longitude" th:value="${address.longitude}" />
-
                 </div>
+
 
 
                 <div class="btn-group">
@@ -577,62 +581,57 @@
     }
 </script>
 
-<script>
+<script th:inline="javascript">
     let map, marker, autocomplete;
 
     function initMap() {
         let lat = /*[[${address.latitude}]]*/ 12.9716;
         let lng = /*[[${address.longitude}]]*/ 77.5946;
 
-        if (!lat) lat = 12.9716;
-        if (!lng) lng = 77.5946;
+        const defaultLoc = {
+            lat: parseFloat(lat) || 12.9716,
+            lng: parseFloat(lng) || 77.5946
+        };
 
-        const defaultLocation = { lat: parseFloat(lat), lng: parseFloat(lng) };
-
-        // Initialize map
+        // Initialize Map
         map = new google.maps.Map(document.getElementById("localityMap"), {
-            center: defaultLocation,
-            zoom: 15,
+            center: defaultLoc,
+            zoom: 15
         });
 
-        // Marker
+        // Draggable Marker
         marker = new google.maps.Marker({
+            position: defaultLoc,
             map: map,
-            position: defaultLocation,
             draggable: true,
+            title: "Drag to set exact location"
         });
 
-        // Autocomplete
-        autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById("autocompleteLocality"),
-            {
-                types: ["geocode"],
-                componentRestrictions: { country: "in" },
-            }
-        );
-
-        autocomplete.addListener("place_changed", () => {
-            const place = autocomplete.getPlace();
-            if (!place.geometry || !place.geometry.location) {
-                alert("No details available for input: '" + place.name + "'");
-                return;
-            }
-
-            const location = place.geometry.location;
-            map.setCenter(location);
-            marker.setPosition(location);
-
-            updateLatLngInputs(location.lat(), location.lng());
-        });
-
-        // Update lat/lng on marker drag
+        // Update lat/lng inputs on drag
         marker.addListener("dragend", function () {
             const pos = marker.getPosition();
             updateLatLngInputs(pos.lat(), pos.lng());
         });
 
-        // Initial lat/lng set
-        updateLatLngInputs(defaultLocation.lat, defaultLocation.lng);
+        // Google Autocomplete
+        const input = document.getElementById("autocompleteLocality");
+        autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ["geocode"],
+            componentRestrictions: { country: "in" }
+        });
+
+        autocomplete.addListener("place_changed", () => {
+            const place = autocomplete.getPlace();
+            if (!place.geometry || !place.geometry.location) return;
+
+            const loc = place.geometry.location;
+            map.setCenter(loc);
+            marker.setPosition(loc);
+            updateLatLngInputs(loc.lat(), loc.lng());
+        });
+
+        // Initial load
+        updateLatLngInputs(defaultLoc.lat, defaultLoc.lng);
     }
 
     function updateLatLngInputs(lat, lng) {
@@ -640,12 +639,14 @@
         document.getElementById("longitude").value = lng;
     }
 
+    // Required for callback to work with async script loading
     window.initMap = initMap;
 </script>
 
+
 <!-- Google Maps API with callback -->
 <script async defer
-        th:src="https://maps.googleapis.com/maps/api/js?key=[[${googleApiKey}]]&libraries=places&callback=initMap">
+        th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} + '&libraries=places&callback=initMap'}">
 </script>
 
 </body>
