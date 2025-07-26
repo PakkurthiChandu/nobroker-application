@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Post Property - Locality Details</title>
     <link rel="icon" type="image/png" href="/images/nobroker-favicon.png">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+
     <style>
         * {
             box-sizing: border-box;
@@ -504,15 +503,11 @@
                     <label>Pin Location on Map <span class="required">*</span></label>
 
                     <!-- Search bar -->
-                    <input id="autocompleteLocality" placeholder="Search for location..."
-                           type="text" style="width: 100%; padding: 8px; margin: 10px 0;" />
-
-                    <!-- Map -->
-                    <div id="localityMap" style="height: 400px; width: 100%;"></div>
-
-                    <!-- Hidden fields -->
+                    <input id="autocompleteLocality" placeholder="Search for location..." type="text" />
+                    <div id="localityMap" style="height: 400px;"></div>
                     <input type="hidden" id="latitude" name="latitude" th:value="${address.latitude}" />
                     <input type="hidden" id="longitude" name="longitude" th:value="${address.longitude}" />
+
                 </div>
 
 
@@ -582,86 +577,75 @@
     }
 </script>
 
-<script th:inline="javascript">
-    let localityMap, localityMarker, autocomplete;
+<script>
+    let map, marker, autocomplete;
 
-    function initLocalityMap() {
-        const defaultLocation = {
-            lat: [[${address.latitude}]] || 12.9716,
-            lng: [[${address.longitude}]] || 77.5946
-        };
+    function initMap() {
+        let lat = /*[[${address.latitude}]]*/ 12.9716;
+        let lng = /*[[${address.longitude}]]*/ 77.5946;
 
-        localityMap = new google.maps.Map(document.getElementById('localityMap'), {
+        if (!lat) lat = 12.9716;
+        if (!lng) lng = 77.5946;
+
+        const defaultLocation = { lat: parseFloat(lat), lng: parseFloat(lng) };
+
+        // Initialize map
+        map = new google.maps.Map(document.getElementById("localityMap"), {
             center: defaultLocation,
-            zoom: 16,
+            zoom: 15,
         });
 
-        localityMarker = new google.maps.Marker({
+        // Marker
+        marker = new google.maps.Marker({
+            map: map,
             position: defaultLocation,
-            map: localityMap,
             draggable: true,
         });
 
-        updateLocalityInputs(defaultLocation);
-
-        localityMarker.addListener('dragend', function () {
-            const pos = localityMarker.getPosition();
-            updateLocalityInputs(pos);
-        });
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                const current = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                };
-                localityMap.setCenter(current);
-                localityMarker.setPosition(current);
-                updateLocalityInputs(current);
-            });
-        }
-
-        // Setup autocomplete
+        // Autocomplete
         autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('autocompleteLocality'),
-            { types: ['geocode'], componentRestrictions: { country: 'in' } }
+            document.getElementById("autocompleteLocality"),
+            {
+                types: ["geocode"],
+                componentRestrictions: { country: "in" },
+            }
         );
 
-        autocomplete.addListener('place_changed', function () {
+        autocomplete.addListener("place_changed", () => {
             const place = autocomplete.getPlace();
-            if (!place.geometry) return;
-
-            const loc = place.geometry.location;
-            localityMap.setCenter(loc);
-            localityMarker.setPosition(loc);
-            updateLocalityInputs(loc);
-        });
-
-        // 💡 Prevent enter key from submitting form & trigger first prediction
-        document.getElementById('autocompleteLocality').addEventListener('keydown', function (event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-
-                // Simulate down arrow to select first item
-                const simulatedDownArrow = new KeyboardEvent('keydown', {
-                    key: 'ArrowDown',
-                    keyCode: 40,
-                    which: 40,
-                    bubbles: true
-                });
-                this.dispatchEvent(simulatedDownArrow);
+            if (!place.geometry || !place.geometry.location) {
+                alert("No details available for input: '" + place.name + "'");
+                return;
             }
+
+            const location = place.geometry.location;
+            map.setCenter(location);
+            marker.setPosition(location);
+
+            updateLatLngInputs(location.lat(), location.lng());
         });
+
+        // Update lat/lng on marker drag
+        marker.addListener("dragend", function () {
+            const pos = marker.getPosition();
+            updateLatLngInputs(pos.lat(), pos.lng());
+        });
+
+        // Initial lat/lng set
+        updateLatLngInputs(defaultLocation.lat, defaultLocation.lng);
     }
 
-    function updateLocalityInputs(latlng) {
-        document.getElementById('latitude').value = typeof latlng.lat === "function" ? latlng.lat() : latlng.lat;
-        document.getElementById('longitude').value = typeof latlng.lng === "function" ? latlng.lng() : latlng.lng;
+    function updateLatLngInputs(lat, lng) {
+        document.getElementById("latitude").value = lat;
+        document.getElementById("longitude").value = lng;
     }
+
+    window.initMap = initMap;
 </script>
 
-<script async
-        th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${googleApiKey} + '&libraries=places&callback=initMap'">
+<!-- Google Maps API with callback -->
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=[[${googleApiKey}]]&libraries=places&callback=initMap">
 </script>
 
 </body>
