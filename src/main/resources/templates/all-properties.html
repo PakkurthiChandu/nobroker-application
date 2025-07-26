@@ -528,14 +528,11 @@
                 <!-- Rent Range Filter -->
                 <!-- Rent Range Filter -->
                 <div class="filter-section">
-                    <!--                    <h4>Rent Range: ₹<span id="minDisplay">0</span> to ₹<span id="maxDisplay">5,00,000</span></h4>-->
-
-                    <!--                    <h4 th:text="${isSale.equalsIgnoreCase('buy') ? 'For Sale Range: ₹' + minRent + ' to ₹' + maxRent : 'For Rent Range: ₹' + minRent + ' to ₹' + maxRent}"></h4>-->
-
                     <h4>
                         <span th:text="${isSale.equalsIgnoreCase('buy') ? 'For Sale Range: ₹' : 'For Rent Range: ₹'}"></span>
-                        <span id="minDisplay">0</span> to ₹<span id="maxDisplay">5,00,000</span>
+                        <span id="minDisplay" th:text="${minRent}">0</span> to ₹<span id="maxDisplay" th:text="${maxRent}">5,00,000</span>
                     </h4>
+
                     <div style="position: relative; height: 60px; margin: 20px 0;">
                         <!-- Background track -->
                         <div style="position: absolute; width: 100%; height: 6px; background: #ddd; border-radius: 3px; top: 27px; z-index: 0;"></div>
@@ -550,7 +547,7 @@
                                min="0"
                                max="500000"
                                step="1000"
-                               value="0"
+                               th:value="${minRent}"
                                oninput="syncRentRange()"
                                style="position: absolute; width: 100%; height: 60px; background: transparent; outline: none; border: none; -webkit-appearance: none; appearance: none; pointer-events: none; z-index: 3;" />
 
@@ -561,14 +558,14 @@
                                min="0"
                                max="500000"
                                step="1000"
-                               value="500000"
+                               th:value="${maxRent}"
                                oninput="syncRentRange()"
                                style="position: absolute; width: 100%; height: 60px; background: transparent; outline: none; border: none; -webkit-appearance: none; appearance: none; pointer-events: none; z-index: 2;" />
                     </div>
 
                     <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 14px; color: #666;">
-                        <span>Min: ₹<span id="minValue">0</span></span>
-                        <span>Max: ₹<span id="maxValue">5,00,000</span></span>
+                        <span>Min: ₹<span id="minValue" th:text="${minRent}">0</span></span>
+                        <span>Max: ₹<span id="maxValue" th:text="${maxRent}">5,00,000</span></span>
                     </div>
                 </div>
 
@@ -732,21 +729,20 @@
                         <label style="flex: 1 1 30%; display: flex; align-items: center;">
                             <input type="checkbox" name="parking" value="2-Wheeler"
                                    th:checked="${parking != null and parking.contains('2-Wheeler')}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">Bike</span>
+                            <span style="margin-left: 5px; white-space: nowrap;">2-Wheeler</span>
                         </label>
 
                         <label style="flex: 1 1 30%; display: flex; align-items: center;">
                             <input type="checkbox" name="parking" value="4-Wheeler"
                                    th:checked="${parking != null and parking.contains('4-Wheeler')}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">Car</span>
+                            <span style="margin-left: 5px; white-space: nowrap;">4-Wheeler</span>
                         </label>
 
                         <label style="flex: 1 1 30%; display: flex; align-items: center;">
-                            <input type="checkbox" name="parking" value="both"
-                                   th:checked="${parking != null and parking.contains('both')}" />
-                            <span style="margin-left: 5px; white-space: nowrap;">Both</span>
+                            <input type="checkbox" name="parking" value="None"
+                                   th:checked="${parking != null and parking.contains('None')}" />
+                            <span style="margin-left: 5px; white-space: nowrap;">None</span>
                         </label>
-
                     </div>
                 </div>
 
