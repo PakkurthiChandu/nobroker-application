@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class NobrokerApplicationProjectApplication {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(NobrokerApplicationProjectApplication.class, args);
 	}
 

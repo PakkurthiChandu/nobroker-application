@@ -25,9 +25,12 @@ public class StripeService {
                                         .setPriceData(
                                                 SessionCreateParams.LineItem.PriceData.builder()
                                                         .setCurrency("inr")
-                                                        .setUnitAmount(amount) // in paise
+                                                        .setUnitAmount(amount)
                                                         .setProductData(
-                                                                SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                                SessionCreateParams
+                                                                        .LineItem
+                                                                        .PriceData
+                                                                        .ProductData.builder()
                                                                         .setName("Unlock Owner Contact")
                                                                         .build()
                                                         )
@@ -38,8 +41,8 @@ public class StripeService {
                         .build();
 
         Session session = Session.create(params);
+
         return session.getUrl();
     }
-
 }
 

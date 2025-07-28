@@ -5,12 +5,11 @@ import com.noBroker.nobroker_application_project.model.Transaction;
 import com.noBroker.nobroker_application_project.model.User;
 import com.noBroker.nobroker_application_project.repository.TransactionRepository;
 import com.noBroker.nobroker_application_project.repository.UserRepository;
-
 import com.noBroker.nobroker_application_project.service.PropertyService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,14 +26,16 @@ import java.util.Optional;
 @Controller
 public class UserAuthenController {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PropertyService propertyService;
+    private final TransactionRepository transactionRepository;
 
-    @Autowired
-    PropertyService propertyService;
-
-    @Autowired
-    TransactionRepository transactionRepository;
+    public UserAuthenController(UserRepository userRepository, PropertyService propertyService,
+                                TransactionRepository transactionRepository) {
+        this.userRepository = userRepository;
+        this.propertyService = propertyService;
+        this.transactionRepository = transactionRepository;
+    }
 
     @GetMapping("/saveUser")
     public String saveUser(OAuth2AuthenticationToken authentication, Model model, HttpSession session, HttpServletRequest request) {
@@ -43,8 +43,6 @@ public class UserAuthenController {
         String name = authentication.getPrincipal().getAttribute("name");
 
         User user = userRepository.findByEmail(email).orElse(null);
-
-        System.out.println("in google autho");
 
         if (user != null) {
             session.setAttribute("user", user);
@@ -82,6 +80,7 @@ public class UserAuthenController {
         Boolean isSubscriptionValid = isSubscriptionValid(user);
 
         Map<String, Boolean> response = new HashMap<>();
+
         response.put("subscribed", user != null && !user.getTransactions().isEmpty() && isSubscriptionValid);
 
         return response;
@@ -106,7 +105,6 @@ public class UserAuthenController {
 
         session.setAttribute("tagetUrl", "/getOwnerDetails");
         session.setAttribute("propertyId", propertyId);
-
 
         if(user == null || user.getTransactions().isEmpty()) {
             return "subscriptionForm";
@@ -136,6 +134,7 @@ public class UserAuthenController {
 
             if ("SUCCESS".equalsIgnoreCase(latestTransaction.getPaymentStatus())) {
                 LocalDateTime paymentTime = latestTransaction.getPaymentTime();
+
                 return paymentTime.plusMonths(1).isAfter(LocalDateTime.now());
             }
         }

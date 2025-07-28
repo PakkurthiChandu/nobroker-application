@@ -1,10 +1,11 @@
 package com.noBroker.nobroker_application_project.model;
 
 import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
+
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +15,6 @@ import java.time.LocalDateTime;
 @Table(name = "transaction", indexes = {
         @Index(name = "idx_transaction_user", columnList = "user_id")
 })
-
 public class Transaction {
 
     @Id

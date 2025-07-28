@@ -5,6 +5,7 @@ import com.noBroker.nobroker_application_project.model.User;
 import com.noBroker.nobroker_application_project.repository.TransactionRepository;
 import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.noBroker.nobroker_application_project.service.EmailService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,14 +16,16 @@ import java.util.List;
 @Component
 public class SubscriptionChecker {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final TransactionRepository transactionRepository;
+    private final EmailService emailService;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
-
-    @Autowired
-    private EmailService emailService;
+    public SubscriptionChecker(UserRepository userRepository, TransactionRepository transactionRepository,
+                               EmailService emailService) {
+        this.userRepository = userRepository;
+        this.transactionRepository = transactionRepository;
+        this.emailService = emailService;
+    }
 
     @Scheduled(cron = "0 00 9 * * ?", zone = "Asia/Kolkata")
     public void checkExpiredSubscriptions() {
@@ -36,6 +39,7 @@ public class SubscriptionChecker {
 
                 if (expiryDate.isBefore(LocalDateTime.now())) {
                     user.setIsSubscribed(false);
+
                     userRepository.save(user);
 
                     emailService.sendSubscriptionExpiredEmail(user.getEmail(), user.getName());

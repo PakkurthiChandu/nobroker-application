@@ -17,33 +17,36 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers( "/chatbot", "/images/**","/login", "/error","/landingPage","/loginPage", "/send-otp", "/verify","/verify-otp").permitAll()
-                        .requestMatchers("/viewProperty/**", "/view-full-property", "edit/**").hasAnyRole("OIDC_USER","USER")
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .permitAll()
-                )
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/saveUser", true)
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userAuthoritiesMapper(authorities -> {
-                                    Set<GrantedAuthority> mappedAuthorities = new HashSet<>(authorities);
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers( "/chatbot", "/images/**","/login", "/error","/landingPage",
+                            "/loginPage", "/send-otp", "/verify","/verify-otp").permitAll()
+                    .requestMatchers("/viewProperty/**", "/view-full-property",
+                            "edit/**").hasAnyRole("OIDC_USER","USER")
+                    .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                    .loginPage("/login")
+                    .permitAll()
+            )
+            .oauth2Login(oauth2 -> oauth2
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/saveUser", true)
+                    .userInfoEndpoint(userInfo -> userInfo
+                            .userAuthoritiesMapper(authorities -> {
+                                Set<GrantedAuthority> mappedAuthorities = new HashSet<>(authorities);
 
-                                    mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+                                mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-                                    return mappedAuthorities;
-                                })
-                        )
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/landingPage")
-                        .permitAll()
-                );
+                                return mappedAuthorities;
+                            })
+                    )
+            )
+            .logout(logout -> logout
+                    .logoutSuccessUrl("/landingPage")
+                    .permitAll()
+            );
+
         return http.build();
     }
 

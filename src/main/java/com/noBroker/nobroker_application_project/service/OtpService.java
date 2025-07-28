@@ -1,7 +1,6 @@
 package com.noBroker.nobroker_application_project.service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,10 +20,12 @@ public class OtpService {
         String url = "https://www.fast2sms.com/dev/bulkV2";
 
         HttpHeaders headers = new HttpHeaders();
+
         headers.set("authorization", apiKey);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+
         body.add("sender_id", "FSTSMS");
         body.add("message", "Your OTP for NoBroker login is " + otp);
         body.add("language", "english");
@@ -42,5 +43,4 @@ public class OtpService {
             e.printStackTrace();
         }
     }
-
 }

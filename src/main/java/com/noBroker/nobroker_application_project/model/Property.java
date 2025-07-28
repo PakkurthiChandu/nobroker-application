@@ -1,9 +1,10 @@
 package com.noBroker.nobroker_application_project.model;
 
 import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -47,7 +48,6 @@ public class Property {
     private Long expectedDeposit = 0L;
     private String monthlyMaintenance;
     private String preferredTenets;
-
 
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean negotiation;

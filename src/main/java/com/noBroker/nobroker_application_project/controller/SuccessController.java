@@ -19,7 +19,8 @@ public class SuccessController {
     PropertyService propertyService;
     TransactionRepository transactionRepository;
 
-    public SuccessController(UserService userService, PropertyService propertyService, TransactionRepository transactionRepository) {
+    public SuccessController(UserService userService, PropertyService propertyService,
+                             TransactionRepository transactionRepository) {
         this.userService = userService;
         this.propertyService = propertyService;
         this.transactionRepository = transactionRepository;
@@ -27,7 +28,6 @@ public class SuccessController {
 
     @GetMapping("/success")
     public String successPage(HttpSession session, Model model) {
-
         User user = (User) session.getAttribute("user");
 
         Transaction tx = new Transaction();

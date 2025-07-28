@@ -2,25 +2,23 @@ package com.noBroker.nobroker_application_project.service;
 
 import com.noBroker.nobroker_application_project.model.*;
 import com.noBroker.nobroker_application_project.dto.RentalDto;
-import com.noBroker.nobroker_application_project.model.*;
+import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.noBroker.nobroker_application_project.repository.PropertyRepository;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import com.noBroker.nobroker_application_project.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -30,8 +28,8 @@ public class PropertyService {
     private final PropertyRepository propertyRepository;
     private final UserRepository userRepository;
 
-
-    public PropertyService(Cloudinary cloudinary, PropertyRepository propertyRepository, UserRepository userRepository) {
+    public PropertyService(Cloudinary cloudinary, PropertyRepository propertyRepository,
+                           UserRepository userRepository) {
         this.cloudinary = cloudinary;
         this.propertyRepository = propertyRepository;
         this.userRepository = userRepository;
@@ -57,8 +55,10 @@ public class PropertyService {
                 String imageUrl = uploadResult.get("secure_url").toString();
 
                 Image image = new Image();
+
                 image.setImageUrl(imageUrl);
                 image.setProperty(property);
+
                 property.getPhotos().add(image);
             } catch (IOException e) {
                 throw new RuntimeException("Image upload failed", e);
@@ -70,20 +70,11 @@ public class PropertyService {
         propertyRepository.save(property);
     }
 
-    public Page<Property> getAllProperties(boolean isSale, String city, String keyword,
-                                           List<Integer> bhkType,
-                                           String propertyStatus,
-                                           List<String> furnishing,
-                                           List<String> propertyType,
-                                           List<String> parking,
-                                           Integer propertyAge,
-                                           Double minBuiltUpArea,
-                                           Double maxBuiltUpArea,
-                                           Long minRent,
-                                           Long maxRent,
-                                           String sortBy,
-                                           int page,
-                                           int size) {
+    public Page<Property> getAllProperties(boolean isSale, String city, String keyword, List<Integer> bhkType,
+                                           String propertyStatus, List<String> furnishing, List<String> propertyType,
+                                           List<String> parking, Integer propertyAge, Double minBuiltUpArea,
+                                           Double maxBuiltUpArea, Long minRent, Long maxRent, String sortBy,
+                                           int page, int size) {
 
         keyword = (keyword == null || keyword.trim().isEmpty()) ? "" : keyword;
 
@@ -108,11 +99,10 @@ public class PropertyService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         return propertyRepository.searchProperties(
-                isSale, city, keyword.toLowerCase().split(",")[0].trim(), bhkType, furnishing, parking, propertyType,
-                propertyAge, propertyStatus, minBuiltUpArea, maxBuiltUpArea, minRent, maxRent, pageable
-        );
+                isSale, city, keyword.toLowerCase().split(",")[0].trim(), bhkType, furnishing, parking,
+                propertyType, propertyAge, propertyStatus, minBuiltUpArea, maxBuiltUpArea,
+                minRent, maxRent, pageable);
     }
-
 
     public Set<Property> getBookmarkedPropertyDTOs(Long userId) {
         User user = userRepository.findById(userId)
@@ -128,6 +118,7 @@ public class PropertyService {
 
         propertyRepository.delete(property);
     }
+
     public boolean saveBookMarks(Long propertyId, User user) {
         Property property = propertyRepository.findById(propertyId).orElse(null);
         user = userRepository.findByEmail(user.getEmail()).orElse(null);
@@ -152,5 +143,99 @@ public class PropertyService {
         }
 
         userRepository.save(user);
+    }
+
+    public RentalDto getForm3(Property property) {
+        RentalDto rentalDto = new RentalDto();
+
+        rentalDto.setIsSale(property.getIsSale());
+        rentalDto.setAvailableFor(property.getAvailableFor());
+        rentalDto.setAvailableFrom(property.getAvailableFrom());
+        rentalDto.setExpectedRent(property.getExpectedRent() != null ?
+                property.getExpectedRent() : 0L);
+        rentalDto.setExpectedDeposit(property.getExpectedDeposit() != null ?
+                property.getExpectedDeposit() : 0L);
+        rentalDto.setNegotiation(property.getNegotiation());
+        rentalDto.setMonthlyMaintenance(property.getMonthlyMaintenance());
+        rentalDto.setPreferredTenets(property.getPreferredTenets());
+        rentalDto.setFurnishing(property.getFurnishing());
+        rentalDto.setParking(property.getParking());
+        rentalDto.setDescription(property.getDescription());
+        rentalDto.setPrice(property.getPrice());
+        rentalDto.setPropertyStatus(property.getPropertyStatus());
+
+        return rentalDto;
+    }
+
+    public Property updatePropertyDetails(Property property,Property updatedProperty) {
+        property.setApartmentType(updatedProperty.getApartmentType());
+        property.setApartmentName(updatedProperty.getApartmentName());
+        property.setBhkType(updatedProperty.getBhkType());
+        property.setFloor(updatedProperty.getFloor());
+        property.setTotalFloors(updatedProperty.getTotalFloors());
+        property.setPropertyAge(updatedProperty.getPropertyAge());
+        property.setFacing(updatedProperty.getFacing());
+        property.setBuiltUpArea(updatedProperty.getBuiltUpArea());
+
+        return property;
+    }
+
+    public RentalDto getRentalDetails(Property property) {
+        RentalDto rentalDto = new RentalDto();
+
+        rentalDto.setIsSale(property.getIsSale());
+        rentalDto.setAvailableFor(property.getAvailableFor());
+        rentalDto.setAvailableFrom(property.getAvailableFrom());
+        rentalDto.setExpectedRent(property.getExpectedRent() != null ?
+                property.getExpectedRent() : 0L);
+        rentalDto.setExpectedDeposit(property.getExpectedDeposit() != null ?
+                property.getExpectedDeposit() : 0l);
+        rentalDto.setNegotiation(property.getNegotiation());
+        rentalDto.setMonthlyMaintenance(property.getMonthlyMaintenance());
+        rentalDto.setPreferredTenets(property.getPreferredTenets());
+        rentalDto.setFurnishing(property.getFurnishing());
+        rentalDto.setParking(property.getParking());
+        rentalDto.setDescription(property.getDescription());
+        rentalDto.setPrice(property.getPrice());
+        rentalDto.setPropertyStatus(property.getPropertyStatus());
+
+        return rentalDto;
+    }
+
+    public Property saveUpdatedRentalDetails(Property property, RentalDto rentalDto) {
+        property.setIsSale(rentalDto.getIsSale());
+        property.setAvailableFor(rentalDto.getAvailableFor());
+        property.setExpectedRent(rentalDto.getExpectedRent());
+        property.setExpectedDeposit(rentalDto.getExpectedDeposit());
+        property.setNegotiation(rentalDto.getNegotiation());
+        property.setMonthlyMaintenance(rentalDto.getMonthlyMaintenance());
+        property.setAvailableFrom(rentalDto.getAvailableFrom());
+        property.setPreferredTenets(rentalDto.getPreferredTenets());
+        property.setFurnishing(rentalDto.getFurnishing());
+        property.setParking(rentalDto.getParking());
+        property.setDescription(rentalDto.getDescription());
+        property.setPropertyStatus(rentalDto.getPropertyStatus());
+        property.setPrice(rentalDto.getPrice());
+
+        return property;
+    }
+
+    public Property saveRentalDetails(Property property, RentalDto rentalDto) {
+        property.setIsSale(rentalDto.getIsSale());
+        property.setAvailableFor(rentalDto.getAvailableFor());
+        property.setAvailableFrom(rentalDto.getAvailableFrom());
+        property.setExpectedRent(rentalDto.getExpectedRent());
+        property.setExpectedDeposit(rentalDto.getExpectedDeposit() != null ?
+                rentalDto.getExpectedDeposit() : 0L);
+        property.setNegotiation(rentalDto.getNegotiation());
+        property.setMonthlyMaintenance(rentalDto.getMonthlyMaintenance());
+        property.setPreferredTenets(rentalDto.getPreferredTenets());
+        property.setFurnishing(rentalDto.getFurnishing());
+        property.setParking(rentalDto.getParking());
+        property.setDescription(rentalDto.getDescription());
+        property.setPrice(rentalDto.getPrice());
+        property.setPropertyStatus(rentalDto.getPropertyStatus());
+
+        return property;
     }
 }
