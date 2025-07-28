@@ -42,8 +42,8 @@ public class MessageController {
     public String sendOtp(@RequestParam("mobilePhone") String mobile, Model model) {
 
         String otp = String.valueOf(new Random().nextInt(900000) + 100000);
-        otpService.sendOtp(mobile, otp);
-        otpStore.put(mobile, otp);
+//        otpService.sendOtp(mobile, otp);
+//        otpStore.put(mobile, otp);
 
         System.out.println("otp: " + otp);
 
