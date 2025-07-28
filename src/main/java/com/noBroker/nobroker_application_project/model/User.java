@@ -10,7 +10,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
+@Table(name = "users", indexes = {
+        @Index(name = "idx_user_email", columnList = "email")
+})
 public class User {
 
     @Id
@@ -18,13 +20,15 @@ public class User {
     private Long userId;
 
     private String name;
-    private String password;
-    private String email;
-    private String phone;
-    private String role;
-    private Boolean isSubscribed;
 
-    @ManyToMany()
+    @Column(unique = true)
+    private String email;
+    @Column(unique = true)
+    private String mobilePhone;
+    private String role;
+    private Boolean isSubscribed = false;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_bookmarks",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -34,4 +38,7 @@ public class User {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Property> properties = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<Transaction> transactions = new HashSet<>();
 }

@@ -10,6 +10,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Table(name = "address", indexes = {
+        @Index(name = "idx_address_city", columnList = "city")
+})
 public class Address {
 
     @Id
@@ -19,6 +22,9 @@ public class Address {
     private String city;
     private String locality;
     private String landmark;
+
+    private Double latitude;
+    private Double longitude;
 
     @OneToMany(mappedBy = "address")
     private Set<Property> properties = new HashSet<>();

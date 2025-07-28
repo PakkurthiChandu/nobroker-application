@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Post Property - Property Details</title>
+    <link rel="icon" type="image/png" href="/images/nobroker-favicon.png">
     <style>
         * {
             box-sizing: border-box;
@@ -17,21 +18,18 @@
             display: flex;
         }
 
-        /* HEADER STYLES */
+        /* HEADER STYLES - Updated to match NoBroker style */
         .main-header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 24px;
             background-color: #fff;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #ddd;
             z-index: 1000;
             height: 60px;
         }
+
 
         .left-section {
             display: flex;
@@ -45,18 +43,6 @@
             gap: 8px;
         }
 
-        .logo {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #ff385c, #e91e63);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-        }
 
         .brand-name {
             font-weight: bold;
@@ -105,6 +91,92 @@
             border-radius: 20px;
             font-size: 14px;
             color: #374151;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-outline {
+            border: 1px solid #ccc;
+            background-color: white;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-filled {
+            background-color: #009587;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .new-badge {
+            background-color: #ffb300;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: -8px;
+            margin-right: 4px;
+        }
+
+        .new-label {
+            font-size: 10px;
+            color: white;
+            background-color: #009587;
+            border-radius: 8px;
+            padding: 2px 5px;
+            font-weight: bold;
+            position: absolute;
+            top: -5px;
+            right: -10px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .profile-icon {
+            background-color: #ccc;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .menu-icon {
+            font-size: 18px;
+            margin-left: 10px;
         }
 
         /* SIDEBAR */
@@ -334,30 +406,91 @@
         .submit-btn:hover {
             background-color: #059669;
         }
+
+        #chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff5a5f;
+            color: white;
+            padding: 12px 14px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 999;
+        }
+
+        #chatbox {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 10px;
+            background-color: #ff5a5f;
+            font-weight: bold;
+        }
+
+        .chat-title {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .chat-messages {
+            padding: 10px;
+            height: 250px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 8px;
+            border-top: 1px solid #ccc;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .chat-input button {
+            margin-left: 8px;
+            background: #ff5a5f;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="main-header">
-    <div class="left-section">
-        <div class="logo-section">
-            <div class="logo">NB</div>
-            <span class="brand-name">NOBROKER</span>
-        </div>
-    </div>
-    <div class="right-section">
-        <button class="pay-rent">Pay Rent</button>
-        <button class="post-property">Post Your Property</button>
-        <div class="profile">Pakkurthi Chandu ▾</div>
-    </div>
+    <div th:replace="~{fragments/header :: header}"></div>
 </header>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
     <div class="progress-header">
         <span class="progress-text">0% Done</span>
-        <button class="preview-btn">Preview</button>
     </div>
     <ul class="nav-steps">
         <li class="nav-step active">
@@ -384,9 +517,11 @@
     </ul>
 </div>
 
-<!-- MAIN CONTENT -->
 <div class="main-content">
+
     <div class="form-section">
+        <div style="color:green; font-size:18px;" th:if="${message}" class="alert alert-success"
+             th:text="${message}"></div>
         <div class="form-header">
             <h2 class="form-title">Property Details</h2>
         </div>
@@ -398,8 +533,8 @@
                 <div class="form-row">
                     <div class="form-group half-width">
                         <label>Apartment Type<span class="required">*</span></label>
-                        <select th:filed="*{apartmentType}" required>
-                            <option value="" disabled selected>Select Apartment</option>
+                        <select th:field="*{apartmentType}" required>
+                            <option value="" >Select Apartment</option>
                             <option value="Apartment">Apartment</option>
                             <option value="Gated Community">Gated Community</option>
                             <option value="Villa">Villa</option>
@@ -416,17 +551,18 @@
                     <div class="form-group">
                         <label>BHK Type<span class="required">*</span></label>
                         <select th:field="*{bhkType}" required>
-                            <option value="" disabled selected>Select</option>
+                            <option value="" selected>Select</option>
                             <option value="1">1 BHK</option>
                             <option value="2">2 BHK</option>
                             <option value="3">3 BHK</option>
                             <option value="4">4 BHK</option>
+                            <option value="5">4 BHK +</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Floor<span class="required">*</span></label>
                         <select th:field="*{floor}" required>
-                            <option value="" disabled selected>Select</option>
+                            <option value="" selected>Select</option>
                             <option value="0">Ground</option>
                             <option value="1">1st Floor</option>
                             <option value="2">2nd Floor</option>
@@ -437,7 +573,7 @@
                     <div class="form-group">
                         <label>Total Floor<span class="required">*</span></label>
                         <select th:field="*{totalFloors}" required>
-                            <option value="" disabled selected>Select</option>
+                            <option value="" selected>Select</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -451,7 +587,7 @@
                     <div class="form-group half-width">
                         <label>Property Age<span class="required">*</span></label>
                         <select th:field="*{propertyAge}" required>
-                            <option value="" disabled selected>Select</option>
+                            <option value="" selected>Select</option>
                             <option value="1">Less than 1 year</option>
                             <option value="2">1 to 3 years</option>
                             <option value="3">3 to 5 years</option>
@@ -460,9 +596,9 @@
                         </select>
                     </div>
                     <div class="form-group half-width">
-                        <label>Facing</label>
-                        <select th:field="*{facing}">
-                            <option value="" disabled selected>Select</option>
+                        <label>Facing<span class="required">*</span></label>
+                        <select th:field="*{facing}" required>
+                            <option value="" selected>Select</option>
                             <option value="East">East</option>
                             <option value="West">West</option>
                             <option value="North">North</option>
@@ -484,9 +620,15 @@
                             <span class="area-unit">Sq.ft</span>
                         </div>
                     </div>
+                    <div class="form-group half-width">
+                        <label>Property Status<span class="required">*</span></label>
+                        <select th:field="*{propertyStatus}" required>
+                            <option value="" selected>Select</option>
+                            <option value="Under Construction">Under Construction</option>
+                            <option value="Ready">Ready</option>
+                        </select>
+                    </div>
                 </div>
-
-                <!-- Form Actions -->
                 <div class="form-actions">
                     <button type="submit" class="submit-btn">Save & Continue</button>
                 </div>
@@ -495,6 +637,60 @@
     </div>
 
 </div>
+<div id="chat-icon" onclick="toggleChatbox()">
+    <img src="https://assets.nobroker.in/nb-new/public/Common/chatLightBg.svg" alt="Chat"
+         style="width: 40px; height: 40px;">
+</div>
 
+<div id="chatbox" style="display: none;">
+    <div class="chat-header">
+        <img src="/images/ai_bot.png" width="70px" height="70px">
+        <div class="chat-title">
+            <div>Natasha</div>
+            <div>Your AI Assistant</div>
+        </div>
+    </div>
+    <div class="chat-messages" id="chat-messages" style="white-space: pre-line;"></div>
+    <div class="chat-input">
+        <input type="text" id="user-message" placeholder="Ask your question here.." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
 </body>
+<script>
+    function toggleChatbox() {
+        const chatbox = document.getElementById('chatbox');
+        chatbox.style.display = (chatbox.style.display === 'none') ? 'block' : 'none';
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('user-message');
+        const message = input.value.trim();
+        if (message === '') return;
+
+        appendMessage("You", message);
+        input.value = '';
+
+        fetch('/chatbot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        })
+            .then(res => res.text())
+            .then(data => {
+                appendMessage("AI", data);
+            })
+            .catch(() => {
+                appendMessage("AI", "Sorry, something went wrong.");
+            });
+    }
+
+    function appendMessage(sender, text) {
+        const msgDiv = document.getElementById('chat-messages');
+        msgDiv.innerHTML += `<p><strong>${sender}:</strong> ${text}</p>`;
+        msgDiv.scrollTop = msgDiv.scrollHeight;
+    }
+</script>
 </html>

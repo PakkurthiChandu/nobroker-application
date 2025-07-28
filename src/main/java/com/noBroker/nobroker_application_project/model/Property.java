@@ -14,6 +14,20 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Table(name = "property", indexes = {
+        @Index(name = "idx_property_issale", columnList = "isSale"),
+        @Index(name = "idx_property_expected_rent", columnList = "expectedRent"),
+        @Index(name = "idx_property_bhk", columnList = "bhkType"),
+        @Index(name = "idx_property_area", columnList = "builtUpArea"),
+        @Index(name = "idx_property_created", columnList = "createdAt"),
+        @Index(name = "idx_property_furnishing", columnList = "furnishing"),
+        @Index(name = "idx_property_parking", columnList = "parking"),
+        @Index(name = "idx_property_age", columnList = "propertyAge"),
+        @Index(name = "idx_property_status", columnList = "propertyStatus"),
+        @Index(name = "idx_property_address", columnList = "address_id"),
+        @Index(name = "idx_property_amenity", columnList = "amenity_id"),
+        @Index(name = "idx_property_owner", columnList = "user_id")
+})
 public class Property {
 
     @Id
@@ -29,10 +43,11 @@ public class Property {
     private String facing;
     private Double builtUpArea;
     private String availableFor;
-    private Long expectedRent;
-    private Long expectedDeposit;
+    private Long expectedRent = 0L;
+    private Long expectedDeposit = 0L;
     private String monthlyMaintenance;
     private String preferredTenets;
+
 
     @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean negotiation;

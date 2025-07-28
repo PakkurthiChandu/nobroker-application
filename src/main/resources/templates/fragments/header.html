@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <!-- Keep head empty for fragments -->
+</head>
+<body>
+<div th:fragment="header">
+  <div class="header">
+    <!-- Left Section -->
+    <div class="header-left">
+      <div class="logo">
+        <a th:href="@{/landingPage}" class="logo" style="text-decoration: none; color: inherit;">
+          <div class="logo-icon">%</div>
+          <div class="logo-text"><strong>NO</strong><span>BROKER</span></div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="header-right">
+      <button class="btn-filled" onclick="window.location.href='/'">Post Your Property</button>
+
+
+      <div class="profile-name" style="display: flex; align-items: center;">
+        <img src="https://assets.nobroker.in/nb-new/public/MaterialIcons/accountCircle.svg"
+             alt="Profile Icon"
+             class="h-3.5p w-3.5p mx-0.5p border-1 border-gray-lightest text-gray-lightest mr-0.3p rounded-full">
+
+        <!-- If user is NOT logged in -->
+        <div th:if="${session.user == null}">
+          <a th:href="@{/login}">
+            <button>Sign up/Login</button>
+          </a>
+        </div>
+
+        <!-- If user IS logged in -->
+        <div th:if="${session.user != null}">
+          <a th:href="@{'/profile/view/' + ${session.user.userId}}"
+             style="text-decoration: none; color: black;"
+             th:text="${session.user.name}">
+            Username
+          </a>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <!-- Move CSS styles here or link to a common stylesheet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ddd;
+      text-decoration: none;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      text-decoration: none
+    }
+    .logo {
+      width: auto;
+      height: 35px; /* Slightly larger */
+      max-width: 200px;
+      object-fit: contain;
+    }
+
+    /* Make sure the left section has enough space */
+    .left-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 200px; /* Ensures enough space for logo */
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background-color: #ff5a5f;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .logo-text {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .logo-text span {
+      color: #555;
+    }
+    .logo-text strong {
+      color: #000;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .btn-outline {
+      border: 1px solid #ccc;
+      background-color: white;
+      padding: 5px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn-filled {
+      background-color: #009587;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .new-badge {
+      background-color: #ffb300;
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: -8px;
+      margin-right: 4px;
+    }
+    .new-label {
+      font-size: 10px;
+      color: white;
+      background-color: #009587;
+      border-radius: 8px;
+      padding: 2px 5px;
+      font-weight: bold;
+      margin-left: -10px;
+      margin-top: -10px;
+      position: absolute;
+    }
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .profile-icon {
+      background-color: #ccc;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .profile-name {
+      font-size: 14px;
+      font-weight: normal;
+    }
+    .icon-btn {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .menu-icon {
+      font-size: 18px;
+      margin-left: 10px;
+    }
+  </style>
+</div>
+</body>
+</html>

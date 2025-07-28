@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Post Property - Upload Photos</title>
+    <link rel="icon" type="image/png" href="/images/nobroker-favicon.png">
     <style>
         * {
             box-sizing: border-box;
@@ -23,12 +24,8 @@
             top: 0;
             left: 0;
             right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 24px;
             background-color: #fff;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #ddd;
             z-index: 1000;
             height: 60px;
         }
@@ -45,18 +42,6 @@
             gap: 8px;
         }
 
-        .logo {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #ff385c, #e91e63);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-        }
 
         .brand-name {
             font-weight: bold;
@@ -382,30 +367,90 @@
         .submit-btn-green:hover {
             background-color: #059669;
         }
+        #chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff5a5f;
+            color: white;
+            padding: 12px 14px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 999;
+        }
+
+        #chatbox {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 10px;
+            background-color: #ff5a5f;
+            font-weight: bold;
+        }
+
+        .chat-title {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .chat-messages {
+            padding: 10px;
+            height: 250px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 8px;
+            border-top: 1px solid #ccc;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .chat-input button {
+            margin-left: 8px;
+            background: #ff5a5f;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="main-header">
-    <div class="left-section">
-        <div class="logo-section">
-            <div class="logo">NB</div>
-            <span class="brand-name">NOBROKER</span>
-        </div>
-    </div>
-    <div class="right-section">
-        <button class="pay-rent">Pay Rent</button>
-        <button class="post-property">Post Your Property</button>
-        <div class="profile">Pakkurthi Chandu ▾</div>
-    </div>
+    <div th:replace="~{fragments/header :: header}"></div>
 </header>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
     <div class="progress-header">
         <span class="progress-text">80% Done</span>
-        <button class="preview-btn">Preview</button>
     </div>
     <ul class="nav-steps">
         <li class="nav-step">
@@ -478,12 +523,69 @@
         </div>
     </div>
 </div>
+<!-- Chat Widget -->
+<div id="chat-icon" onclick="toggleChatbox()">
+    <img src="https://assets.nobroker.in/nb-new/public/Common/chatLightBg.svg" alt="Chat"
+         style="width: 40px; height: 40px;">
+</div>
+
+<div id="chatbox" style="display: none;">
+    <div class="chat-header">
+        <img src="/images/ai_bot.png" width="70px" height="70px">
+        <div class="chat-title">
+            <div>Natasha</div>
+            <div>Your AI Assistant</div>
+        </div>
+    </div>
+    <div class="chat-messages" id="chat-messages" style="white-space: pre-line;"></div>
+    <div class="chat-input">
+        <input type="text" id="user-message" placeholder="Ask your question here.." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+<script>
+    function toggleChatbox() {
+        const chatbox = document.getElementById('chatbox');
+        chatbox.style.display = (chatbox.style.display === 'none') ? 'block' : 'none';
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('user-message');
+        const message = input.value.trim();
+        if (message === '') return;
+
+        appendMessage("You", message);
+        input.value = '';
+
+        fetch('/chatbot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        })
+            .then(res => res.text())
+            .then(data => {
+                appendMessage("AI", data);
+            })
+            .catch(() => {
+                appendMessage("AI", "Sorry, something went wrong.");
+            });
+    }
+
+    function appendMessage(sender, text) {
+        const msgDiv = document.getElementById('chat-messages');
+        msgDiv.innerHTML += `<p><strong>${sender}:</strong> ${text}</p>`;
+        msgDiv.scrollTop = msgDiv.scrollHeight;
+    }
+</script>
+
+
 
 <script>
     function previewImages(event) {
         const files = event.target.files;
         const previewContainer = document.getElementById('imagePreview');
-        previewContainer.innerHTML = '';
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
