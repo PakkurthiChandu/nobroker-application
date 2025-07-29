@@ -54,7 +54,7 @@ public class PropertyController {
     }
 
     @GetMapping("/localityDetails")
-    public String getFrom2(HttpSession session, Model model){
+    public String getForm2(HttpSession session, Model model){
         Property property = (Property) session.getAttribute("property");
 
         if(property == null) {
@@ -231,6 +231,7 @@ public class PropertyController {
     @GetMapping("/edit/rentals")
     public String showRentalEditForm(HttpSession session, Model model) {
         Property property = (Property) session.getAttribute("property");
+
         if(property == null) {
             return "redirect:/";
         }
@@ -276,7 +277,6 @@ public class PropertyController {
     @PostMapping("/edit/amenities")
     public String updateAmenities(@ModelAttribute Amenity amenity, HttpSession session) {
         Property property = (Property) session.getAttribute("property");
-
         property.setAmenity(amenity);
 
         session.setAttribute("property", property);

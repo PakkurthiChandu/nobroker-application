@@ -33,4 +33,3 @@ public class PaymentController {
         return stripeService.createCheckoutSession(price, successUrl, cancelUrl);
     }
 }
-
