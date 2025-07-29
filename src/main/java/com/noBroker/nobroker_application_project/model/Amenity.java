@@ -20,42 +20,24 @@ public class Amenity {
     private int bathrooms;
     private Integer balcony;
     private String waterSupply;
-
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean petAllowed=false;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean gym=false;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean petAllowed = false;
+    private Boolean gym = false;
     private Boolean nonVeg = false;
-
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean gatedSecurity=false;
-
+    private Boolean gatedSecurity = false;
     private String showProperty;
     private String propertyCondition;
     private String secondaryNumber;
     private String nearByPlace;
-
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean lift=false;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean gasPipeLine=false;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean airConditioner=false;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean park=false;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean houseKeeping=false;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean internetService=false;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean powerBackUp=false;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean serventRoom=false;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean swimmingPool=false;
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean fireSafety=false;
+    private Boolean lift = false;
+    private Boolean gasPipeLine = false;
+    private Boolean airConditioner = false;
+    private Boolean park = false;
+    private Boolean houseKeeping = false;
+    private Boolean internetService = false;
+    private Boolean powerBackUp = false;
+    private Boolean serventRoom = false;
+    private Boolean swimmingPool = false;
+    private Boolean fireSafety = false;
 
     @OneToMany(mappedBy = "amenity")
     private Set<Property> properties = new HashSet<>();

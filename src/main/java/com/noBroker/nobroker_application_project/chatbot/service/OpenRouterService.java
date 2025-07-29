@@ -14,6 +14,7 @@ import java.util.Map;
 
 @Service
 public class OpenRouterService {
+
     @Value("${openrouter.api.key}")
     private String apiKey;
 

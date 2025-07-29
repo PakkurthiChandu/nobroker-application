@@ -38,7 +38,7 @@ public class UserAuthenController {
     }
 
     @GetMapping("/saveUser")
-    public String saveUser(OAuth2AuthenticationToken authentication, Model model, HttpSession session, HttpServletRequest request) {
+    public String saveUser(OAuth2AuthenticationToken authentication, Model model, HttpSession session) {
         String email = authentication.getPrincipal().getAttribute("email");
         String name = authentication.getPrincipal().getAttribute("name");
 

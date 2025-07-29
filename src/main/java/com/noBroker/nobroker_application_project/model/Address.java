@@ -23,7 +23,6 @@ public class Address {
     private String city;
     private String locality;
     private String landmark;
-
     private Double latitude;
     private Double longitude;
 

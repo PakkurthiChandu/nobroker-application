@@ -48,9 +48,7 @@ public class Property {
     private Long expectedDeposit = 0L;
     private String monthlyMaintenance;
     private String preferredTenets;
-
-    @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
-    private Boolean negotiation;
+    private Boolean negotiation = false;
 
     @Temporal(TemporalType.DATE)
     private Date availableFrom;
@@ -59,8 +57,6 @@ public class Property {
     private String parking;
     private String propertyStatus;
     private Long price;
-
-    @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean isSale = true;
 
     @CreationTimestamp
@@ -69,17 +65,18 @@ public class Property {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToMany(mappedBy = "bookmarkedProperties", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "bookmarkedProperties", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<User> bookmarkedByUsers = new HashSet<>();
 
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "property", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            fetch = FetchType.EAGER)
     private Set<Image> photos = new HashSet<>();
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "amenity_id")
     private Amenity amenity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "address_id")
     private Address address;
 

@@ -33,11 +33,6 @@ public class MessageController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/loginPage")
-    public String showLoginPage() {
-        return "loginPage";
-    }
-
     @PostMapping("/send-otp")
     @ResponseBody
     public String sendOtp(@RequestParam("mobilePhone") String mobile, Model model) {

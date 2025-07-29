@@ -6,7 +6,6 @@ import com.noBroker.nobroker_application_project.repository.TransactionRepositor
 import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.noBroker.nobroker_application_project.service.EmailService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
