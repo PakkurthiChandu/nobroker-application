@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class SuccessController {
 
-    UserService userService;
-    PropertyService propertyService;
-    TransactionRepository transactionRepository;
+    private final UserService userService;
+    private final PropertyService propertyService;
+    private final TransactionRepository transactionRepository;
 
     public SuccessController(UserService userService, PropertyService propertyService,
                              TransactionRepository transactionRepository) {
@@ -42,7 +42,7 @@ public class SuccessController {
 
         session.setAttribute("user", user);
 
-        return "redirect:" + (String) session.getAttribute("tagetUrl").toString();
+        return "redirect:" + (String) session.getAttribute("targetUrl").toString();
     }
 
     @GetMapping("/cancel")
