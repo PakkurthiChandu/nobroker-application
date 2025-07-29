@@ -7,7 +7,6 @@ import com.noBroker.nobroker_application_project.repository.TransactionRepositor
 import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;

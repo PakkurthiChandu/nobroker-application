@@ -3,11 +3,9 @@ package com.noBroker.nobroker_application_project.controller;
 import com.noBroker.nobroker_application_project.model.Property;
 import com.noBroker.nobroker_application_project.model.Transaction;
 import com.noBroker.nobroker_application_project.model.User;
-import com.noBroker.nobroker_application_project.repository.PropertyRepository;
 import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 import com.noBroker.nobroker_application_project.service.TransactionService;
-import com.noBroker.nobroker_application_project.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -23,16 +21,12 @@ import java.util.Set;
 @Controller
 public class ProfileController {
 
-    private final UserService userService;
-    private final PropertyRepository propertyRepository;
     private final PropertyService propertyService;
     private final UserRepository userRepository;
     private final TransactionService transactionService;
 
-    public ProfileController(UserService userService, PropertyRepository propertyRepository,
-                             PropertyService propertyService, UserRepository userRepository, TransactionService transactionService) {
-        this.userService = userService;
-        this.propertyRepository = propertyRepository;
+    public ProfileController(PropertyService propertyService, UserRepository userRepository,
+                             TransactionService transactionService) {
         this.propertyService = propertyService;
         this.userRepository = userRepository;
         this.transactionService = transactionService;

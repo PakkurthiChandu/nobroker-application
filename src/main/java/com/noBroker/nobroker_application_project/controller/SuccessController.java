@@ -3,7 +3,6 @@ package com.noBroker.nobroker_application_project.controller;
 import com.noBroker.nobroker_application_project.model.Transaction;
 import com.noBroker.nobroker_application_project.model.User;
 import com.noBroker.nobroker_application_project.repository.TransactionRepository;
-import com.noBroker.nobroker_application_project.service.PropertyService;
 import com.noBroker.nobroker_application_project.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -16,13 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SuccessController {
 
     private final UserService userService;
-    private final PropertyService propertyService;
     private final TransactionRepository transactionRepository;
 
-    public SuccessController(UserService userService, PropertyService propertyService,
-                             TransactionRepository transactionRepository) {
+    public SuccessController(UserService userService, TransactionRepository transactionRepository) {
         this.userService = userService;
-        this.propertyService = propertyService;
         this.transactionRepository = transactionRepository;
     }
 

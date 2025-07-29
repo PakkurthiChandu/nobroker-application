@@ -1,4 +1,4 @@
 package com.noBroker.nobroker_application_project.service.serviceimpl;
 
-public interface EmailService {
+public class OtpServiceImpl {
 }

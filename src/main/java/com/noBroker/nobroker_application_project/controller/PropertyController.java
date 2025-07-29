@@ -28,14 +28,10 @@ import java.util.stream.Collectors;
 @Controller
 public class PropertyController {
 
-    private final UserService userService;
     private final PropertyService propertyService;
-    private final PropertyRepository propertyRepository;
 
-    public PropertyController(UserService userService, PropertyService propertyService, PropertyRepository propertyRepository) {
-        this.userService = userService;
+    public PropertyController(PropertyService propertyService) {
         this.propertyService = propertyService;
-        this.propertyRepository = propertyRepository;
     }
 
     @GetMapping("/")

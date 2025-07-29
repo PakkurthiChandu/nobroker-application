@@ -1,4 +1,4 @@
-package com.noBroker.nobroker_application_project.chatbot.service;
+package com.noBroker.nobroker_application_project.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class OpenRouterService {
+public class OpenRouterServiceImpl {
 
     @Value("${openrouter.api.key}")
     private String apiKey;
@@ -47,8 +47,6 @@ public class OpenRouterService {
 
             return (String) message.get("content");
         }catch (Exception exception) {
-            exception.printStackTrace();
-
             return "Something went wrong";
         }
     }
