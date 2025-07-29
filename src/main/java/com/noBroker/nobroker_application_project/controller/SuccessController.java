@@ -2,7 +2,7 @@ package com.noBroker.nobroker_application_project.controller;
 
 import com.noBroker.nobroker_application_project.model.Transaction;
 import com.noBroker.nobroker_application_project.model.User;
-import com.noBroker.nobroker_application_project.repository.TransactionRepository;
+import com.noBroker.nobroker_application_project.service.TransactionService;
 import com.noBroker.nobroker_application_project.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -15,30 +15,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SuccessController {
 
     private final UserService userService;
-    private final TransactionRepository transactionRepository;
+    private final TransactionService transactionService;
 
-    public SuccessController(UserService userService, TransactionRepository transactionRepository) {
+    public SuccessController(UserService userService, TransactionService transactionService) {
         this.userService = userService;
-        this.transactionRepository = transactionRepository;
+        this.transactionService = transactionService;
     }
 
     @GetMapping("/success")
     public String successPage(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
 
-        Transaction tx = new Transaction();
+        Transaction transaction = new Transaction();
 
-        tx.setAmount(164900L);
-        tx.setPaymentStatus("SUCCESS");
-        tx.setUser(user);
+        transaction.setAmount(164900L);
+        transaction.setPaymentStatus("SUCCESS");
+        transaction.setUser(user);
 
-        transactionRepository.save(tx);
+        transactionService.save(transaction);
 
         user = userService.changeToSubscribe(user.getUserId());
 
         session.setAttribute("user", user);
 
-        return "redirect:" + (String) session.getAttribute("targetUrl").toString();
+        return "redirect:" + session.getAttribute("targetUrl").toString();
     }
 
     @GetMapping("/cancel")

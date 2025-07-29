@@ -10,6 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class RentalDto {
+
     private Boolean isSale;
     private Long expectedRent;
     private Long expectedDeposit;
@@ -21,7 +22,6 @@ public class RentalDto {
     private Date availableFrom;
 
     private String availableFor;
-
     private String preferredTenets;
     private String furnishing;
     private String parking;

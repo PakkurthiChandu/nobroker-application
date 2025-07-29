@@ -3,9 +3,9 @@ package com.noBroker.nobroker_application_project.controller;
 import com.noBroker.nobroker_application_project.model.Property;
 import com.noBroker.nobroker_application_project.model.Transaction;
 import com.noBroker.nobroker_application_project.model.User;
-import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 import com.noBroker.nobroker_application_project.service.TransactionService;
+import com.noBroker.nobroker_application_project.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -15,29 +15,27 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Controller
 public class ProfileController {
 
     private final PropertyService propertyService;
-    private final UserRepository userRepository;
     private final TransactionService transactionService;
+    private final UserService userService;
 
-    public ProfileController(PropertyService propertyService, UserRepository userRepository,
-                             TransactionService transactionService) {
+    public ProfileController(PropertyService propertyService, TransactionService transactionService,
+                             UserService userService) {
         this.propertyService = propertyService;
-        this.userRepository = userRepository;
         this.transactionService = transactionService;
+        this.userService = userService;
     }
 
     @GetMapping("/profile/view/{userId}")
     public String viewProfile(@PathVariable("userId") Long userId,
                               HttpSession session,
                               Model model) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.findById(userId);
 
         model.addAttribute("user", user);
 
@@ -48,20 +46,20 @@ public class ProfileController {
 
     @PostMapping("/profile/update")
     public String updateProfile(@ModelAttribute("user") User updatedUser, RedirectAttributes redirectAttributes) {
-        User user = userRepository.findById(updatedUser.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Optional<User> userByEmail = userRepository.findByEmail(updatedUser.getEmail());
+        User user = userService.findById(updatedUser.getUserId());
 
-        if (userByEmail.isPresent() && !userByEmail.get().getUserId().equals(user.getUserId())) {
+        User userByEmail = userService.findByEmail(updatedUser.getEmail());
+
+        if (userByEmail != null) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Email is already in use.");
 
             return "redirect:/profile/view/" + user.getUserId();
         }
 
-        Optional<User> userByPhone = userRepository.findByMobilePhone(updatedUser.getMobilePhone());
+       User userByPhone = userService.findByMobilePhone(updatedUser.getMobilePhone());
 
-        if (userByPhone.isPresent() && !userByPhone.get().getUserId().equals(user.getUserId())) {
+        if (userByPhone != null) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Mobile number is already in use.");
 
@@ -72,7 +70,7 @@ public class ProfileController {
         user.setEmail(updatedUser.getEmail());
         user.setMobilePhone(updatedUser.getMobilePhone());
 
-        userRepository.save(user);
+        userService.save(user);
 
         redirectAttributes.addFlashAttribute("successMessage",
                 "Profile updated successfully.");
@@ -84,8 +82,7 @@ public class ProfileController {
     public String showShortlisted(@PathVariable("userId") Long userId,
                                   HttpSession session,
                                   Model model) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.findById(userId);
 
         Set<Property> properties = propertyService.getBookmarkedPropertyDTOs(userId);
 
@@ -101,8 +98,7 @@ public class ProfileController {
     public String showPayments(@PathVariable("userId") Long userId,
                                   HttpSession session,
                                   Model model) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.findById(userId);
 
         List<Transaction> transactions = transactionService.getTransactionsByUserId(userId);
 
@@ -114,7 +110,7 @@ public class ProfileController {
 
     @GetMapping("/your-properties/{userId}")
     public String showUserProperties(@PathVariable("userId") Long userId, Model model) {
-        User user = userRepository.findById(userId).orElse(null);
+        User user = userService.findById(userId);
 
         model.addAttribute("user", user);
 

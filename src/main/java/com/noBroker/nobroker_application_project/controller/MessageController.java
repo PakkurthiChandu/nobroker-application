@@ -1,8 +1,8 @@
 package com.noBroker.nobroker_application_project.controller;
 
 import com.noBroker.nobroker_application_project.model.User;
-import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.noBroker.nobroker_application_project.service.OtpService;
+import com.noBroker.nobroker_application_project.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -23,13 +23,13 @@ import java.util.Random;
 public class MessageController {
 
     private final OtpService otpService;
-    private final UserRepository userRepository;
     private final java.util.Map<String, String> otpStore = new java.util.HashMap<>();
+    private final UserService userService;
     private String storedOtp = "";
 
-    public MessageController(OtpService otpService, UserRepository userRepository) {
+    public MessageController(OtpService otpService, UserService userService) {
         this.otpService = otpService;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @PostMapping("/send-otp")
@@ -56,7 +56,7 @@ public class MessageController {
         User user = null;
 
         if (storedOtp != null && storedOtp.equals(otp)) {
-            user = userRepository.findByMobilePhone(mobilePhone).orElse(null);
+            user = userService.findByMobilePhone(mobilePhone);
 
             if (user != null) {
                 UsernamePasswordAuthenticationToken authToken =
@@ -80,7 +80,7 @@ public class MessageController {
                 user.setRole("USER");
                 user.setIsSubscribed(false);
 
-                user = userRepository.save(user);
+                user = userService.save(user);
 
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(

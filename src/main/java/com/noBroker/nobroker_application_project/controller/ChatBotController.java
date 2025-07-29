@@ -1,6 +1,6 @@
-package com.noBroker.nobroker_application_project.chatbot.controller;
+package com.noBroker.nobroker_application_project.controller;
 
-import com.noBroker.nobroker_application_project.chatbot.service.OpenRouterService;
+import com.noBroker.nobroker_application_project.service.OpenRouterService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

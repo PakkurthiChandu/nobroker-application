@@ -65,18 +65,17 @@ public class Property {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToMany(mappedBy = "bookmarkedProperties", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "bookmarkedProperties")
     private Set<User> bookmarkedByUsers = new HashSet<>();
 
-    @OneToMany(mappedBy = "property", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
-            fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "property", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Image> photos = new HashSet<>();
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "amenity_id")
     private Amenity amenity;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "address_id")
     private Address address;
 

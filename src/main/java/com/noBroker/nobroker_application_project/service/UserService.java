@@ -1,40 +1,16 @@
 package com.noBroker.nobroker_application_project.service;
 
 import com.noBroker.nobroker_application_project.model.User;
-import com.noBroker.nobroker_application_project.repository.UserRepository;
 
-import org.springframework.stereotype.Service;
+public interface UserService {
 
-@Service
-public class UserService {
+    User changeToSubscribe(Long userId);
 
-    private final UserRepository userRepository;
+    User save(User user);
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    User findByEmail(String email);
 
-    public User changeToSubscribe(Long userId) {
-        User user = userRepository.findById(userId).orElse(null);
+    User findByMobilePhone(String mobilePhone);
 
-        if(user != null){
-            user.setIsSubscribed(true);
-
-            return userRepository.save(user);
-        }
-
-        return null;
-    }
-
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
-    }
-
-    public void saveUser(User user) {
-        userRepository.save(user);
-    }
-
-    public User findByEmail(String email) {
-        return  userRepository.findByEmail(email).orElse(null);
-    }
+    User findById(Long userId);
 }

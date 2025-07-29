@@ -1,5 +1,6 @@
-package com.noBroker.nobroker_application_project.service;
+package com.noBroker.nobroker_application_project.service.serviceimpl;
 
+import com.noBroker.nobroker_application_project.service.EmailService;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;

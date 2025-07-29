@@ -2,13 +2,12 @@ package com.noBroker.nobroker_application_project.controller;
 
 import com.noBroker.nobroker_application_project.dto.RentalDto;
 import com.noBroker.nobroker_application_project.model.Address;
-import com.noBroker.nobroker_application_project.repository.PropertyRepository;
 import com.noBroker.nobroker_application_project.model.User;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 import com.noBroker.nobroker_application_project.model.Amenity;
 import com.noBroker.nobroker_application_project.model.Property;
-import com.noBroker.nobroker_application_project.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.data.domain.Page;
@@ -21,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -344,10 +344,11 @@ public class PropertyController {
                 propertyType, parking, propertyAge,minBuiltUpArea,maxBuiltUpArea,
                 minRent, maxRent,sortBy, page, size);
 
-        List<Long> bookmarkedIds = user.getBookmarkedProperties()
-                .stream()
-                .map(Property::getPropertyId)
-                .collect(Collectors.toList());
+        List<Long> bookmarkedIds = new ArrayList<>();
+
+        for (Property property : user.getBookmarkedProperties()) {
+            bookmarkedIds.add(property.getPropertyId());
+        }
 
         model.addAttribute("bookmarkedProperties", bookmarkedIds);
         model.addAttribute("allProperties", propertyPage.getContent());
@@ -396,7 +397,8 @@ public class PropertyController {
 
         Page<Property> propertyPage = propertyService.getAllProperties(
                 isSale, city, searchKeyword, bhkType, propertyStatus, furnishing,
-                propertyType, parking, propertyAge,minBuiltUpArea,maxBuiltUpArea,minRent, maxRent, sortBy, page, size);
+                propertyType, parking, propertyAge, minBuiltUpArea, maxBuiltUpArea,
+                minRent, maxRent, sortBy, page, size);
 
         model.addAttribute("allProperties", propertyPage.getContent());
         model.addAttribute("hasNext", propertyPage.hasNext());
@@ -423,33 +425,14 @@ public class PropertyController {
     }
 
     @PostMapping("/property/{propertyId}")
-    public String deleteProperty(@PathVariable Long propertyId,
+    public String deleteProperty(@PathVariable Long propertyId, HttpSession session,
                                  RedirectAttributes redirectAttributes) {
+        User user = (User) session.getAttribute("user");
+
         propertyService.deleteById(propertyId);
 
         redirectAttributes.addFlashAttribute("message", "Property deleted successfully !!!");
 
-        return "redirect:/";
-    }
-
-    @PostMapping("/toggleBookmark/{propertyId}")
-    @ResponseBody
-    public Map<String, Object> toggleBookmark(@PathVariable Long propertyId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-
-        boolean bookmarked = propertyService.saveBookMarks(propertyId, user);
-
-        return Map.of(
-                "success", true,
-                "bookmarked", bookmarked
-        );
-    }
-
-    @PostMapping("/removeBookMarks/{userId}/{propertyId}")
-    public String removeBookMarka(@PathVariable("userId") Long userId, @PathVariable("propertyId") Long propertyId,
-                                  HttpSession session) {
-        propertyService.removeBookmarks(propertyId, userId);
-
-        return "redirect:/shortlisted-properties/"+userId;
+        return "redirect:/your-properties/" + user.getUserId();
     }
 }

@@ -7,6 +7,8 @@ import com.noBroker.nobroker_application_project.repository.TransactionRepositor
 import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 
+import com.noBroker.nobroker_application_project.service.TransactionService;
+import com.noBroker.nobroker_application_project.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
@@ -25,15 +27,17 @@ import java.util.Optional;
 @Controller
 public class UserAuthenController {
 
-    private final UserRepository userRepository;
     private final PropertyService propertyService;
     private final TransactionRepository transactionRepository;
+    private final UserService userService;
+    private final TransactionService transactionService;
 
-    public UserAuthenController(UserRepository userRepository, PropertyService propertyService,
-                                TransactionRepository transactionRepository) {
-        this.userRepository = userRepository;
+    public UserAuthenController(PropertyService propertyService, TransactionRepository transactionRepository,
+                                UserService userService, TransactionService transactionService) {
         this.propertyService = propertyService;
         this.transactionRepository = transactionRepository;
+        this.userService = userService;
+        this.transactionService = transactionService;
     }
 
     @GetMapping("/saveUser")
@@ -41,7 +45,7 @@ public class UserAuthenController {
         String email = authentication.getPrincipal().getAttribute("email");
         String name = authentication.getPrincipal().getAttribute("name");
 
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = userService.findByEmail(email);
 
         if (user != null) {
             session.setAttribute("user", user);
@@ -56,7 +60,7 @@ public class UserAuthenController {
             user.setIsSubscribed(false);
             user.setRole("USER");
 
-            user  = userRepository.save(user);
+            user  = userService.save(user);
 
             session.setAttribute("user", user);
             model.addAttribute("user", user);
@@ -126,13 +130,11 @@ public class UserAuthenController {
     }
 
     public boolean isSubscriptionValid(User user) {
-        Optional<Transaction> optionalTransaction = transactionRepository.findTopByUserOrderByPaymentTimeDesc(user);
+        Transaction transaction = transactionService.findTopByUserOrderByPaymentTimeDesc(user);
 
-        if (optionalTransaction.isPresent()) {
-            Transaction latestTransaction = optionalTransaction.get();
-
-            if ("SUCCESS".equalsIgnoreCase(latestTransaction.getPaymentStatus())) {
-                LocalDateTime paymentTime = latestTransaction.getPaymentTime();
+        if (transaction != null) {
+            if ("SUCCESS".equalsIgnoreCase(transaction.getPaymentStatus())) {
+                LocalDateTime paymentTime = transaction.getPaymentTime();
 
                 return paymentTime.plusMonths(1).isAfter(LocalDateTime.now());
             }

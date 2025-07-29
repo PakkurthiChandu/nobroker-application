@@ -1,6 +1,6 @@
 package com.noBroker.nobroker_application_project.controller;
 
-import com.noBroker.nobroker_application_project.repository.UserRepository;
+import com.noBroker.nobroker_application_project.service.UserService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,17 +10,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/{userId}/shortlists")
     public String getProperty(@PathVariable Long userId, Model model) {
         model.addAttribute("userId", userId);
-        model.addAttribute("allProperties", userRepository.findById(userId)
-                .orElse(null).getProperties());
+        model.addAttribute("allProperties", userService.findById(userId));
 
         return "all-properties";
     }
