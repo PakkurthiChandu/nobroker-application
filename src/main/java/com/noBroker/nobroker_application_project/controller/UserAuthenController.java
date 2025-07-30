@@ -3,12 +3,10 @@ package com.noBroker.nobroker_application_project.controller;
 import com.noBroker.nobroker_application_project.model.Property;
 import com.noBroker.nobroker_application_project.model.Transaction;
 import com.noBroker.nobroker_application_project.model.User;
-import com.noBroker.nobroker_application_project.repository.TransactionRepository;
-import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.noBroker.nobroker_application_project.service.PropertyService;
-
 import com.noBroker.nobroker_application_project.service.TransactionService;
 import com.noBroker.nobroker_application_project.service.UserService;
+
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
@@ -22,20 +20,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 public class UserAuthenController {
 
     private final PropertyService propertyService;
-    private final TransactionRepository transactionRepository;
     private final UserService userService;
     private final TransactionService transactionService;
 
-    public UserAuthenController(PropertyService propertyService, TransactionRepository transactionRepository,
-                                UserService userService, TransactionService transactionService) {
+    public UserAuthenController(PropertyService propertyService, UserService userService,
+                                TransactionService transactionService) {
         this.propertyService = propertyService;
-        this.transactionRepository = transactionRepository;
         this.userService = userService;
         this.transactionService = transactionService;
     }

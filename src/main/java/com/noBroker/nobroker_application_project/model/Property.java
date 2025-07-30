@@ -68,7 +68,8 @@ public class Property {
     @ManyToMany(mappedBy = "bookmarkedProperties")
     private Set<User> bookmarkedByUsers = new HashSet<>();
 
-    @OneToMany(mappedBy = "property", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "property", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            fetch = FetchType.EAGER)
     private Set<Image> photos = new HashSet<>();
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
