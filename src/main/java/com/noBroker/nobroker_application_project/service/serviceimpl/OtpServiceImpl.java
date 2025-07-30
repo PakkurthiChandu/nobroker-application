@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -37,10 +36,8 @@ public class OtpServiceImpl implements OtpService {
         RestTemplate restTemplate = new RestTemplate();
 
         try {
-            ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
-            System.out.println("Fast2SMS response: " + response.getBody());
+            restTemplate.postForEntity(url, entity, String.class);
         } catch (Exception e) {
-            System.out.println("Error sending OTP: " + e.getMessage());
             e.printStackTrace();
         }
     }

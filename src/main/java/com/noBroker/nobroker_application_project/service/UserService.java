@@ -8,9 +8,13 @@ public interface UserService {
 
     User save(User user);
 
+    User findByEmailNotId(String email, Long userId);
+
+    User findByMobilePhoneNotId(String mobilePhone, Long userId);
+
+    User findById(Long userId);
+
     User findByEmail(String email);
 
     User findByMobilePhone(String mobilePhone);
-
-    User findById(Long userId);
 }

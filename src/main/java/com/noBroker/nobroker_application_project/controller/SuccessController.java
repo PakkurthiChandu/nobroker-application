@@ -8,7 +8,6 @@ import com.noBroker.nobroker_application_project.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -23,7 +22,7 @@ public class SuccessController {
     }
 
     @GetMapping("/success")
-    public String successPage(HttpSession session, Model model) {
+    public String successPage(HttpSession session) {
         User user = (User) session.getAttribute("user");
 
         Transaction transaction = new Transaction();

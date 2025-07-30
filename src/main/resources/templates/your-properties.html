@@ -474,10 +474,10 @@
             <h3>Manage your Account</h3>
         </div>
         <ul class="sidebar-menu">
-            <li><a th:href="@{'/profile/view/' + ${user.userId}}">Basic Profile</a></li>
-            <li><a th:href="@{'/shortlisted-properties/' + ${user.userId}}">Your Shortlist</a></li>
-            <li><a th:href="@{'/shortlisted-payments/' + ${user.userId}}">Your Payments</a></li>
-            <li><a class="active" th:href="@{'/your-properties/' + ${user.userId}}">Your Properties</a></li>
+            <li><a th:href="@{'/profile/view/' + ${session.user.userId}}">Basic Profile</a></li>
+            <li><a th:href="@{'/shortlisted-properties/' + ${session.user.userId}}">Your Shortlist</a></li>
+            <li><a th:href="@{'/shortlisted-payments/' + ${session.user.userId}}">Your Payments</a></li>
+            <li><a class="active" th:href="@{'/your-properties/' + ${session.user.userId}}">Your Properties</a></li>
             <!-- need to change-->
             <li><a th:href="@{'/logout'}">Sign Out</a></li>
         </ul>

@@ -39,16 +39,14 @@ public class ProfileController {
 
         model.addAttribute("user", user);
 
-        session.setAttribute("user", user);
-
         return "edit-profile-details";
     }
 
     @PostMapping("/profile/update")
-    public String updateProfile(@ModelAttribute("user") User updatedUser, RedirectAttributes redirectAttributes) {
+    public String updateProfile(@ModelAttribute("user") User updatedUser, RedirectAttributes redirectAttributes,
+                                HttpSession session) {
         User user = userService.findById(updatedUser.getUserId());
-
-        User userByEmail = userService.findByEmail(updatedUser.getEmail());
+        User userByEmail = userService.findByEmailNotId(updatedUser.getEmail(), updatedUser.getUserId());
 
         if (userByEmail != null) {
             redirectAttributes.addFlashAttribute("errorMessage",
@@ -57,7 +55,7 @@ public class ProfileController {
             return "redirect:/profile/view/" + user.getUserId();
         }
 
-       User userByPhone = userService.findByMobilePhone(updatedUser.getMobilePhone());
+       User userByPhone = userService.findByMobilePhoneNotId(updatedUser.getMobilePhone(), updatedUser.getUserId());
 
         if (userByPhone != null) {
             redirectAttributes.addFlashAttribute("errorMessage",
@@ -70,7 +68,9 @@ public class ProfileController {
         user.setEmail(updatedUser.getEmail());
         user.setMobilePhone(updatedUser.getMobilePhone());
 
-        userService.save(user);
+        user = userService.save(user);
+
+        session.setAttribute("user", user);
 
         redirectAttributes.addFlashAttribute("successMessage",
                 "Profile updated successfully.");
@@ -80,30 +80,20 @@ public class ProfileController {
 
     @GetMapping("/shortlisted-properties/{userId}")
     public String showShortlisted(@PathVariable("userId") Long userId,
-                                  HttpSession session,
                                   Model model) {
-        User user = userService.findById(userId);
-
         Set<Property> properties = propertyService.getBookmarkedPropertyDTOs(userId);
 
-        model.addAttribute("user", user);
         model.addAttribute("allProperties", properties);
-
-        session.setAttribute("user", user);
 
         return "shortlist";
     }
 
     @GetMapping("/shortlisted-payments/{userId}")
     public String showPayments(@PathVariable("userId") Long userId,
-                                  HttpSession session,
                                   Model model) {
-        User user = userService.findById(userId);
-
         List<Transaction> transactions = transactionService.getTransactionsByUserId(userId);
 
         model.addAttribute("transactions", transactions);
-        model.addAttribute("user",user);
 
         return "payments";
     }
@@ -111,8 +101,6 @@ public class ProfileController {
     @GetMapping("/your-properties/{userId}")
     public String showUserProperties(@PathVariable("userId") Long userId, Model model) {
         User user = userService.findById(userId);
-
-        model.addAttribute("user", user);
 
         Set<Property> properties = (user != null) ? user.getProperties() : Set.of();
 

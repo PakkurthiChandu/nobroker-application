@@ -16,14 +16,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Controller
 public class MessageController {
 
     private final OtpService otpService;
-    private final java.util.Map<String, String> otpStore = new java.util.HashMap<>();
+    private final Map<String, String> otpStore = new HashMap<>();
     private final UserService userService;
     private String storedOtp = "";
 
@@ -52,6 +54,7 @@ public class MessageController {
     @PostMapping("/verify-otp")
     public String verifyOtp(@RequestParam String mobilePhone,
                             @RequestParam String otp,
+                            HttpSession session,
                             Model model, HttpServletRequest request) {
         User user = null;
 
@@ -67,10 +70,11 @@ public class MessageController {
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                HttpSession session = request.getSession(true);
+//                HttpSession session = request.getSession(true);
+
+                session.setAttribute("user", user);
 
                 session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-                session.setAttribute("user", user);
 
                 return "redirect:/landingPage";
             } else {
@@ -90,10 +94,11 @@ public class MessageController {
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                HttpSession session = request.getSession(true);
+//                HttpSession session = request.getSession(true);
+
+                session.setAttribute("user", user);
 
                 session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-                session.setAttribute("user", user);
 
                 return "redirect:/profile/view/"+ user.getUserId();
             }

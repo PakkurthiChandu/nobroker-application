@@ -72,11 +72,11 @@ public class Property {
             fetch = FetchType.EAGER)
     private Set<Image> photos = new HashSet<>();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "amenity_id")
     private Amenity amenity;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
 

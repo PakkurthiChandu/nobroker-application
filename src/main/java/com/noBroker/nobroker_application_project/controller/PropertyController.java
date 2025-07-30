@@ -3,6 +3,8 @@ package com.noBroker.nobroker_application_project.controller;
 import com.noBroker.nobroker_application_project.dto.RentalDto;
 import com.noBroker.nobroker_application_project.model.Address;
 import com.noBroker.nobroker_application_project.model.User;
+import com.noBroker.nobroker_application_project.service.AddressService;
+import com.noBroker.nobroker_application_project.service.AmenityService;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 import com.noBroker.nobroker_application_project.model.Amenity;
 import com.noBroker.nobroker_application_project.model.Property;
@@ -26,13 +28,23 @@ import java.util.List;
 public class PropertyController {
 
     private final PropertyService propertyService;
+    private final AddressService addressService;
+    private final AmenityService amenityService;
 
-    public PropertyController(PropertyService propertyService) {
+    public PropertyController(PropertyService propertyService, AddressService addressService,
+                              AmenityService amenityService) {
         this.propertyService = propertyService;
+        this.addressService = addressService;
+        this.amenityService = amenityService;
+    }
+
+    @GetMapping("/landingPage")
+    public String getLandingPage() {
+        return "landing-page";
     }
 
     @GetMapping("/")
-    public String getForm1(Model model){
+    public String getPropertyForm(Model model){
         model.addAttribute("property", new Property());
         model.addAttribute("editMode", false);
 
@@ -47,20 +59,14 @@ public class PropertyController {
     }
 
     @GetMapping("/localityDetails")
-    public String getForm2(HttpSession session, Model model){
+    public String getLocalityDetailsForm(HttpSession session, Model model){
         Property property = (Property) session.getAttribute("property");
 
         if(property == null) {
             return "redirect:/";
         }
 
-        Address address = property.getAddress();
-
-        if(address == null) {
-            address = new Address();
-        }
-
-        model.addAttribute("address", address);
+        model.addAttribute("address", new Address());
         model.addAttribute("editMode", false);
 
         return "locality-details";
@@ -74,7 +80,10 @@ public class PropertyController {
             return "redirect:/";
         }
 
-        property.setAddress(address);
+        Address existingOrNewAddress = addressService.findOrCreate(address);
+
+        property.setAddress(existingOrNewAddress);
+        address.getProperties().add(property);
 
         session.setAttribute("property", property);
 
@@ -82,14 +91,14 @@ public class PropertyController {
     }
 
     @GetMapping("/rentalDetails")
-    public String getFrom3(HttpSession session, Model model){
+    public String getRentalDetailsForm(HttpSession session, Model model){
         Property property = (Property)session.getAttribute("property");
 
         if(property == null) {
             return "redirect:/";
         }
 
-        RentalDto rentalDto = propertyService.getForm3(property);
+        RentalDto rentalDto = propertyService.getRentalDetails(property);
 
         model.addAttribute("property", property);
         model.addAttribute("rentalDto", rentalDto);
@@ -119,12 +128,8 @@ public class PropertyController {
             return "redirect:/";
         }
 
-        if(property.getAmenity() == null) {
-            property.setAmenity(new Amenity());
-        }
-
         model.addAttribute("editMode", false);
-        model.addAttribute("amenity", property.getAmenity());
+        model.addAttribute("amenity", new Amenity());
 
         return "amenities-details";
     }
@@ -137,7 +142,10 @@ public class PropertyController {
             return "redirect:/";
         }
 
-        property.setAmenity(amenity);
+        Amenity existingOrNewAmenity = amenityService.findOrCreateAmenity(amenity);
+
+        property.setAmenity(existingOrNewAmenity);
+        existingOrNewAmenity.getProperties().add(property);
 
         session.setAttribute("property", property);
 
@@ -145,8 +153,7 @@ public class PropertyController {
     }
 
     @GetMapping("/images")
-    public String propertyImages(Model model, HttpSession session) {
-        model.addAttribute("editMode", session.getAttribute("property") != null);
+    public String propertyImages(Model model) {
         model.addAttribute("editMode", false);
 
         return "gallery";
@@ -155,7 +162,7 @@ public class PropertyController {
     @PostMapping("/images")
     public String uploadImages(@RequestParam("propertyImages") MultipartFile[] propertyImages,
                                HttpSession session) {
-        Property property = (Property)session.getAttribute("property");
+        Property property = (Property) session.getAttribute("property");
 
         if(property == null) {
             return "redirect:/";
@@ -185,7 +192,7 @@ public class PropertyController {
     @PostMapping("/edit/propertyDetails")
     public String updatePropertyDetails(Property updatedProperty,
                                         HttpSession session) {
-        Property property = (Property)session.getAttribute("property");
+        Property property = (Property) session.getAttribute("property");
 
         if (property == null) {
             return "redirect:/";
@@ -214,7 +221,9 @@ public class PropertyController {
     public String updateAddress(@ModelAttribute Address address, HttpSession session) {
         Property property = (Property) session.getAttribute("property");
 
-        property.setAddress(address);
+        Address existingOrNewAddress = addressService.findOrCreate(address);
+
+        property.setAddress(existingOrNewAddress);
 
         session.setAttribute("property", property);
 
@@ -270,7 +279,10 @@ public class PropertyController {
     @PostMapping("/edit/amenities")
     public String updateAmenities(@ModelAttribute Amenity amenity, HttpSession session) {
         Property property = (Property) session.getAttribute("property");
-        property.setAmenity(amenity);
+
+        Amenity existingOrNewAmenity = amenityService.findOrCreateAmenity(property.getAmenity());
+
+        property.setAmenity(existingOrNewAmenity);
 
         session.setAttribute("property", property);
 
@@ -307,11 +319,6 @@ public class PropertyController {
         return "redirect:/";
     }
 
-    @GetMapping("/landingPage")
-    public String getLandingPage(Model model) {
-        return "landing-page";
-    }
-
     @GetMapping("/getProperties")
     public String getPropertyDetails(
             @RequestParam("type") String isSaleStr,
@@ -334,7 +341,7 @@ public class PropertyController {
             HttpSession session) {
         boolean isSale = "buy".equalsIgnoreCase(isSaleStr);
 
-        User user = (User)session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
 
         Page<Property> propertyPage = propertyService.getAllProperties(
                 isSale, city, searchKeyword, bhkType, propertyStatus, furnishing,

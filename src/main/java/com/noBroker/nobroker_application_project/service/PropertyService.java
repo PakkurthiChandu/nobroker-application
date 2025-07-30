@@ -29,11 +29,9 @@ public interface PropertyService {
 
     void deleteById(Long propertyId);
 
-    RentalDto getForm3(Property property);
+    RentalDto getRentalDetails(Property property);
 
     Property updatePropertyDetails(Property property,Property updatedProperty);
-
-    RentalDto getRentalDetails(Property property);
 
     Property saveUpdatedRentalDetails(Property property, RentalDto rentalDto);
 

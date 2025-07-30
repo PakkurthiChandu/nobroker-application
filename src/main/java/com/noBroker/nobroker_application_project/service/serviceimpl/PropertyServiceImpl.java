@@ -6,6 +6,8 @@ import com.noBroker.nobroker_application_project.repository.UserRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.noBroker.nobroker_application_project.repository.PropertyRepository;
+import com.noBroker.nobroker_application_project.service.AddressService;
+import com.noBroker.nobroker_application_project.service.AmenityService;
 import com.noBroker.nobroker_application_project.service.PropertyService;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,11 +30,17 @@ public class PropertyServiceImpl implements PropertyService {
     private final Cloudinary cloudinary;
     private final PropertyRepository propertyRepository;
     private final UserRepository userRepository;
+    private final AddressService addressService;
+    private final AmenityService amenityService;
 
-    public PropertyServiceImpl(Cloudinary cloudinary, PropertyRepository propertyRepository, UserRepository userRepository) {
+    public PropertyServiceImpl(Cloudinary cloudinary, PropertyRepository propertyRepository,
+                               UserRepository userRepository, AddressService addressService,
+                               AmenityService amenityService) {
         this.cloudinary = cloudinary;
         this.propertyRepository = propertyRepository;
         this.userRepository = userRepository;
+        this.addressService = addressService;
+        this.amenityService = amenityService;
     }
 
     public Property getPropertyById(Long id) {
@@ -112,14 +120,22 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     public void deleteById(Long propertyId) {
-        Property property = propertyRepository.findById(propertyId).
-                orElseThrow(() ->
-                        new RuntimeException("No property found with id: " + propertyId));
+        Property property = propertyRepository.findById(propertyId).orElse(null);
 
-        propertyRepository.delete(property);
+        if (property != null) {
+            propertyRepository.delete(property);
+
+            if (property.getAddress().getProperties().size() <= 1) {
+                addressService.delete(property.getAddress());
+            }
+
+            if (property.getAmenity().getProperties().size() <= 1) {
+                amenityService.delete(property.getAmenity());
+            }
+        }
     }
 
-    public RentalDto getForm3(Property property) {
+    public RentalDto getRentalDetails(Property property) {
         return getRentalDto(property);
     }
 
@@ -154,10 +170,6 @@ public class PropertyServiceImpl implements PropertyService {
         property.setBuiltUpArea(updatedProperty.getBuiltUpArea());
 
         return property;
-    }
-
-    public RentalDto getRentalDetails(Property property) {
-        return getRentalDto(property);
     }
 
     public Property saveUpdatedRentalDetails(Property property, RentalDto rentalDto) {

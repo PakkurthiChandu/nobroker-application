@@ -35,17 +35,27 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    public User findByEmail(String email) {
-        return  userRepository.findByEmail(email).orElse(null);
+    public User findByEmailNotId(String email, Long userId) {
+        return  userRepository.findByEmailUserIdNot(email, userId);
     }
 
     @Override
-    public User findByMobilePhone(String mobilePhone) {
-        return  userRepository.findByMobilePhone(mobilePhone).orElse(null);
+    public User findByMobilePhoneNotId(String mobilePhone, Long userId) {
+        return  userRepository.findByMobilePhoneUserIdNot(mobilePhone, userId).orElse(null);
     }
 
     @Override
     public User findById(Long userId) {
         return userRepository.findById(userId).orElse(null);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public User findByMobilePhone(String mobilePhone) {
+        return userRepository.findByMobilePhone(mobilePhone).orElse(null);
     }
 }
