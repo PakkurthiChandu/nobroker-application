@@ -1,6 +1,7 @@
 package com.noBroker.nobroker_application_project.service.serviceimpl;
 
 import com.noBroker.nobroker_application_project.service.OpenRouterService;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,11 +20,16 @@ public class OpenRouterServiceImpl implements OpenRouterService {
     @Value("${openrouter.api.key}")
     private String apiKey;
 
-    private final RestTemplate restTemplate = new RestTemplate();
-    private final String API_URL = "https://openrouter.ai/api/v1/chat/completions";
+    private final RestTemplate restTemplate;
 
+    public OpenRouterServiceImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    @Override
     public String getChatBotResponse(String userMessage) {
         HttpHeaders headers = new HttpHeaders();
+
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + apiKey);
 
@@ -40,6 +46,7 @@ public class OpenRouterServiceImpl implements OpenRouterService {
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
 
         try {
+            String API_URL = "https://openrouter.ai/api/v1/chat/completions";
             ResponseEntity<Map> response = restTemplate.postForEntity(API_URL, request, Map.class);
 
             Map<String, Object> choice = (Map<String, Object>)(
@@ -47,7 +54,7 @@ public class OpenRouterServiceImpl implements OpenRouterService {
             Map<String, Object> message = (Map<String, Object>) choice.get("message");
 
             return (String) message.get("content");
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             return "Something went wrong";
         }
     }

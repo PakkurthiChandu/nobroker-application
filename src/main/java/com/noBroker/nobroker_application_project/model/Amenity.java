@@ -17,7 +17,7 @@ public class Amenity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long amenityId;
 
-    private int bathrooms;
+    private Integer bathrooms;
     private Integer balcony;
     private String waterSupply;
     private Boolean petAllowed = false;

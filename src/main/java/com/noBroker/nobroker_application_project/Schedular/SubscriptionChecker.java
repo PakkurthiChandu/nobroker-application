@@ -31,16 +31,13 @@ public class SubscriptionChecker {
         List<User> users = userRepository.findByIsSubscribedTrue();
 
         for (User user : users) {
-            Transaction latestTransaction = transactionRepository.findTopByUserOrderByPaymentTimeDesc(user).orElse(null);
+            Transaction latestTransaction = transactionRepository.findTopByUserOrderByPaymentTimeDesc(user)
+                    .orElse(null);
 
             if (latestTransaction != null) {
                 LocalDateTime expiryDate = latestTransaction.getPaymentTime().plusMonths(1);
 
                 if (expiryDate.isBefore(LocalDateTime.now())) {
-//                    user.setIsSubscribed(false);
-
-//                    userRepository.save(user);
-
                     emailService.sendSubscriptionExpiredEmail(user.getEmail(), user.getName());
                 }
             }

@@ -43,11 +43,12 @@ public class PropertyServiceImpl implements PropertyService {
         this.amenityService = amenityService;
     }
 
+    @Override
     public Property getPropertyById(Long id) {
-        return propertyRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("No property found with id: " + id));
+        return propertyRepository.findById(id).orElse(null);
     }
 
+    @Override
     public void saveImage(Property property, MultipartFile[] propertyImages, HttpSession session) {
         for (MultipartFile multipartFile : propertyImages) {
             if (multipartFile == null || multipartFile.isEmpty()) {
@@ -78,6 +79,7 @@ public class PropertyServiceImpl implements PropertyService {
         propertyRepository.save(property);
     }
 
+    @Override
     public Page<Property> getAllProperties(boolean isSale, String city, String keyword, List<Integer> bhkType,
                                            String propertyStatus, List<String> furnishing, List<String> propertyType,
                                            List<String> parking, Integer propertyAge, Double minBuiltUpArea,
@@ -111,6 +113,7 @@ public class PropertyServiceImpl implements PropertyService {
                 minRent, maxRent, pageable);
     }
 
+    @Override
     public Set<Property> getBookmarkedProperties(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
 
@@ -133,6 +136,7 @@ public class PropertyServiceImpl implements PropertyService {
         }
     }
 
+    @Override
     public RentalDto getRentalDetails(Property property) {
         return getRentalDto(property);
     }
@@ -157,6 +161,7 @@ public class PropertyServiceImpl implements PropertyService {
         return rentalDto;
     }
 
+    @Override
     public Property updatePropertyDetails(Property property,Property updatedProperty) {
         property.setApartmentType(updatedProperty.getApartmentType());
         property.setApartmentName(updatedProperty.getApartmentName());
@@ -170,6 +175,7 @@ public class PropertyServiceImpl implements PropertyService {
         return property;
     }
 
+    @Override
     public Property saveUpdatedRentalDetails(Property property, RentalDto rentalDto) {
         property.setIsSale(rentalDto.getIsSale());
         property.setAvailableFor(rentalDto.getAvailableFor());
@@ -190,6 +196,7 @@ public class PropertyServiceImpl implements PropertyService {
         return property;
     }
 
+    @Override
     public Property saveRentalDetails(Property property, RentalDto rentalDto) {
         property.setIsSale(rentalDto.getIsSale());
         property.setAvailableFor(rentalDto.getAvailableFor());

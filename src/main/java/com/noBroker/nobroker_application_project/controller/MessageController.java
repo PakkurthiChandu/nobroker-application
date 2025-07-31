@@ -34,12 +34,11 @@ public class MessageController {
     @ResponseBody
     public String sendOtp(@RequestParam("mobilePhone") String mobile, Model model) {
         String otp = String.valueOf(new Random().nextInt(900000) + 100000);
+        storedOtp = otp;
 
         otpService.sendOtp(mobile, otp);
 
         System.out.println("otp: " + otp);
-
-        storedOtp = otp;
 
         model.addAttribute("mobilePhone", mobile);
 
@@ -60,13 +59,11 @@ public class MessageController {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
                                 user, null, List.of(new SimpleGrantedAuthority("ROLE_" +
-                                user.getRole()))
-                        );
+                                user.getRole())));
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
                 session.setAttribute("user", user);
-
                 session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
                 return "redirect:/landingPage";
@@ -88,7 +85,6 @@ public class MessageController {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
                 session.setAttribute("user", user);
-
                 session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
                 return "redirect:/profile/view/"+ user.getUserId();

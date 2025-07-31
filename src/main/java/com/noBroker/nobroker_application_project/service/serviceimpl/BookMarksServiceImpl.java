@@ -19,11 +19,12 @@ public class BookMarksServiceImpl implements BookMarksService {
         this.userRepository = userRepository;
     }
 
+    @Override
     public boolean saveBookMarks(Long propertyId, User user) {
         Property property = propertyRepository.findById(propertyId).orElse(null);
         user = userRepository.findByEmail(user.getEmail()).orElse(null);
 
-        if(user != null && property != null) {
+        if (user != null && property != null) {
             user.getBookmarkedProperties().add(property);
             property.getBookmarkedByUsers().add(user);
 
@@ -33,11 +34,12 @@ public class BookMarksServiceImpl implements BookMarksService {
         return true;
     }
 
+    @Override
     public void removeBookmarks(Long propertyId, Long userId) {
         User user = userRepository.findById(userId).orElse(null);
         Property property = propertyRepository.findById(propertyId).orElse(null);
 
-        if(user != null && property != null) {
+        if (user != null && property != null) {
             user.getBookmarkedProperties().remove(property);
             property.getBookmarkedByUsers().remove(user);
         }

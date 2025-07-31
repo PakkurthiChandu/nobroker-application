@@ -8,9 +8,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "Photos", indexes = {
-        @Index(name = "idx_image_property", columnList = "property_id")
-})
+@Table(name = "photos")
 public class Image {
 
     @Id

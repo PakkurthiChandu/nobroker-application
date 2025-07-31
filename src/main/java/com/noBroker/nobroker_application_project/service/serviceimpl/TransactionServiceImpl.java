@@ -7,7 +7,7 @@ import com.noBroker.nobroker_application_project.service.TransactionService;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -18,13 +18,8 @@ public class TransactionServiceImpl implements TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
-    public Transaction getLatestTransaction(User user) {
-        return transactionRepository
-                .findTopByUserOrderByPaymentTimeDesc(user)
-                .orElse(null);
-    }
-
-    public List<Transaction> getTransactionsByUserId(Long userId) {
+    @Override
+    public Set<Transaction> getTransactionsByUserId(Long userId) {
         return transactionRepository.findByUserUserId(userId);
     }
 

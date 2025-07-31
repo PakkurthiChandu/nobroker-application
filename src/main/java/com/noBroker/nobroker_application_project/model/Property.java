@@ -24,10 +24,7 @@ import java.util.Set;
         @Index(name = "idx_property_furnishing", columnList = "furnishing"),
         @Index(name = "idx_property_parking", columnList = "parking"),
         @Index(name = "idx_property_age", columnList = "propertyAge"),
-        @Index(name = "idx_property_status", columnList = "propertyStatus"),
-        @Index(name = "idx_property_address", columnList = "address_id"),
-        @Index(name = "idx_property_amenity", columnList = "amenity_id"),
-        @Index(name = "idx_property_owner", columnList = "user_id")
+        @Index(name = "idx_property_status", columnList = "propertyStatus")
 })
 public class Property {
 

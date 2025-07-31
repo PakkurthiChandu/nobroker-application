@@ -12,7 +12,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "address", indexes = {
-        @Index(name = "idx_address_city", columnList = "city")
+        @Index(name = "idx_address_city", columnList = "city"),
+        @Index(name = "idx_address_locality", columnList = "locality"),
+        @Index(name = "idx_address_landmark", columnList = "landmark")
 })
 public class Address {
 

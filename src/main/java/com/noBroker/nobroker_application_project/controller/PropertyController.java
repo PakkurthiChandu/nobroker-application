@@ -61,8 +61,7 @@ public class PropertyController {
     @GetMapping("/localityDetails")
     public String getLocalityDetailsForm(HttpSession session, Model model){
         Property property = (Property) session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
@@ -75,8 +74,7 @@ public class PropertyController {
     @PostMapping("/localityDetails")
     public String addAddress(@ModelAttribute Address address, HttpSession session){
         Property property = (Property) session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
@@ -93,8 +91,7 @@ public class PropertyController {
     @GetMapping("/rentalDetails")
     public String getRentalDetailsForm(HttpSession session, Model model){
         Property property = (Property)session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
@@ -110,8 +107,7 @@ public class PropertyController {
     @PostMapping("/rentalDetails")
     public String addRentalDetails(@ModelAttribute RentalDto rentalDto, HttpSession session) {
         Property property = (Property)session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
@@ -123,8 +119,7 @@ public class PropertyController {
     @GetMapping("/amenities")
     public String showAmenityForm(HttpSession session, Model model) {
         Property property = (Property) session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
@@ -137,8 +132,7 @@ public class PropertyController {
     @PostMapping("/amenities")
     public String addAmenities(@ModelAttribute Amenity amenity, HttpSession session){
         Property property = (Property) session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
@@ -163,8 +157,7 @@ public class PropertyController {
     public String uploadImages(@RequestParam("propertyImages") MultipartFile[] propertyImages,
                                HttpSession session) {
         Property property = (Property) session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
@@ -193,7 +186,6 @@ public class PropertyController {
     public String updatePropertyDetails(Property updatedProperty,
                                         HttpSession session) {
         Property property = (Property) session.getAttribute("property");
-
         if (property == null) {
             return "redirect:/";
         }
@@ -206,7 +198,6 @@ public class PropertyController {
     @GetMapping("/edit/address")
     public String showEditAddressForm(HttpSession session, Model model) {
         Property property = (Property)session.getAttribute("property");
-
         if (property == null || property.getAddress() == null) {
             return "redirect:/";
         }
@@ -222,7 +213,6 @@ public class PropertyController {
         Property property = (Property) session.getAttribute("property");
 
         Address existingOrNewAddress = addressService.findOrCreate(address);
-
         property.setAddress(existingOrNewAddress);
 
         session.setAttribute("property", property);
@@ -233,8 +223,7 @@ public class PropertyController {
     @GetMapping("/edit/rentals")
     public String showRentalEditForm(HttpSession session, Model model) {
         Property property = (Property) session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
@@ -248,8 +237,7 @@ public class PropertyController {
     public String updateRentalDetails(@ModelAttribute RentalDto rentalDto,
                                       HttpSession session) {
         Property property = (Property) session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
@@ -261,12 +249,11 @@ public class PropertyController {
     @GetMapping("/edit/amenities")
     public String showEditAmenityForm(HttpSession session, Model model) {
         Property property = (Property)session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
-        if(property.getAmenity() == null) {
+        if (property.getAmenity() == null) {
             property.setAmenity(new Amenity());
         }
 
@@ -281,7 +268,6 @@ public class PropertyController {
         Property property = (Property) session.getAttribute("property");
 
         Amenity existingOrNewAmenity = amenityService.findOrCreateAmenity(property.getAmenity());
-
         property.setAmenity(existingOrNewAmenity);
 
         session.setAttribute("property", property);
@@ -292,8 +278,7 @@ public class PropertyController {
     @GetMapping("/edit/gallery")
     public String showGalleryEditForm(HttpSession session, Model model) {
         Property property = (Property) session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
@@ -307,8 +292,7 @@ public class PropertyController {
     public String updateGallery(@RequestParam("propertyImages") MultipartFile[] propertyImages,
                                 HttpSession session) {
         Property property = (Property) session.getAttribute("property");
-
-        if(property == null) {
+        if (property == null) {
             return "redirect:/";
         }
 
@@ -413,7 +397,6 @@ public class PropertyController {
     @GetMapping("/viewProperty/{id}")
     public String viewProperty(@PathVariable Long id, Model model) {
         Property property = propertyService.getPropertyById(id);
-
         if (property == null || property.getAddress() == null) {
             return "error";
         }

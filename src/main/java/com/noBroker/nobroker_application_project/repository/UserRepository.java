@@ -16,12 +16,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     @Query("SELECT u FROM User u WHERE u.mobilePhone = :mobilePhone AND u.userId <> :userId")
-    Optional<User> findByMobilePhoneUserIdNot(@Param("mobilePhone") String mobilePhone, @Param("userId") Long userId);
+    Optional<User> findByMobilePhoneExcludeUser(@Param("mobilePhone") String mobilePhone, @Param("userId") Long userId);
 
     List<User> findByIsSubscribedTrue();
 
     Optional<User> findByMobilePhone(String username);
 
     @Query("SELECT u FROM User u WHERE u.email = :email AND u.userId <> :userId")
-    User findByEmailUserIdNot(@Param("email") String email, @Param("userId") Long  userId);
+    User findByEmailExcludeUser(@Param("email") String email, @Param("userId") Long  userId);
 }

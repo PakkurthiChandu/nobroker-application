@@ -12,9 +12,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "transaction", indexes = {
-        @Index(name = "idx_transaction_user", columnList = "user_id")
-})
 public class Transaction {
 
     @Id
@@ -22,11 +19,10 @@ public class Transaction {
     private Long id;
 
     private Long amount;
+    private String paymentStatus;
 
     @CreationTimestamp
     private LocalDateTime paymentTime;
-
-    private String paymentStatus;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

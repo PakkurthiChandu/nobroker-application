@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -33,7 +32,6 @@ public class ProfileController {
 
     @GetMapping("/profile/view/{userId}")
     public String viewProfile(@PathVariable("userId") Long userId,
-                              HttpSession session,
                               Model model) {
         User user = userService.findById(userId);
 
@@ -92,7 +90,7 @@ public class ProfileController {
     @GetMapping("/shortlisted-payments/{userId}")
     public String showPayments(@PathVariable("userId") Long userId,
                                   Model model) {
-        List<Transaction> transactions = transactionService.getTransactionsByUserId(userId);
+        Set<Transaction> transactions = transactionService.getTransactionsByUserId(userId);
 
         model.addAttribute("transactions", transactions);
 
@@ -102,7 +100,6 @@ public class ProfileController {
     @GetMapping("/your-properties/{userId}")
     public String showUserProperties(@PathVariable("userId") Long userId, Model model, HttpSession session) {
         User user = userService.findById(userId);
-
         Set<Property> properties = (user != null) ? user.getProperties() : Set.of();
 
         model.addAttribute("properties", properties);

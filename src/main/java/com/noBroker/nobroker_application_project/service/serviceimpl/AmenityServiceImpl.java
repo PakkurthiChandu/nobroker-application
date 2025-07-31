@@ -41,10 +41,8 @@ public class AmenityServiceImpl implements AmenityService {
         );
 
         if (existing != null) {
-
             return existing;
         } else {
-
             return amenityRepository.save(amenity);
         }
     }

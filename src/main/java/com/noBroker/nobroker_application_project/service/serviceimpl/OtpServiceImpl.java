@@ -17,15 +17,15 @@ public class OtpServiceImpl implements OtpService {
     @Value("${fast2sms.api.key}")
     private String apiKey;
 
+    @Override
     public void sendOtp(String mobile, String otp) {
         String url = "https://www.fast2sms.com/dev/bulkV2";
 
         HttpHeaders headers = new HttpHeaders();
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 
         headers.set("authorization", apiKey);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 
         body.add("sender_id", "FSTSMS");
         body.add("message", "Your OTP for NoBroker login is " + otp);

@@ -35,7 +35,6 @@ public class SecurityConfig {
                     .userInfoEndpoint(userInfo -> userInfo
                             .userAuthoritiesMapper(authorities -> {
                                 Set<GrantedAuthority> mappedAuthorities = new HashSet<>(authorities);
-
                                 mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
                                 return mappedAuthorities;
@@ -44,6 +43,7 @@ public class SecurityConfig {
             )
             .logout(logout -> logout
                     .logoutSuccessUrl("/landingPage")
+                    .invalidateHttpSession(true)
                     .permitAll()
             );
 

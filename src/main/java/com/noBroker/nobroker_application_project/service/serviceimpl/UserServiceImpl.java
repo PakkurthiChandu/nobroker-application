@@ -15,10 +15,11 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    @Override
     public User changeToSubscribe(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
 
-        if(user != null){
+        if (user != null){
             user.setIsSubscribed(true);
 
             return userRepository.save(user);
@@ -27,17 +28,19 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
     public User save(User user) {
         return userRepository.save(user);
     }
 
+    @Override
     public User findByEmailExcludeUser(String email, Long userId) {
-        return  userRepository.findByEmailUserIdNot(email, userId);
+        return  userRepository.findByEmailExcludeUser(email, userId);
     }
 
     @Override
     public User findByMobilePhoneExcludeUser(String mobilePhone, Long userId) {
-        return  userRepository.findByMobilePhoneUserIdNot(mobilePhone, userId).orElse(null);
+        return  userRepository.findByMobilePhoneExcludeUser(mobilePhone, userId).orElse(null);
     }
 
     @Override

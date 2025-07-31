@@ -11,9 +11,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "users", indexes = {
-        @Index(name = "idx_user_email", columnList = "email")
-})
+@Table(name = "users")
 public class User {
 
     @Id

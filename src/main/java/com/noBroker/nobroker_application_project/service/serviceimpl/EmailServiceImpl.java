@@ -1,6 +1,7 @@
 package com.noBroker.nobroker_application_project.service.serviceimpl;
 
 import com.noBroker.nobroker_application_project.service.EmailService;
+
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ public class EmailServiceImpl implements EmailService {
         this.mailSender = mailSender;
     }
 
+    @Override
     public void sendSubscriptionExpiredEmail(String toEmail, String name) {
         SimpleMailMessage message = new SimpleMailMessage();
 

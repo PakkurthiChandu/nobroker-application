@@ -51,7 +51,4 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             @Param("minRent") Long minRent,
             @Param("maxRent") Long maxRent,
             Pageable pageable);
-
-    @Query("SELECT p FROM Property p JOIN FETCH p.address a WHERE p.propertyId = :propertyId")
-    Property findByPropertyId(long propertyId);
 }

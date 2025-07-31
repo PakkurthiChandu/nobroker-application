@@ -46,9 +46,7 @@ public class UserController {
     @ResponseBody
     public Map<String, Boolean> checkSubscription(HttpSession session) {
         User user = (User) session.getAttribute("user");
-
-        Boolean isSubscriptionValid = isSubscriptionValid(user);
-
+        boolean isSubscriptionValid = isSubscriptionValid(user);
         Map<String, Boolean> response = new HashMap<>();
 
         response.put("subscribed", user != null && isSubscriptionValid);
@@ -62,7 +60,7 @@ public class UserController {
 
         User user = (User) session.getAttribute("user");
 
-        if(user == null || user.getTransactions().isEmpty()) {
+        if (user == null || user.getTransactions().isEmpty()) {
             return "subscriptionForm";
         } else {
             return "subscriptionExpired";
@@ -76,9 +74,9 @@ public class UserController {
         session.setAttribute("tagetUrl", "/getOwnerDetails");
         session.setAttribute("propertyId", propertyId);
 
-        if(user == null || user.getTransactions().isEmpty()) {
+        if (user == null || user.getTransactions().isEmpty()) {
             return "subscriptionForm";
-        } else if(!isSubscriptionValid(user)) {
+        } else if (!isSubscriptionValid(user)) {
             return "subscriptionExpired";
         } else {
             return "redirect:/getOwnerDetails";
@@ -88,7 +86,6 @@ public class UserController {
     @GetMapping("/getOwnerDetails")
     public String getOwnerDetails(HttpSession session,Model model) {
         Long propertyId = (Long) session.getAttribute("propertyId");
-
         Property property = propertyService.getPropertyById(propertyId);
 
         model.addAttribute("owner", property.getOwner());
@@ -98,7 +95,6 @@ public class UserController {
 
     public boolean isSubscriptionValid(User user) {
         Transaction transaction = transactionService.findTopByUserOrderByPaymentTimeDesc(user);
-
         if (transaction != null) {
             if ("SUCCESS".equalsIgnoreCase(transaction.getPaymentStatus())) {
                 LocalDateTime paymentTime = transaction.getPaymentTime();
