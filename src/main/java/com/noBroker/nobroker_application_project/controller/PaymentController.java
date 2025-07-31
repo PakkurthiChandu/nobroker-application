@@ -25,8 +25,8 @@ public class PaymentController {
     @PostMapping("/create-checkout-session")
     public String createCheckoutSession(@RequestBody Map<String, Object> requestData) throws StripeException {
         Stripe.apiKey = stripeSecretKey;
-
         Long price = Long.valueOf(requestData.get("price").toString());
+
         String successUrl = "http://localhost:8080/success";
         String cancelUrl = "http://localhost:8080/cancel";
 

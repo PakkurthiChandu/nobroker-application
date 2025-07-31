@@ -55,7 +55,7 @@ public class PropertyServiceImpl implements PropertyService {
             }
 
             try {
-                Map<?, ?> uploadResult = cloudinary.uploader().upload(
+                Map<String, Object> uploadResult = cloudinary.uploader().upload(
                         multipartFile.getBytes(),
                         ObjectUtils.emptyMap()
                 );
@@ -83,7 +83,6 @@ public class PropertyServiceImpl implements PropertyService {
                                            List<String> parking, Integer propertyAge, Double minBuiltUpArea,
                                            Double maxBuiltUpArea, Long minRent, Long maxRent, String sortBy,
                                            int page, int size) {
-
         keyword = (keyword == null || keyword.trim().isEmpty()) ? "" : keyword;
 
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
@@ -112,9 +111,8 @@ public class PropertyServiceImpl implements PropertyService {
                 minRent, maxRent, pageable);
     }
 
-    public Set<Property> getBookmarkedPropertyDTOs(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public Set<Property> getBookmarkedProperties(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
 
         return user.getBookmarkedProperties();
     }

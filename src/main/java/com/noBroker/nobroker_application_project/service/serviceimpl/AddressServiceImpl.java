@@ -20,7 +20,7 @@ public class AddressServiceImpl implements AddressService {
         Address existingAddress = addressRepository.findByCityAndLocalityAndLandmark(address.getCity(),
                 address.getLocality(), address.getLandmark());
 
-        if(existingAddress != null) {
+        if (existingAddress != null) {
             return existingAddress;
         } else {
             return addressRepository.save(address);

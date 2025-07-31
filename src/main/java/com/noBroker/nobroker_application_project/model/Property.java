@@ -44,8 +44,8 @@ public class Property {
     private String facing;
     private Double builtUpArea;
     private String availableFor;
-    private Long expectedRent = 0L;
-    private Long expectedDeposit = 0L;
+    private Long expectedRent;
+    private Long expectedDeposit;
     private String monthlyMaintenance;
     private String preferredTenets;
     private Boolean negotiation = false;

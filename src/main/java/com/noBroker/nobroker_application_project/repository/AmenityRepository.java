@@ -1,6 +1,7 @@
 package com.noBroker.nobroker_application_project.repository;
 
 import com.noBroker.nobroker_application_project.model.Amenity;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

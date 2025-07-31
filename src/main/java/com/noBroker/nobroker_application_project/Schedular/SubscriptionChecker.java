@@ -37,9 +37,9 @@ public class SubscriptionChecker {
                 LocalDateTime expiryDate = latestTransaction.getPaymentTime().plusMonths(1);
 
                 if (expiryDate.isBefore(LocalDateTime.now())) {
-                    user.setIsSubscribed(false);
+//                    user.setIsSubscribed(false);
 
-                    userRepository.save(user);
+//                    userRepository.save(user);
 
                     emailService.sendSubscriptionExpiredEmail(user.getEmail(), user.getName());
                 }

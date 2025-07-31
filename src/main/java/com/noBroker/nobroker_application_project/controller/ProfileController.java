@@ -46,7 +46,7 @@ public class ProfileController {
     public String updateProfile(@ModelAttribute("user") User updatedUser, RedirectAttributes redirectAttributes,
                                 HttpSession session) {
         User user = userService.findById(updatedUser.getUserId());
-        User userByEmail = userService.findByEmailNotId(updatedUser.getEmail(), updatedUser.getUserId());
+        User userByEmail = userService.findByEmailExcludeUser(updatedUser.getEmail(), updatedUser.getUserId());
 
         if (userByEmail != null) {
             redirectAttributes.addFlashAttribute("errorMessage",
@@ -55,7 +55,8 @@ public class ProfileController {
             return "redirect:/profile/view/" + user.getUserId();
         }
 
-       User userByPhone = userService.findByMobilePhoneNotId(updatedUser.getMobilePhone(), updatedUser.getUserId());
+       User userByPhone = userService.findByMobilePhoneExcludeUser(updatedUser.getMobilePhone(),
+               updatedUser.getUserId());
 
         if (userByPhone != null) {
             redirectAttributes.addFlashAttribute("errorMessage",
@@ -81,7 +82,7 @@ public class ProfileController {
     @GetMapping("/shortlisted-properties/{userId}")
     public String showShortlisted(@PathVariable("userId") Long userId,
                                   Model model) {
-        Set<Property> properties = propertyService.getBookmarkedPropertyDTOs(userId);
+        Set<Property> properties = propertyService.getBookmarkedProperties(userId);
 
         model.addAttribute("allProperties", properties);
 
@@ -99,7 +100,7 @@ public class ProfileController {
     }
 
     @GetMapping("/your-properties/{userId}")
-    public String showUserProperties(@PathVariable("userId") Long userId, Model model) {
+    public String showUserProperties(@PathVariable("userId") Long userId, Model model, HttpSession session) {
         User user = userService.findById(userId);
 
         Set<Property> properties = (user != null) ? user.getProperties() : Set.of();

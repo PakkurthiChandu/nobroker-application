@@ -4,7 +4,6 @@ import com.noBroker.nobroker_application_project.model.User;
 import com.noBroker.nobroker_application_project.service.OtpService;
 import com.noBroker.nobroker_application_project.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,16 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 @Controller
 public class MessageController {
 
     private final OtpService otpService;
-    private final Map<String, String> otpStore = new HashMap<>();
     private final UserService userService;
     private String storedOtp = "";
 
@@ -39,8 +35,7 @@ public class MessageController {
     public String sendOtp(@RequestParam("mobilePhone") String mobile, Model model) {
         String otp = String.valueOf(new Random().nextInt(900000) + 100000);
 
-//        otpService.sendOtp(mobile, otp);
-//        otpStore.put(mobile, otp);
+        otpService.sendOtp(mobile, otp);
 
         System.out.println("otp: " + otp);
 
@@ -55,8 +50,8 @@ public class MessageController {
     public String verifyOtp(@RequestParam String mobilePhone,
                             @RequestParam String otp,
                             HttpSession session,
-                            Model model, HttpServletRequest request) {
-        User user = null;
+                            Model model) {
+        User user;
 
         if (storedOtp != null && storedOtp.equals(otp)) {
             user = userService.findByMobilePhone(mobilePhone);
@@ -69,8 +64,6 @@ public class MessageController {
                         );
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-
-//                HttpSession session = request.getSession(true);
 
                 session.setAttribute("user", user);
 
@@ -93,8 +86,6 @@ public class MessageController {
                         );
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-
-//                HttpSession session = request.getSession(true);
 
                 session.setAttribute("user", user);
 

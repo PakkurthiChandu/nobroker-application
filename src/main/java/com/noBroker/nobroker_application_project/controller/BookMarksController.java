@@ -23,7 +23,7 @@ public class BookMarksController {
 
     @PostMapping("/toggleBookmark/{propertyId}")
     @ResponseBody
-    public Map<String, Object> toggleBookmark(@PathVariable Long propertyId, HttpSession session) {
+    public Map<String, Boolean> toggleBookmark(@PathVariable Long propertyId, HttpSession session) {
         User user = (User) session.getAttribute("user");
 
         boolean bookmarked = bookMarksService.saveBookMarks(propertyId, user);

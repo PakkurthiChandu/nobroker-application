@@ -25,7 +25,7 @@ public interface PropertyService {
                                            Double maxBuiltUpArea, Long minRent, Long maxRent, String sortBy,
                                            int page, int size);
 
-    Set<Property> getBookmarkedPropertyDTOs(Long userId);
+    Set<Property> getBookmarkedProperties(Long userId);
 
     void deleteById(Long propertyId);
 
