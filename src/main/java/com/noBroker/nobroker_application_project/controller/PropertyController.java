@@ -81,7 +81,6 @@ public class PropertyController {
         Address existingOrNewAddress = addressService.findOrCreate(address);
 
         property.setAddress(existingOrNewAddress);
-        address.getProperties().add(property);
 
         session.setAttribute("property", property);
 
@@ -139,7 +138,6 @@ public class PropertyController {
         Amenity existingOrNewAmenity = amenityService.findOrCreateAmenity(amenity);
 
         property.setAmenity(existingOrNewAmenity);
-        existingOrNewAmenity.getProperties().add(property);
 
         session.setAttribute("property", property);
 
@@ -267,7 +265,7 @@ public class PropertyController {
     public String updateAmenities(@ModelAttribute Amenity amenity, HttpSession session) {
         Property property = (Property) session.getAttribute("property");
 
-        Amenity existingOrNewAmenity = amenityService.findOrCreateAmenity(property.getAmenity());
+        Amenity existingOrNewAmenity = amenityService.findOrCreateAmenity(amenity);
         property.setAmenity(existingOrNewAmenity);
 
         session.setAttribute("property", property);

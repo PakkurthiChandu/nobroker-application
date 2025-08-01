@@ -22,7 +22,7 @@ public class SecurityConfig {
                     .requestMatchers( "/chatbot", "/images/**","/login", "/error","/landingPage",
                             "/loginPage", "/send-otp", "/verify","/verify-otp").permitAll()
                     .requestMatchers("/viewProperty/**", "/view-full-property",
-                            "edit/**").hasAnyRole("OIDC_USER","USER")
+                            "/edit/**").hasAnyRole("OIDC_USER","USER")
                     .anyRequest().authenticated()
             )
             .formLogin(form -> form

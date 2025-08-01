@@ -49,7 +49,7 @@ public class OpenRouterServiceImpl implements OpenRouterService {
             String API_URL = "https://openrouter.ai/api/v1/chat/completions";
             ResponseEntity<Map> response = restTemplate.postForEntity(API_URL, request, Map.class);
 
-            Map<String, Object> choice = (Map<String, Object>)(
+            Map<String, Object> choice = (Map<String, Object>) (
                     (List<?>) response.getBody().get("choices")).get(0);
             Map<String, Object> message = (Map<String, Object>) choice.get("message");
 

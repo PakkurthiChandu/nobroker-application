@@ -124,6 +124,14 @@ public class PropertyServiceImpl implements PropertyService {
         Property property = propertyRepository.findById(propertyId).orElse(null);
 
         if (property != null) {
+            Set<User> users = property.getBookmarkedByUsers();
+
+            for(User user : users){
+                user.getBookmarkedProperties().remove(property);
+
+                userRepository.save(user);
+            }
+
             propertyRepository.delete(property);
 
             if (property.getAddress().getProperties().size() <= 1) {

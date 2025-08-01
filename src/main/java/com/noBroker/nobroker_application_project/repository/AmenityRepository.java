@@ -33,7 +33,7 @@ public interface AmenityRepository extends JpaRepository<Amenity, Long> {
             "(:swimmingPool IS NULL OR a.swimmingPool = :swimmingPool) AND " +
             "(:fireSafety IS NULL OR a.fireSafety = :fireSafety)")
     Amenity findMatchingAmenity(
-            @Param("bathrooms") int bathrooms,
+            @Param("bathrooms") Integer bathrooms,
             @Param("balcony") Integer balcony,
             @Param("waterSupply") String waterSupply,
             @Param("petAllowed") Boolean petAllowed,

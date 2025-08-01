@@ -22,7 +22,7 @@ public class BookMarksServiceImpl implements BookMarksService {
     @Override
     public boolean saveBookMarks(Long propertyId, User user) {
         Property property = propertyRepository.findById(propertyId).orElse(null);
-        user = userRepository.findByEmail(user.getEmail()).orElse(null);
+        user = userRepository.findById(user.getUserId()).orElse(null);
 
         if (user != null && property != null) {
             user.getBookmarkedProperties().add(property);

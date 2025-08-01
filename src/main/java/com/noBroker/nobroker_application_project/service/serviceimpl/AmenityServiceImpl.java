@@ -41,8 +41,12 @@ public class AmenityServiceImpl implements AmenityService {
         );
 
         if (existing != null) {
+            System.out.println("hi");
+
             return existing;
         } else {
+            System.out.println("hello");
+
             return amenityRepository.save(amenity);
         }
     }

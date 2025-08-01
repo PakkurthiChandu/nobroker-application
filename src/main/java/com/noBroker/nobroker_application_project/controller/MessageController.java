@@ -36,7 +36,7 @@ public class MessageController {
         String otp = String.valueOf(new Random().nextInt(900000) + 100000);
         storedOtp = otp;
 
-        otpService.sendOtp(mobile, otp);
+//        otpService.sendOtp(mobile, otp);
 
         System.out.println("otp: " + otp);
 
