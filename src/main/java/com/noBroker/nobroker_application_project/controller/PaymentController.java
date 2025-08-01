@@ -27,8 +27,8 @@ public class PaymentController {
         Stripe.apiKey = stripeSecretKey;
         Long price = Long.valueOf(requestData.get("price").toString());
 
-        String successUrl = "http://localhost:8080/success";
-        String cancelUrl = "http://localhost:8080/cancel";
+        String successUrl = "https://nobroker-application-4.onrender.com/success";
+        String cancelUrl = "https://nobroker-application-4.onrender.com/cancel";
 
         return stripeService.createCheckoutSession(price, successUrl, cancelUrl);
     }
